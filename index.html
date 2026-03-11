@@ -221,24 +221,16 @@
       align-items:center;
     }
 
-    .spaRow2{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px 24px;
-    }
+    .serviceRow3{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px 22px;
+  align-items:center;
+}
 
-    .spaRow3{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:12px 20px;
-    }
-
-    @media (max-width:560px){
-      .spaRow2,
-      .spaRow3{
-        grid-template-columns:1fr 1fr;
-      }
-    }
+.serviceRow3 .ck{
+  min-width:92px;
+}
 
     .ck{
       display:flex;
@@ -659,28 +651,24 @@
       </div>
 
       <div class="label">SPA</div>
-      <div class="spaRow2">
-        <label class="ck"><input type="checkbox" class="svcSpa" value="草本泥">草本泥</label>
-        <label class="ck"><input type="checkbox" class="svcSpa" value="草本泥輕保養">草本泥輕保養</label>
-      </div>
-      <div class="spaRow3" style="margin-top:12px;">
-        <label class="ck"><input type="checkbox" class="svcSpa" value="臭氧">臭氧</label>
-        <label class="ck"><input type="checkbox" class="svcSpa" value="碳酸">碳酸</label>
-        <label class="ck"><input type="checkbox" class="svcSpa" value="皮膚調理">皮膚調理</label>
-      </div>
+<div class="serviceRow3">
+  <label class="ck"><input type="checkbox" class="svcSpa" value="草本泥">草本泥</label>
+  <label class="ck"><input type="checkbox" class="svcSpa" value="草本泥輕保養">草本泥輕保養</label>
+  <label class="ck"><input type="checkbox" class="svcSpa" value="臭氧">臭氧</label>
+  <label class="ck"><input type="checkbox" class="svcSpa" value="碳酸">碳酸</label>
+  <label class="ck"><input type="checkbox" class="svcSpa" value="皮膚調理">皮膚調理</label>
+</div>
 
-      <div class="label">單次項目</div>
-      <div class="spaRow3">
-        <label class="ck"><input type="checkbox" class="svcSingle" value="剪指甲">剪指甲</label>
-        <label class="ck"><input type="checkbox" class="svcSingle" value="清耳朵">清耳朵</label>
-        <label class="ck"><input type="checkbox" class="svcSingle" value="刷牙">刷牙</label>
-      </div>
-      <div class="spaRow3" style="margin-top:12px;">
-        <label class="ck"><input type="checkbox" class="svcSingle" value="貴賓腳">貴賓腳</label>
-        <label class="ck"><input type="checkbox" class="svcSingle" value="腳底毛">腳底毛</label>
-        <label class="ck"><input type="checkbox" class="svcSingle" value="頭部大修">頭部大修</label>
-      </div>
-
+     <div class="label">單次項目</div>
+<div class="serviceRow3">
+  <label class="ck"><input type="checkbox" class="svcSingle" value="剪指甲">剪指甲</label>
+  <label class="ck"><input type="checkbox" class="svcSingle" value="清耳朵">清耳朵</label>
+  <label class="ck"><input type="checkbox" class="svcSingle" value="刷牙">刷牙</label>
+  <label class="ck"><input type="checkbox" class="svcSingle" value="貴賓腳">貴賓腳</label>
+  <label class="ck"><input type="checkbox" class="svcSingle" value="腳底毛">腳底毛</label>
+  <label class="ck"><input type="checkbox" class="svcSingle" value="頭部大修">頭部大修</label>
+</div>
+      
       <div class="label">住宿</div>
       <div class="grid2" style="margin-top:10px;">
         <div>
