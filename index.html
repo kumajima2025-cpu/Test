@@ -48,8 +48,19 @@
       box-shadow:var(--shadow);
     }
 
-    .logoBox{ text-align:center; margin:10px 0 8px; }
-    .logoBox img{ width:66px; opacity:.9; }
+    .logoBox{
+      text-align:center;
+      margin:2px 0 12px;
+    }
+
+    .logoBox img{
+      max-width:120px;
+      max-height:120px;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      display:inline-block;
+    }
 
     .title{
       font-size:26px;
@@ -140,6 +151,30 @@
       letter-spacing:.6px;
       text-align:left;
       color:var(--text);
+    }
+
+    .contractScrollCard{
+      border:1.4px solid rgba(230,201,177,.95);
+      border-radius:18px;
+      background:#FFFBF7;
+      padding:14px 14px;
+      max-height:420px;
+      overflow-y:auto;
+      overflow-x:hidden;
+    }
+
+    .contractScrollCard::-webkit-scrollbar{
+      width:10px;
+    }
+
+    .contractScrollCard::-webkit-scrollbar-thumb{
+      background:rgba(195,90,46,.35);
+      border-radius:999px;
+    }
+
+    .contractScrollCard::-webkit-scrollbar-track{
+      background:rgba(230,201,177,.18);
+      border-radius:999px;
     }
 
     .contractBox{
@@ -382,6 +417,10 @@
   <div class="wrap">
 
     <div class="card">
+      <div class="logoBox">
+        <img src="logo.png" alt="店家 LOGO">
+      </div>
+
       <div class="title">寵物美容服務定型化契約</div>
 
       <div class="plainBox">
@@ -395,8 +434,9 @@
     <div class="card">
       <div class="contractTitle">契約內容（請完整閱讀）</div>
 
-      <div class="contractBox">
-        <pre id="contractText">為保障毛孩的安全與您的權益，
+      <div class="contractScrollCard">
+        <div class="contractBox">
+          <pre id="contractText">為保障毛孩的安全與您的權益，
 本店採用犬、貓美容服務定型化契約。
 請您於簽署前詳閱契約內容，
 了解雙方之權利義務及相關服務事項。
@@ -565,6 +605,7 @@
 本契約之附件「寵物基本資料及健康狀況填寫表」（包含但不限於寵物基本資料、健康狀況、個性傾向、病史、服務項目及相關告知事項），
 為本契約之一部分，與本契約具有同一之效力。甲方確認已於簽訂本契約前，依乙方之說明完整填寫前述附件，並同意其內容作為乙方評估是否提供犬、貓美容服務及服務方式之依據。前述附件得以書面、電子文件、拍照、掃描或其他可供日後查證之方式留存，均視為有效。
 </pre>
+        </div>
       </div>
 
       <div class="checkRow">
@@ -1391,7 +1432,7 @@
       }
 
       function isValidEmail(email){
-        return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       }
 
       function todayZh(){
@@ -1401,10 +1442,20 @@
         const dd = d.getDate();
         return `${y}年${m}月${dd}日`;
       }
+
+      function todayYMD(){
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${y}/${m}/${dd}`;
+      }
+
       signDate.value = todayZh();
+      payDate.value = todayYMD();
 
       function formatYMD(value){
-        const digits = String(value || "").replace(/\\D/g, "").slice(0, 8);
+        const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
         if (!digits) return "";
 
         const y = digits.slice(0, 4);
@@ -1426,13 +1477,13 @@
       document.querySelectorAll(".js-date").forEach(bindDateFormat);
 
       function formatCurrency(v){
-        const digits = String(v || "").replace(/\\D/g, "");
+        const digits = String(v || "").replace(/\D/g, "");
         if(!digits) return "";
         return "$" + Number(digits).toLocaleString("zh-TW");
       }
 
       function parseCurrency(v){
-        const digits = String(v || "").replace(/\\D/g, "");
+        const digits = String(v || "").replace(/\D/g, "");
         return digits ? Number(digits) : 0;
       }
 
