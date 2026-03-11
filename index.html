@@ -468,8 +468,8 @@
 
       <div class="label">晶片</div>
       <div class="choiceRow" id="chipRow">
-        <label class="choice"><input type="radio" name="chipHas" value="有">有</label>
-        <label class="choice"><input type="radio" name="chipHas" value="無" checked>無</label>
+        <label class="choice"><input type="radio" name="chipHas" value="有" checked>有</label>
+        <label class="choice"><input type="radio" name="chipHas" value="無">無</label>
       </div>
 
       <div id="chipNoWrap" class="hidden">
@@ -670,11 +670,13 @@
       </div>
 
       <div class="label">單次項目</div>
-      <div class="grid3">
+      <div class="spaRow3">
         <label class="ck"><input type="checkbox" class="svcSingle" value="剪指甲">剪指甲</label>
         <label class="ck"><input type="checkbox" class="svcSingle" value="清耳朵">清耳朵</label>
-        <label class="ck"><input type="checkbox" class="svcSingle" value="貴賓腳">貴賓腳</label>
         <label class="ck"><input type="checkbox" class="svcSingle" value="刷牙">刷牙</label>
+      </div>
+      <div class="spaRow3" style="margin-top:12px;">
+        <label class="ck"><input type="checkbox" class="svcSingle" value="貴賓腳">貴賓腳</label>
         <label class="ck"><input type="checkbox" class="svcSingle" value="腳底毛">腳底毛</label>
         <label class="ck"><input type="checkbox" class="svcSingle" value="頭部大修">頭部大修</label>
       </div>
@@ -776,7 +778,7 @@
       <div class="sectionTitle">乙方（業者）資料</div>
       <div class="plainBox">
         <div class="meta">
-          乙方（業者）<br><br>
+
           公司名稱：熊汪寵物美容<br>
           負責人：黃淑婷<br>
           統一編號：85550862<br>
@@ -1250,7 +1252,7 @@
         }
 
         const isOwnerSelf = getRadio("isOwnerSelf") || "是";
-        const chipHas = getRadio("chipHas") || "無";
+        const chipHas = getRadio("chipHas") || "有";
         const neuterStatus = getRadio("neuterStatus") || "已絕育";
         const vetMode = getRadio("vetMode") || "甲方指定";
 
