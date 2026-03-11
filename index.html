@@ -439,7 +439,8 @@
       <div class="plainBox">
         <div class="meta">
           公司名稱：熊汪寵物美容<br>
-          營業地址：高雄市苓雅區正義路150號
+          營業地址：高雄市苓雅區正義路150號<br>
+          官方LINE：@911xgwmz
         </div>
       </div>
     </div>
@@ -893,6 +894,17 @@
       <div class="checkGrid oneLine">
         <div class="serviceOptionBlock">
           <label class="ck">
+            <input type="checkbox" class="svcWash svcAmountToggle" value="洗澡" data-amount-target="svcWashAmt0">
+            洗澡
+          </label>
+          <div id="svcWashAmt0" class="serviceAmountWrap">
+            <div class="serviceAmountHint">金額（選填）</div>
+            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
+          </div>
+        </div>
+
+        <div class="serviceOptionBlock">
+          <label class="ck">
             <input type="checkbox" class="svcWash svcAmountToggle" value="廢毛" data-amount-target="svcWashAmt1">
             廢毛
           </label>
@@ -930,7 +942,7 @@
       </div>
 
       <div class="subText" style="margin-top:10px; color:var(--text);">
-        洗澡包含：剪指甲、清耳朵、腳底毛、肛門清潔、修腳緣、眼睛周圍毛髮修剪以不遮蓋眼睛為主（部分品種不適用或屁股雜毛修剪）
+        洗澡包含：剪指甲、清耳朵、腳底毛、肛門清潔、修腳緣、眼睛周圍毛髮修剪以不遮蓋眼睛為主（部分品種不適用改屁股雜毛修剪）
       </div>
 
       <div class="label">大美容（含洗澡）</div>
@@ -1637,20 +1649,18 @@
       function refreshVet(){
         const mode = getRadio("vetMode");
         if(mode === "乙方指定"){
-          vetName.value = STORE_VET.name;
-          vetPhone.value = STORE_VET.phone;
-          vetAddress.value = STORE_VET.address;
-          vetName.readOnly = true;
-          vetPhone.readOnly = true;
-          vetAddress.readOnly = true;
+          if(!vetName.value.trim()) vetName.value = STORE_VET.name;
+          if(!vetPhone.value.trim()) vetPhone.value = STORE_VET.phone;
+          if(!vetAddress.value.trim()) vetAddress.value = STORE_VET.address;
         }else{
-          vetName.readOnly = false;
-          vetPhone.readOnly = false;
-          vetAddress.readOnly = false;
           vetName.value = "";
           vetPhone.value = "";
           vetAddress.value = "";
         }
+
+        vetName.readOnly = false;
+        vetPhone.readOnly = false;
+        vetAddress.readOnly = false;
       }
       document.querySelectorAll('input[name="vetMode"]').forEach(r => r.addEventListener("change", refreshVet));
       refreshVet();
