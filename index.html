@@ -2067,40 +2067,143 @@ SPA：${formatServiceText(data.serviceSpa)}
 
 ${completeNote}`;
 
-          await liff.sendMessages([{ type:"text", text:textMsg }]);
+try{
+  const ok = await initLIFF();
+  if(!ok){
+    resetSubmit();
+    return;
+  }
 
-          let profile = null;
-          try { profile = await liff.getProfile(); } catch(e){}
+  const chipText = (data.chipHas === "有")
+    ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
+    : "無";
 
-          const contractText = (document.getElementById("contractText")?.innerText || "").trim();
-          const signatureDataUrl = canvas.toDataURL("image/png");
+  const mhText = data.medicalHistory.length ? data.medicalHistory.join("、") : "（未勾選）";
+  const ptText = data.petTemperament.length ? data.petTemperament.join("、") : "（未勾選）";
+  const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
 
-          try{
-            await fetch(GOOGLE_SCRIPT_URL, {
-              method: "POST",
-              headers: { "Content-Type": "text/plain;charset=UTF-8" },
-              body: JSON.stringify({
-                secret: SHARED_SECRET,
-                data,
-                signatureDataUrl,
-                line: {
-                  userId: profile?.userId || "",
-                  displayName: profile?.displayName || ""
-                },
-                contractText
-              })
-            });
-          }catch(e){
-            console.warn("Google upload failed:", e);
-          }
+  const otherInjuryTextLine =
+    otherInjury.checked
+      ? (data.otherInjuryNote ? `其他應注意：${data.otherInjuryNote}` : "其他應注意：（未填）")
+      : "其他應注意：—";
 
-          setOK("資料已送出！\n可以回到聊天室了！");
-          resetSubmit();
+  const bodyCheckText = data.bodyChecks.map(item => {
+    return item.status === "異常"
+      ? `${item.part}：異常${item.detail ? "（" + item.detail + "）" : ""}`
+      : `${item.part}：正常`;
+  }).join("、");
 
-        }catch(err){
-          setError(err.message || "送出失敗");
-          resetSubmit();
-        }
+  const paymentText = data.paymentDetails.map(item => `${item.method}${item.amount ? "：" + item.amount : ""}`).join("、");
+
+  const washTextList = [...data.serviceWash];
+  if(data.serviceWashOther) washTextList.push(data.serviceWashOther);
+
+  const stayItemTextList = [...data.serviceStayItems];
+  if(data.serviceStayOther) stayItemTextList.push(data.serviceStayOther);
+
+  const completeNote =
+  "（簽署資料與簽名已完成。\n副本已寄送至您的Email信箱。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
+
+  const textMsg =
+`【犬貓美容契約簽署資料】
+甲方姓名：${data.ownerName}
+聯絡電話：${data.ownerPhone}
+通訊地址：${data.ownerAddress}
+緊急聯絡人：${data.emergencyName}
+緊急聯絡人電話：${data.emergencyPhone}
+Email：${data.ownerEmail}
+身分證字號：${data.ownerIdNo}
+是否飼主本人：${data.isOwnerSelf}${data.ownerRelation ? "（關係：" + data.ownerRelation + "）" : ""}
+
+寵物名字：${data.petName}
+品種：${data.petBreed}
+性別：${data.petSex}
+種類：${data.petType}
+年齡：${data.petAge}
+生日：${data.petBirthday}
+體重（公斤）：${data.petWeight}
+晶片：${chipText}
+絕育狀況：${data.neuterStatus}
+寵物個性：${ptText}
+個性其他應注意：${ptNoteText}
+身體狀況檢視：${bodyCheckText}
+病史：${mhText}
+${otherInjuryTextLine}
+
+洗澡服務：${formatServiceText(washTextList)}
+大美容（含洗澡）：${formatServiceText(data.serviceGroom)}
+SPA：${formatServiceText(data.serviceSpa)}
+單次項目：${formatServiceText(data.serviceSingle)}
+住宿入住：${data.stayCheckin || "（未填）"}
+住宿退宿：${data.stayCheckout || "（未填）"}
+住宿金額：${data.stayAmount || "（未填）"}
+住宿用品：${formatServiceText(stayItemTextList)}
+其他服務：${data.serviceOther ? formatServiceText([data.serviceOther]) : "（未填）"}
+支付方式 / 金額：${paymentText || "（未填）"}
+支付總金額：${data.payTotal || "$0"}
+支付時間：${data.payDate || "（未填）"}
+
+緊急就醫：${data.vetMode}／${data.vetName}／${data.vetPhone}／${data.vetAddress}
+審閱 / 簽署日期：${data.signDate}
+
+${completeNote}`;
+
+  // 先抓 profile
+  let profile = null;
+  try {
+    profile = await liff.getProfile();
+  } catch(e) {
+    console.warn("getProfile failed:", e);
+  }
+
+  // 先送 GAS
+  const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
+  const signatureDataUrl = canvas.toDataURL("image/png");
+
+  const gasRes = await fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
+    body: JSON.stringify({
+      secret: SHARED_SECRET,
+      data,
+      signatureDataUrl,
+      line: {
+        userId: profile?.userId || "",
+        displayName: profile?.displayName || ""
+      },
+      contractText: contractTextValue
+    })
+  });
+
+  const gasText = await gasRes.text();
+  let gasJson = null;
+
+  try {
+    gasJson = JSON.parse(gasText);
+  } catch(e) {
+    throw new Error("GAS 回傳格式錯誤：" + gasText);
+  }
+
+  if(!gasJson.ok){
+    throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
+  }
+
+  // 再送 LINE 訊息
+  try {
+    await liff.sendMessages([{ type:"text", text:textMsg }]);
+  } catch(e) {
+    throw new Error("LINE 訊息傳送失敗：" + (e.message || e));
+  }
+
+  setOK("資料已送出！\n副本已寄送完成，可以回到聊天室了！");
+  resetSubmit();
+
+}catch(err){
+  console.error(err);
+  setError(err.message || "送出失敗");
+  alert(err.message || "送出失敗");
+  resetSubmit();
+}
       };
     })();
   </script>
