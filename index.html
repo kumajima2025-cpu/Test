@@ -1854,7 +1854,7 @@ ${completeNote}`;
       clearTimeout(timeoutId);
     }
 
-    const gasText = await gasRes.text();
+     const gasText = await gasRes.text();
     let gasJson = null;
 
     try {
@@ -1863,27 +1863,23 @@ ${completeNote}`;
       throw new Error("GAS 回傳格式錯誤：" + gasText);
     }
 
-if (!gasJson.ok) {
-  throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
-}
+    if (!gasJson.ok) {
+      throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
+    }
 
-setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
+    setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
 
-submitBtn.textContent = "完成";
-submitBtn.disabled = true;
+    submitBtn.textContent = "完成";
+    submitBtn.disabled = true;
 
-setTimeout(() => {
-  if (window.liff && liff.isInClient()) {
-    liff.closeWindow();
-  }
-}, 2000);
+    setTimeout(() => {
+      if (window.liff && liff.isInClient()) {
+        liff.closeWindow();
+      }
+    }, 2000);
 
-} catch (err) {
-  console.error(err);
-  setError(err.message || "送出失敗");
-  resetSubmit();
-}
-};
+  } catch (err) {
+    console.error(err);
 
     if (err.name === "AbortError") {
       setError("GAS 連線逾時，請檢查 Apps Script 是否已重新部署最新版本");
@@ -1894,6 +1890,8 @@ setTimeout(() => {
     resetSubmit();
   }
 };
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const signDate = document.getElementById("signDate");
