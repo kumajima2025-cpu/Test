@@ -1534,15 +1534,48 @@ window.handleSubmit = async function () {
     return;
   }
 
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.textContent = "謝謝您！資料上傳中...";
+submitBtn.onclick = async () => {
+  msg.textContent = "";
+  submitBtn.disabled = true;
+  submitBtn.textContent = "謝謝您！資料上傳中...";
+
+  if(!agree.checked){
+    setError("請先勾選同意契約內容");
+    resetSubmit();
+    return;
   }
 
   const isOwnerSelf = getRadio("isOwnerSelf") || "是";
   const chipHas = getRadio("chipHas") || "有";
   const neuterStatus = getRadio("neuterStatus") || "已絕育";
   const vetMode = getRadio("vetMode") || "甲方指定";
+
+  const medicalHistory = getMedicalHistory();
+  const otherInjuryNote = otherInjury.checked ? (otherText.value || "").trim() : "";
+  const bodyChecks = getBodyChecks();
+
+  const serviceWash = getServiceDetailList(svcWashBoxes);
+  const serviceGroom = getServiceDetailList(svcGroomBoxes);
+  const serviceSpa = getServiceDetailList(svcSpaBoxes);
+  const serviceSingle = getServiceDetailList(svcSingleBoxes);
+  const serviceStayItems = getStayItemDetailList();
+  const payMethods = getCheckedValues(payMethodBoxes);
+  const paymentDetails = getPaymentDetailList();
+
+  const svcWashOtherDetail = svcWashOther.checked ? {
+    item: (svcWashOtherText.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
+    amount: (svcWashOtherAmount.value || "").trim()
+  } : null;
+
+  const svcStayOtherDetail = svcStayOther.checked ? {
+    item: (svcStayOtherText.value || "").trim() ? `其他：${(svcStayOtherText.value || "").trim()}` : "其他",
+    amount: ""
+  } : null;
+
+  const serviceOtherDetail = (serviceOtherNote.value || "").trim() ? {
+    item: (serviceOtherNote.value || "").trim(),
+    amount: (serviceOtherAmount.value || "").trim()
+  } : null;
 
   const data = {
     ownerName: requireValue(ownerName, "甲方姓名"),
@@ -1563,16 +1596,16 @@ window.handleSubmit = async function () {
     petAge: requireValue(petAge, "寵物年齡"),
     petBirthday: requireValue(petBirthday, "寵物生日"),
     petWeight: requireValue(petWeight, "體重"),
-    petTemperament: getCheckedValues(".pt"),
+    petTemperament: getPetTemperament(),
     petTemperamentNote: (petTemperamentNote.value || "").trim(),
 
     chipHas,
     chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
     neuterStatus,
 
-    medicalHistory: getMedicalHistory(),
-    otherInjuryNote: (otherInjury && otherInjury.checked) ? (otherText.value || "").trim() : "",
-    bodyChecks: getBodyChecks(),
+    medicalHistory,
+    otherInjuryNote,
+    bodyChecks,
 
     vetMode,
     vetName: requireValue(vetName, "動物醫院名稱"),
@@ -1581,76 +1614,62 @@ window.handleSubmit = async function () {
 
     signDate: requireValue(signDate, "簽署日期"),
 
-    serviceWash: getServiceDetailList(".svcWash"),
-    serviceWashOther: (svcWashOther && svcWashOther.checked) ? {
-      item: (svcWashOtherText.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
-      amount: (svcWashOtherAmount.value || "").trim()
-    } : null,
-
-    serviceGroom: getServiceDetailList(".svcGroom"),
-    serviceSpa: getServiceDetailList(".svcSpa"),
-    serviceSingle: getServiceDetailList(".svcSingle"),
-
+    serviceWash,
+    serviceWashOther: svcWashOtherDetail,
+    serviceGroom,
+    serviceSpa,
+    serviceSingle,
     stayCheckin: (stayCheckin.value || "").trim(),
     stayCheckout: (stayCheckout.value || "").trim(),
     stayAmount: (stayAmount.value || "").trim(),
-    serviceStayItems: getStayItemDetailList(),
-    serviceStayOther: (svcStayOther && svcStayOther.checked) ? {
-      item: (svcStayOtherText.value || "").trim() ? `其他：${(svcStayOtherText.value || "").trim()}` : "其他",
-      amount: ""
-    } : null,
+    serviceStayItems,
+    serviceStayOther: svcStayOtherDetail,
+    serviceOther: serviceOtherDetail,
 
-    serviceOther: (serviceOtherNote.value || "").trim() ? {
-      item: (serviceOtherNote.value || "").trim(),
-      amount: (serviceOtherAmount.value || "").trim()
-    } : null,
-
-    payMethods: getCheckedValues(".payMethod"),
-    paymentDetails: [
-      ...(document.querySelector('.payMethod[value="現金"]')?.checked ? [{ method: "現金", amount: (payAmountCash.value || "").trim() }] : []),
-      ...(document.querySelector('.payMethod[value="轉帳"]')?.checked ? [{ method: "轉帳", amount: (payAmountTransfer.value || "").trim() }] : []),
-      ...(document.querySelector('.payMethod[value="電子支付"]')?.checked ? [{ method: "電子支付", amount: (payAmountEpay.value || "").trim() }] : [])
-    ],
+    payMethods,
+    paymentDetails,
     payDate: (payDate.value || "").trim(),
-    payTotal: payTotalText ? payTotalText.textContent : "$0"
+    payTotal: payTotalText.textContent
   };
 
-  if (Object.values(data).some(v => v === null)) return;
+  if(Object.values(data).some(v => v === null)){
+    resetSubmit();
+    return;
+  }
 
-  if (!isValidEmail(data.ownerEmail)) {
+  if(!isValidEmail(data.ownerEmail)){
     setError("Email 格式不正確，請重新確認");
     ownerEmail.focus();
     resetSubmit();
     return;
   }
 
-  if (data.payMethods.length === 0) {
+  if(data.payMethods.length === 0){
     setError("請至少勾選一種支付方式");
     resetSubmit();
     return;
   }
 
-  for (const item of data.paymentDetails) {
-    if (!item.amount) {
+  for(const item of data.paymentDetails){
+    if(!item.amount){
       setError(`請填寫「${item.method}」金額`);
       resetSubmit();
       return;
     }
   }
 
-  try {
-    if (!window.liff) {
-      throw new Error("LIFF SDK 未載入");
-    }
+  const signatureDataUrlCheck = canvas.toDataURL("image/png");
+  if(!signatureDataUrlCheck || signatureDataUrlCheck.length < 3000){
+    setError("請先完成簽名");
+    resetSubmit();
+    return;
+  }
 
-    await liff.init({ liffId: LIFF_ID });
+  try{
+    setOK("正在初始化 LINE...");
 
-    if (!liff.isInClient()) {
-      throw new Error("請從 LINE 聊天室開啟此連結");
-    }
-
-    if (!liff.isLoggedIn()) {
-      liff.login();
+    const ok = await initLIFF();
+    if(!ok){
       resetSubmit();
       return;
     }
@@ -1658,39 +1677,8 @@ window.handleSubmit = async function () {
     let profile = null;
     try {
       profile = await liff.getProfile();
-    } catch (e) {
+    } catch(e) {
       console.warn("getProfile failed:", e);
-    }
-
-    const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
-    const signatureDataUrl = canvas.toDataURL("image/png");
-
-    const gasRes = await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body: JSON.stringify({
-        secret: SHARED_SECRET,
-        data,
-        signatureDataUrl,
-        line: {
-          userId: profile?.userId || "",
-          displayName: profile?.displayName || ""
-        },
-        contractText: contractTextValue
-      })
-    });
-
-    const gasText = await gasRes.text();
-
-    let gasJson = null;
-    try {
-      gasJson = JSON.parse(gasText);
-    } catch (e) {
-      throw new Error("GAS 回傳格式錯誤：" + gasText);
-    }
-
-    if (!gasJson.ok) {
-      throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
     }
 
     const chipText = (data.chipHas === "有")
@@ -1702,7 +1690,7 @@ window.handleSubmit = async function () {
     const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
 
     const otherInjuryTextLine =
-      (otherInjury && otherInjury.checked)
+      otherInjury.checked
         ? (data.otherInjuryNote ? `其他應注意：${data.otherInjuryNote}` : "其他應注意：（未填）")
         : "其他應注意：—";
 
@@ -1715,13 +1703,13 @@ window.handleSubmit = async function () {
     const paymentText = data.paymentDetails.map(item => `${item.method}${item.amount ? "：" + item.amount : ""}`).join("、");
 
     const washTextList = [...data.serviceWash];
-    if (data.serviceWashOther) washTextList.push(data.serviceWashOther);
+    if(data.serviceWashOther) washTextList.push(data.serviceWashOther);
 
     const stayItemTextList = [...data.serviceStayItems];
-    if (data.serviceStayOther) stayItemTextList.push(data.serviceStayOther);
+    if(data.serviceStayOther) stayItemTextList.push(data.serviceStayOther);
 
     const completeNote =
-      "（簽署資料與簽名已完成。\n副本已寄送至您的Email信箱。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
+    "（簽署資料與簽名已完成。\n副本已寄送至您的Email信箱。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
 
     const textMsg =
 `【犬貓美容契約簽署資料】
@@ -1767,14 +1755,64 @@ SPA：${formatServiceText(data.serviceSpa)}
 
 ${completeNote}`;
 
-    await liff.sendMessages([{ type: "text", text: textMsg }]);
+    const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
+    const signatureDataUrl = canvas.toDataURL("image/png");
+
+    setOK("正在上傳到 GAS...");
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+    let gasRes;
+    try {
+      gasRes = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify({
+          secret: SHARED_SECRET,
+          data,
+          signatureDataUrl,
+          line: {
+            userId: profile?.userId || "",
+            displayName: profile?.displayName || ""
+          },
+          contractText: contractTextValue
+        }),
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
+
+    const gasText = await gasRes.text();
+    let gasJson = null;
+
+    try {
+      gasJson = JSON.parse(gasText);
+    } catch(e) {
+      throw new Error("GAS 回傳格式錯誤：" + gasText);
+    }
+
+    if(!gasJson.ok){
+      throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
+    }
+
+    setOK("正在傳送 LINE 訊息...");
+
+    await liff.sendMessages([{ type:"text", text:textMsg }]);
 
     setOK("資料已送出！\n副本已寄送完成，可以回到聊天室了！");
     resetSubmit();
 
-  } catch (err) {
+  }catch(err){
     console.error(err);
-    setError(err.message || "送出失敗");
+
+    if (err.name === "AbortError") {
+      setError("GAS 連線逾時，請檢查 Apps Script 是否仍為最新部署版本");
+    } else {
+      setError(err.message || "送出失敗");
+    }
+
     resetSubmit();
   }
 };
