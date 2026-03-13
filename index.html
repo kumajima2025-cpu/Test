@@ -1144,6 +1144,10 @@
   </div>
 
 <script>
+const LIFF_ID = "2009333840-1wawyJgg";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0n-CvPyU3HdqPaonyVJ3sFN80jl0b5idQXUNCNUT0MueeKdxsrRWFm0x1IFJyk6JQvA/exec";
+const SHARED_SECRET = "kumajima2025";
+
 function initLIFF() {
   return new Promise(async (resolve) => {
     try {
@@ -1154,13 +1158,13 @@ function initLIFF() {
       }
 
       if (!liff.isInClient() && !liff.isLoggedIn()) {
-        await liff.init({ liffId: "2009333840-1wawyJgg" });
+        await liff.init({ liffId: LIFF_ID });
         liff.login();
         resolve(false);
         return;
       }
 
-      await liff.init({ liffId: "2009333840-1wawyJgg" });
+      await liff.init({ liffId: LIFF_ID });
       resolve(true);
     } catch (e) {
       console.error(e);
@@ -1200,12 +1204,6 @@ function getPaymentDetailList() {
 }
 
 window.handleSubmit = async function () {
-const LIFF_ID = "2009333840-1wawyJgg";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0n-CvPyU3HdqPaonyVJ3sFN80jl0b5idQXUNCNUT0MueeKdxsrRWFm0x1IFJyk6JQvA/exec";
-const SHARED_SECRET = "kumajima2025";
-
-window.handleSubmit = async function () {
-
   const canvas = document.getElementById("sig");
   const submitBtn = document.getElementById("submit");
   const msg = document.getElementById("msg");
@@ -1319,12 +1317,22 @@ window.handleSubmit = async function () {
   }
 
   function getStayItemDetailList() {
-    return Array.from(document.querySelectorAll(".svcStayItem"))
+    const baseItems = Array.from(document.querySelectorAll(".svcStayItem"))
       .filter(el => el.checked)
       .map(el => ({
         item: el.value,
         amount: ""
       }));
+
+    if (svcStayOther && svcStayOther.checked) {
+      baseItems.push({
+        item: "其他",
+        detail: (svcStayOtherText?.value || "").trim(),
+        amount: ""
+      });
+    }
+
+    return baseItems;
   }
 
   function getMedicalHistory() {
@@ -1380,8 +1388,10 @@ window.handleSubmit = async function () {
   const vetMode = getRadio("vetMode") || "甲方指定";
 
   const medicalHistory = getMedicalHistory();
-  const otherInjuryNote = otherInjury.checked ? (otherText.value || "").trim() : "";
+  const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText?.value || "").trim() : "";
   const bodyChecks = getBodyChecks();
+
+  const washOtherChecked = !!(svcWashOther && svcWashOther.checked);
 
   const data = {
     ownerName: requireValue(ownerName, "甲方姓名"),
@@ -1403,10 +1413,10 @@ window.handleSubmit = async function () {
     petBirthday: requireValue(petBirthday, "寵物生日"),
     petWeight: requireValue(petWeight, "體重"),
     petTemperament: getPetTemperament(),
-    petTemperamentNote: (petTemperamentNote.value || "").trim(),
+    petTemperamentNote: (petTemperamentNote?.value || "").trim(),
 
     chipHas,
-    chipNo: chipHas === "有" ? (chipNo.value || "").trim() : "",
+    chipNo: chipHas === "有" ? (chipNo?.value || "").trim() : "",
     neuterStatus,
 
     medicalHistory,
@@ -1421,20 +1431,32 @@ window.handleSubmit = async function () {
     signDate: requireValue(signDate, "簽署日期"),
 
     serviceWash: getServiceDetailList(svcWashBoxes),
+    serviceWashOther: washOtherChecked ? {
+      item: "其他",
+      detail: (svcWashOtherText?.value || "").trim(),
+      amount: (svcWashOtherAmount?.value || "").trim()
+    } : null,
+
     serviceGroom: getServiceDetailList(svcGroomBoxes),
     serviceSpa: getServiceDetailList(svcSpaBoxes),
     serviceSingle: getServiceDetailList(svcSingleBoxes),
-    stayCheckin: (stayCheckin.value || "").trim(),
-    stayCheckout: (stayCheckout.value || "").trim(),
-    stayAmount: (stayAmount.value || "").trim(),
+
+    stayCheckin: (stayCheckin?.value || "").trim(),
+    stayCheckout: (stayCheckout?.value || "").trim(),
+    stayAmount: (stayAmount?.value || "").trim(),
     serviceStayItems: getStayItemDetailList(),
+
+    serviceOtherNote: (serviceOtherNote?.value || "").trim(),
+    serviceOtherAmount: (serviceOtherAmount?.value || "").trim(),
+
     payMethods: getCheckedValues(payMethodBoxes),
     paymentDetails: getPaymentDetailList(),
-    payDate: (payDate.value || "").trim(),
-    payTotal: payTotalText.textContent
+    payDate: (payDate?.value || "").trim(),
+    payTotal: payTotalText ? payTotalText.textContent : "$0"
   };
 
   if (Object.values(data).some(v => v === null)) return;
+
   if (!isValidEmail(data.ownerEmail)) {
     setError("Email 格式不正確，請重新確認");
     ownerEmail.focus();
@@ -1451,6 +1473,7 @@ window.handleSubmit = async function () {
 
     const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
     const signatureDataUrl = canvas.toDataURL("image/png");
+
     const gasRes = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=UTF-8" },
@@ -1465,27 +1488,26 @@ window.handleSubmit = async function () {
     const gasText = await gasRes.text();
     const gasJson = JSON.parse(gasText);
 
-    
-if (!gasJson.ok) {
-  throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
-}
+    if (!gasJson.ok) {
+      throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
+    }
 
-setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
+    setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
 
-submitBtn.textContent = "完成";
-submitBtn.disabled = true;
+    submitBtn.textContent = "完成";
+    submitBtn.disabled = true;
 
-setTimeout(() => {
-  if (window.liff && liff.isInClient()) {
-    liff.closeWindow();
+    setTimeout(() => {
+      if (window.liff && liff.isInClient()) {
+        liff.closeWindow();
+      }
+    }, 2000);
+
+  } catch (err) {
+    console.error(err);
+    setError(err.message || "送出失敗");
+    resetSubmit();
   }
-}, 2000);
-
-} catch (err) {
-  console.error(err);
-  setError(err.message || "送出失敗");
-  resetSubmit();
-}
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1571,23 +1593,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const ownerRelationWrap = document.getElementById("ownerRelationWrap");
   const ownerRelation = document.getElementById("ownerRelation");
+
+  function refreshOwnerRelation() {
+    const notSelf = getRadio("isOwnerSelf") === "否";
+    ownerRelationWrap?.classList.toggle("hidden", !notSelf);
+    if (!notSelf && ownerRelation) ownerRelation.value = "";
+  }
+
   document.querySelectorAll('input[name="isOwnerSelf"]').forEach(r => {
-    r.addEventListener("change", () => {
-      const notSelf = getRadio("isOwnerSelf") === "否";
-      ownerRelationWrap?.classList.toggle("hidden", !notSelf);
-      if (!notSelf && ownerRelation) ownerRelation.value = "";
-    });
+    r.addEventListener("change", refreshOwnerRelation);
   });
+  refreshOwnerRelation();
 
   const chipNoWrap = document.getElementById("chipNoWrap");
   const chipNo = document.getElementById("chipNo");
+
+  function refreshChipNo() {
+    const show = getRadio("chipHas") === "有";
+    chipNoWrap?.classList.toggle("hidden", !show);
+    if (!show && chipNo) chipNo.value = "";
+  }
+
   document.querySelectorAll('input[name="chipHas"]').forEach(r => {
-    r.addEventListener("change", () => {
-      const show = getRadio("chipHas") === "有";
-      chipNoWrap?.classList.toggle("hidden", !show);
-      if (!show && chipNo) chipNo.value = "";
-    });
+    r.addEventListener("change", refreshChipNo);
   });
+  refreshChipNo();
 
   const vetName = document.getElementById("vetName");
   const vetPhone = document.getElementById("vetPhone");
@@ -1631,14 +1661,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function enforceMedicalExclusive() {
     if (!mhNone) return;
-    if (mhNone.checked) {
-      mhBoxes.forEach(b => b.checked = false);
-      if (otherInjury) otherInjury.checked = false;
-      refreshOtherInjury();
-    } else {
-      const anyOther = mhBoxes.some(b => b.checked) || otherInjury?.checked;
-      if (anyOther) mhNone.checked = false;
+
+    const otherChecked = mhBoxes.some(b => b.checked);
+
+    if (mhNone.checked && otherChecked) {
+      mhNone.checked = false;
     }
+
+    if (mhNone.checked) {
+      mhBoxes.forEach(b => { b.checked = false; });
+      refreshOtherInjury();
+      return;
+    }
+
+    if (otherChecked) {
+      mhNone.checked = false;
+    }
+
+    refreshOtherInjury();
   }
 
   mhNone?.addEventListener("change", enforceMedicalExclusive);
@@ -1650,27 +1690,33 @@ document.addEventListener("DOMContentLoaded", function () {
   const svcWashOtherText = document.getElementById("svcWashOtherText");
   const svcWashOtherAmount = document.getElementById("svcWashOtherAmount");
 
-  svcWashOther?.addEventListener("change", () => {
-    const show = !!svcWashOther.checked;
+  function refreshSvcWashOther() {
+    const show = !!svcWashOther?.checked;
     if (svcWashOtherWrap) svcWashOtherWrap.style.display = show ? "block" : "none";
     if (!show) {
       if (svcWashOtherText) svcWashOtherText.value = "";
       if (svcWashOtherAmount) svcWashOtherAmount.value = "";
     }
-  });
+  }
+
+  svcWashOther?.addEventListener("change", refreshSvcWashOther);
+  refreshSvcWashOther();
 
   const svcStayOther = document.getElementById("svcStayOther");
   const svcStayOtherWrap = document.getElementById("svcStayOtherWrap");
   const svcStayOtherText = document.getElementById("svcStayOtherText");
 
-  svcStayOther?.addEventListener("change", () => {
-    const show = !!svcStayOther.checked;
+  function refreshSvcStayOther() {
+    const show = !!svcStayOther?.checked;
     if (svcStayOtherWrap) svcStayOtherWrap.style.display = show ? "block" : "none";
     if (!show && svcStayOtherText) svcStayOtherText.value = "";
-  });
+  }
+
+  svcStayOther?.addEventListener("change", refreshSvcStayOther);
+  refreshSvcStayOther();
 
   document.querySelectorAll(".svcAmountToggle").forEach(box => {
-    box.addEventListener("change", () => {
+    function refreshServiceAmountBox() {
       const targetId = box.dataset.amountTarget;
       if (!targetId) return;
       const wrap = document.getElementById(targetId);
@@ -1681,12 +1727,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const input = wrap.querySelector("input");
         if (input) input.value = "";
       }
-    });
+    }
+
+    box.addEventListener("change", refreshServiceAmountBox);
+    refreshServiceAmountBox();
   });
 
   const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
   payMethodBoxes.forEach(box => {
-    box.addEventListener("change", () => {
+    function refreshPayMethodAmount() {
       const targetId = box.dataset.target;
       const wrap = document.getElementById(targetId);
       if (!wrap) return;
@@ -1697,7 +1746,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (input) input.value = "";
       }
       updatePayTotal();
-    });
+    }
+
+    box.addEventListener("change", refreshPayMethodAmount);
+    refreshPayMethodAmount();
   });
 
   document.querySelectorAll(".bodyCheckItem").forEach(item => {
