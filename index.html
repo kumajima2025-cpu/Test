@@ -934,7 +934,7 @@
 
         <div class="serviceOptionBlock">
           <label class="ck">
-            <input type="checkbox" id="svcWashOther" class="svcAmountToggle" value="其他" data-amount-target="svcWashOtherWrap">
+            <input type="checkbox" id="svcWashOther" class="svcWash svcAmountToggle" value="其他" data-amount-target="svcWashOtherWrap">
             其他
           </label>
         </div>
@@ -1225,7 +1225,7 @@
 
         <div class="serviceOptionBlock fullRow">
           <label class="ck">
-            <input type="checkbox" id="svcStayOther" value="其他">
+            <input type="checkbox" id="svcStayOther" class="svcStayItem" value="其他">
             其他
           </label>
         </div>
@@ -1316,7 +1316,7 @@
       <input type="text" id="signDate" class="input" readonly>
 
       <div class="label">甲方簽名</div>
-      <canvas id="sig"></canvas>
+      <canvas id="sig" data-signed="0"></canvas>
 
       <div class="dangerNote">簽名完成後將自動回傳至聊天室</div>
 
@@ -1607,8 +1607,7 @@ window.handleSubmit = async function () {
     return;
   }
 
-  const signatureDataUrlCheck = canvas.toDataURL("image/png");
-  if (!signatureDataUrlCheck || signatureDataUrlCheck.length < 3000) {
+  if (canvas.dataset.signed !== "1") {
     setError("請先完成簽名");
     return;
   }
@@ -1628,11 +1627,11 @@ window.handleSubmit = async function () {
   const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText?.value || "").trim() : "";
   const bodyChecks = getBodyChecks();
 
-  const serviceWash = getServiceDetailList(svcWashBoxes);
+  const serviceWash = getServiceDetailList(svcWashBoxes.filter(el => el.id !== "svcWashOther"));
   const serviceGroom = getServiceDetailList(svcGroomBoxes);
   const serviceSpa = getServiceDetailList(svcSpaBoxes);
   const serviceSingle = getServiceDetailList(svcSingleBoxes);
-  const serviceStayItems = getStayItemDetailList();
+  const serviceStayItems = getStayItemDetailList().filter(item => item.item !== "其他");
   const payMethods = getCheckedValues(payMethodBoxes);
   const paymentDetails = getPaymentDetailList();
 
@@ -1827,11 +1826,13 @@ SPA：${formatServiceText(data.serviceSpa)}
 
 ${completeNote}`;
 
+    console.log(textMsg);
+
     const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
     const signatureDataUrl = canvas.toDataURL("image/png");
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20000);
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
 
     let gasRes;
     try {
@@ -1854,7 +1855,11 @@ ${completeNote}`;
       clearTimeout(timeoutId);
     }
 
-     const gasText = await gasRes.text();
+    if (!gasRes.ok) {
+      throw new Error("GAS HTTP 狀態錯誤：" + gasRes.status);
+    }
+
+    const gasText = await gasRes.text();
     let gasJson = null;
 
     try {
@@ -1879,7 +1884,7 @@ ${completeNote}`;
     }, 2000);
 
   } catch (err) {
-    console.error(err);
+    console.error("handleSubmit error:", err);
 
     if (err.name === "AbortError") {
       setError("GAS 連線逾時，請檢查 Apps Script 是否已重新部署最新版本");
@@ -1890,8 +1895,6 @@ ${completeNote}`;
     resetSubmit();
   }
 };
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const signDate = document.getElementById("signDate");
@@ -1931,13 +1934,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const ownerRelationWrap = document.getElementById("ownerRelationWrap");
   const ownerRelation = document.getElementById("ownerRelation");
+  function refreshOwnerRelation() {
+    const notSelf = getRadio("isOwnerSelf") === "否";
+    if (ownerRelationWrap) ownerRelationWrap.classList.toggle("hidden", !notSelf);
+    if (!notSelf && ownerRelation) ownerRelation.value = "";
+  }
   document.querySelectorAll('input[name="isOwnerSelf"]').forEach(r => {
-    r.addEventListener("change", () => {
-      const notSelf = getRadio("isOwnerSelf") === "否";
-      if (ownerRelationWrap) ownerRelationWrap.classList.toggle("hidden", !notSelf);
-      if (!notSelf && ownerRelation) ownerRelation.value = "";
-    });
+    r.addEventListener("change", refreshOwnerRelation);
   });
+  refreshOwnerRelation();
 
   const chipNoWrap = document.getElementById("chipNoWrap");
   const chipNo = document.getElementById("chipNo");
@@ -1954,19 +1959,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const vetName = document.getElementById("vetName");
   const vetPhone = document.getElementById("vetPhone");
   const vetAddress = document.getElementById("vetAddress");
+  function refreshVetMode() {
+    const mode = getRadio("vetMode");
+    if (mode === "乙方指定") {
+      if (vetName) vetName.value = STORE_VET.name;
+      if (vetPhone) vetPhone.value = STORE_VET.phone;
+      if (vetAddress) vetAddress.value = STORE_VET.address;
+    } else {
+      if (vetName) vetName.value = "";
+      if (vetPhone) vetPhone.value = "";
+      if (vetAddress) vetAddress.value = "";
+    }
+  }
   document.querySelectorAll('input[name="vetMode"]').forEach(r => {
-    r.addEventListener("change", () => {
-      const mode = getRadio("vetMode");
-      if (mode === "乙方指定") {
-        if (vetName) vetName.value = STORE_VET.name;
-        if (vetPhone) vetPhone.value = STORE_VET.phone;
-        if (vetAddress) vetAddress.value = STORE_VET.address;
-      } else {
-        if (vetName) vetName.value = "";
-        if (vetPhone) vetPhone.value = "";
-        if (vetAddress) vetAddress.value = "";
-      }
-    });
+    r.addEventListener("change", refreshVetMode);
   });
 
   const otherInjury = document.getElementById("otherInjury");
@@ -1980,9 +1986,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (otherWrap) otherWrap.style.display = show ? "block" : "none";
     if (!show && otherText) otherText.value = "";
   }
-
-  if (otherInjury) otherInjury.addEventListener("change", refreshOtherInjury);
-  refreshOtherInjury();
 
   function enforceMedicalExclusive() {
     if (!mhNone) return;
@@ -1999,51 +2002,60 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  if (otherInjury) {
+    otherInjury.addEventListener("change", () => {
+      refreshOtherInjury();
+      enforceMedicalExclusive();
+    });
+  }
   if (mhNone) mhNone.addEventListener("change", enforceMedicalExclusive);
   mhBoxes.forEach(b => b.addEventListener("change", enforceMedicalExclusive));
-  if (otherInjury) otherInjury.addEventListener("change", enforceMedicalExclusive);
+  refreshOtherInjury();
 
   const svcWashOther = document.getElementById("svcWashOther");
   const svcWashOtherWrap = document.getElementById("svcWashOtherWrap");
   const svcWashOtherText = document.getElementById("svcWashOtherText");
   const svcWashOtherAmount = document.getElementById("svcWashOtherAmount");
 
-  if (svcWashOther) {
-    svcWashOther.addEventListener("change", () => {
-      const show = !!svcWashOther.checked;
-      if (svcWashOtherWrap) svcWashOtherWrap.style.display = show ? "block" : "none";
-      if (!show) {
-        if (svcWashOtherText) svcWashOtherText.value = "";
-        if (svcWashOtherAmount) svcWashOtherAmount.value = "";
-      }
-    });
+  function refreshSvcWashOther() {
+    const show = !!svcWashOther?.checked;
+    if (svcWashOtherWrap) svcWashOtherWrap.style.display = show ? "block" : "none";
+    if (!show) {
+      if (svcWashOtherText) svcWashOtherText.value = "";
+      if (svcWashOtherAmount) svcWashOtherAmount.value = "";
+    }
   }
+  if (svcWashOther) svcWashOther.addEventListener("change", refreshSvcWashOther);
+  refreshSvcWashOther();
 
   const svcStayOther = document.getElementById("svcStayOther");
   const svcStayOtherWrap = document.getElementById("svcStayOtherWrap");
   const svcStayOtherText = document.getElementById("svcStayOtherText");
 
-  if (svcStayOther) {
-    svcStayOther.addEventListener("change", () => {
-      const show = !!svcStayOther.checked;
-      if (svcStayOtherWrap) svcStayOtherWrap.style.display = show ? "block" : "none";
-      if (!show && svcStayOtherText) svcStayOtherText.value = "";
-    });
+  function refreshSvcStayOther() {
+    const show = !!svcStayOther?.checked;
+    if (svcStayOtherWrap) svcStayOtherWrap.style.display = show ? "block" : "none";
+    if (!show && svcStayOtherText) svcStayOtherText.value = "";
   }
+  if (svcStayOther) svcStayOther.addEventListener("change", refreshSvcStayOther);
+  refreshSvcStayOther();
 
   document.querySelectorAll(".svcAmountToggle").forEach(box => {
-    box.addEventListener("change", () => {
-      const targetId = box.dataset.amountTarget;
-      if (!targetId) return;
-
-      const wrap = document.getElementById(targetId);
-      if (!wrap) return;
-
-      if (wrap.classList.contains("otherInputWrap")) return;
-
+    const targetId = box.dataset.amountTarget;
+    const wrap = document.getElementById(targetId || "");
+    if (wrap && !wrap.classList.contains("otherInputWrap")) {
       wrap.style.display = box.checked ? "block" : "none";
+    }
+
+    box.addEventListener("change", () => {
+      const target = document.getElementById(box.dataset.amountTarget || "");
+      if (!target) return;
+
+      if (target.classList.contains("otherInputWrap")) return;
+
+      target.style.display = box.checked ? "block" : "none";
       if (!box.checked) {
-        const input = wrap.querySelector("input");
+        const input = target.querySelector("input");
         if (input) input.value = "";
       }
     });
@@ -2051,14 +2063,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
   payMethodBoxes.forEach(box => {
-    box.addEventListener("change", () => {
-      const targetId = box.dataset.target;
-      const wrap = document.getElementById(targetId);
-      if (!wrap) return;
+    const targetId = box.dataset.target;
+    const wrap = document.getElementById(targetId || "");
+    if (wrap) wrap.style.display = box.checked ? "block" : "none";
 
-      wrap.style.display = box.checked ? "block" : "none";
+    box.addEventListener("change", () => {
+      const target = document.getElementById(box.dataset.target || "");
+      if (!target) return;
+
+      target.style.display = box.checked ? "block" : "none";
       if (!box.checked) {
-        const input = wrap.querySelector("input");
+        const input = target.querySelector("input");
         if (input) input.value = "";
       }
       updatePayTotal();
@@ -2097,6 +2112,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx.strokeStyle = "#3F342C";
       ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(0, 0, r.width, r.height);
+      canvas.dataset.signed = "0";
     }
 
     function point(e) {
@@ -2116,6 +2132,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const p = point(e);
       ctx.beginPath();
       ctx.moveTo(p.x, p.y);
+      canvas.dataset.signed = "1";
       if (msg) msg.textContent = "";
     }
 
@@ -2125,6 +2142,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const p = point(e);
       ctx.lineTo(p.x, p.y);
       ctx.stroke();
+      canvas.dataset.signed = "1";
     }
 
     function up() {
@@ -2145,6 +2163,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.clearRect(0, 0, r.width, r.height);
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, r.width, r.height);
+        canvas.dataset.signed = "0";
         if (msg) {
           msg.textContent = "已清除，請重新簽名";
           msg.style.color = "#9E5E4A";
@@ -2152,6 +2171,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
+
+  updatePayTotal();
 });
 </script>
 </body>
