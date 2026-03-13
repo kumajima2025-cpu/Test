@@ -1552,7 +1552,7 @@ window.handleSubmit = async function () {
   }
 
   submitBtn.disabled = true;
-  submitBtn.textContent = "謝謝您！資料上傳中...";
+  submitBtn.textContent = "資料送出中…請稍候";
   msg.textContent = "";
 
   const isOwnerSelf = getRadio("isOwnerSelf") || "是";
@@ -1645,18 +1645,19 @@ window.handleSubmit = async function () {
 
     const gasText = await gasRes.text();
     const gasJson = JSON.parse(gasText);
+if (!gasJson.ok) {
+  throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
+}
 
-    if (!gasJson.ok) {
-      throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
-    }
+setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
 
-    setOK("資料已送出！");
-    resetSubmit();
-  } catch (err) {
-    console.error(err);
-    setError(err.message || "送出失敗");
-    resetSubmit();
-  }
+submitBtn.textContent = "完成";
+submitBtn.disabled = true;
+} catch (err) {
+  console.error(err);
+  setError(err.message || "送出失敗");
+  resetSubmit();
+}
 };
 
 document.addEventListener("DOMContentLoaded", function () {
