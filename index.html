@@ -1645,6 +1645,8 @@ window.handleSubmit = async function () {
 
     const gasText = await gasRes.text();
     const gasJson = JSON.parse(gasText);
+
+    
 if (!gasJson.ok) {
   throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
 }
@@ -1653,6 +1655,13 @@ setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
 
 submitBtn.textContent = "完成";
 submitBtn.disabled = true;
+
+setTimeout(() => {
+  if (window.liff && liff.isInClient()) {
+    liff.closeWindow();
+  }
+}, 2000);
+
 } catch (err) {
   console.error(err);
   setError(err.message || "送出失敗");
