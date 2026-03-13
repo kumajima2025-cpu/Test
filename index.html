@@ -1322,13 +1322,13 @@
 
       <button id="clear" class="btn btnClear" type="button">清除簽名</button>
       <div id="msg" class="msg"></div>
-      <button id="submit" class="btn btnSubmit" type="button">送出簽名</button>
+      <button id="submit" class="btn btnSubmit" type="button" onclick="handleSubmit()">送出簽名</button>
     </div>
 
   </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+window.handleSubmit = async function () {
   const LIFF_ID = "2009333840-1wawyJgg";
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdS0rdSl-Lcbco_fpIh1mBcxEePZORTYAITf12DyidwaNhcbDvR7NhoYXrf4EtM7Ngrg/exec";
   const SHARED_SECRET = "kumajima2025";
@@ -1345,11 +1345,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const msg = document.getElementById("msg");
   const agree = document.getElementById("agree");
 
-  if (!canvas || !clearBtn || !submitBtn || !msg || !agree) {
-    console.error("必要元素缺少，script 未初始化");
-    return;
-  }
-
   const ownerName = document.getElementById("ownerName");
   const ownerIdNo = document.getElementById("ownerIdNo");
   const ownerPhone = document.getElementById("ownerPhone");
@@ -1357,7 +1352,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const ownerAddress = document.getElementById("ownerAddress");
   const emergencyName = document.getElementById("emergencyName");
   const emergencyPhone = document.getElementById("emergencyPhone");
-  const ownerRelationWrap = document.getElementById("ownerRelationWrap");
   const ownerRelation = document.getElementById("ownerRelation");
 
   const petName = document.getElementById("petName");
@@ -1367,16 +1361,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const petWeight = document.getElementById("petWeight");
   const signDate = document.getElementById("signDate");
 
-  const chipNoWrap = document.getElementById("chipNoWrap");
   const chipNo = document.getElementById("chipNo");
 
-  const ptBoxes = Array.from(document.querySelectorAll(".pt"));
   const petTemperamentNote = document.getElementById("petTemperamentNote");
 
-  const mhNone = document.getElementById("mh_none");
-  const mhBoxes = Array.from(document.querySelectorAll(".mh"));
   const otherInjury = document.getElementById("otherInjury");
-  const otherWrap = document.getElementById("otherInjuryWrap");
   const otherText = document.getElementById("otherInjuryText");
 
   const vetName = document.getElementById("vetName");
@@ -1384,21 +1373,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const vetAddress = document.getElementById("vetAddress");
 
   const svcWashOther = document.getElementById("svcWashOther");
-  const svcWashOtherWrap = document.getElementById("svcWashOtherWrap");
   const svcWashOtherText = document.getElementById("svcWashOtherText");
   const svcWashOtherAmount = document.getElementById("svcWashOtherAmount");
 
   const svcStayOther = document.getElementById("svcStayOther");
-  const svcStayOtherWrap = document.getElementById("svcStayOtherWrap");
   const svcStayOtherText = document.getElementById("svcStayOtherText");
-
-  const svcWashBoxes = Array.from(document.querySelectorAll(".svcWash"));
-  const svcGroomBoxes = Array.from(document.querySelectorAll(".svcGroom"));
-  const svcSpaBoxes = Array.from(document.querySelectorAll(".svcSpa"));
-  const svcSingleBoxes = Array.from(document.querySelectorAll(".svcSingle"));
-  const svcStayItemBoxes = Array.from(document.querySelectorAll(".svcStayItem"));
-  const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
-  const serviceAmountToggles = Array.from(document.querySelectorAll(".svcAmountToggle"));
 
   const stayCheckin = document.getElementById("stayCheckin");
   const stayCheckout = document.getElementById("stayCheckout");
@@ -1411,37 +1390,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const payAmountEpay = document.getElementById("payAmountEpay");
   const payTotalText = document.getElementById("payTotalText");
 
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    console.error("canvas context 初始化失敗");
-    return;
-  }
-  canvas.style.touchAction = "none";
-
-  function resetSubmit() {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "送出簽名";
-  }
-
   function setError(t) {
-    msg.textContent = t || "";
-    msg.style.color = "#9E5E4A";
+    if (msg) {
+      msg.textContent = t || "";
+      msg.style.color = "#9E5E4A";
+    }
   }
 
   function setOK(t) {
-    msg.textContent = t || "";
-    msg.style.color = "#3F342C";
+    if (msg) {
+      msg.textContent = t || "";
+      msg.style.color = "#3F342C";
+    }
+  }
+
+  function resetSubmit() {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送出簽名";
+    }
   }
 
   function requireValue(inputEl, label) {
     if (!inputEl) {
-      setError(`系統缺少欄位：${label}（請聯絡店家）`);
+      setError("系統缺少欄位：" + label);
       resetSubmit();
       return null;
     }
     const v = (inputEl.value || "").trim();
     if (!v) {
-      setError(`請填寫：${label}`);
+      setError("請填寫：" + label);
       inputEl.focus();
       resetSubmit();
       return null;
@@ -1453,281 +1431,19 @@ document.addEventListener("DOMContentLoaded", function () {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  function todayZh() {
-    const d = new Date();
-    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
-  }
-
-  function todayYMD() {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${y}/${m}/${dd}`;
-  }
-
-  if (signDate) signDate.value = todayZh();
-  if (payDate) payDate.value = todayYMD();
-
-  function formatYMD(value) {
-    const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
-    if (!digits) return "";
-
-    const y = digits.slice(0, 4);
-    const m = digits.slice(4, 6);
-    const d = digits.slice(6, 8);
-
-    let out = y;
-    if (digits.length > 4) out += "/" + m;
-    if (digits.length > 6) out += "/" + d;
-    return out;
-  }
-
-  function bindDateFormat(el) {
-    if (!el) return;
-    el.addEventListener("input", (e) => {
-      e.target.value = formatYMD(e.target.value);
-    });
-  }
-  document.querySelectorAll(".js-date").forEach(bindDateFormat);
-
-  function formatCurrency(v) {
-    const digits = String(v || "").replace(/\D/g, "");
-    if (!digits) return "";
-    return "$" + Number(digits).toLocaleString("zh-TW");
-  }
-
-  function parseCurrency(v) {
-    const digits = String(v || "").replace(/\D/g, "");
-    return digits ? Number(digits) : 0;
-  }
-
-  function formatCurrencyNumber(n) {
-    return "$" + Number(n || 0).toLocaleString("zh-TW");
-  }
-
-  function updatePayTotal() {
-    const total =
-      parseCurrency(payAmountCash?.value) +
-      parseCurrency(payAmountTransfer?.value) +
-      parseCurrency(payAmountEpay?.value);
-    if (payTotalText) payTotalText.textContent = formatCurrencyNumber(total);
-  }
-
-  function bindCurrency(el) {
-    if (!el) return;
-    el.addEventListener("input", (e) => {
-      e.target.value = formatCurrency(e.target.value);
-      updatePayTotal();
-    });
-  }
-  document.querySelectorAll(".js-currency").forEach(bindCurrency);
-
   function getRadio(name) {
-    return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+    const el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : "";
   }
 
-  function setHidden(el, hidden) {
-    if (!el) return;
-    el.classList.toggle("hidden", !!hidden);
+  function getCheckedValues(selector) {
+    return Array.from(document.querySelectorAll(selector))
+      .filter(el => el.checked)
+      .map(el => el.value);
   }
 
-  function refreshOwnerRelation() {
-    const notSelf = getRadio("isOwnerSelf") === "否";
-    setHidden(ownerRelationWrap, !notSelf);
-    if (!notSelf && ownerRelation) ownerRelation.value = "";
-  }
-  document.querySelectorAll('input[name="isOwnerSelf"]').forEach(r => r.addEventListener("change", refreshOwnerRelation));
-  refreshOwnerRelation();
-
-  function refreshChip() {
-    const show = getRadio("chipHas") === "有";
-    setHidden(chipNoWrap, !show);
-    if (!show && chipNo) chipNo.value = "";
-  }
-  document.querySelectorAll('input[name="chipHas"]').forEach(r => r.addEventListener("change", refreshChip));
-  refreshChip();
-
-  function refreshVet() {
-    const mode = getRadio("vetMode");
-    if (mode === "乙方指定") {
-      if (vetName && !vetName.value.trim()) vetName.value = STORE_VET.name;
-      if (vetPhone && !vetPhone.value.trim()) vetPhone.value = STORE_VET.phone;
-      if (vetAddress && !vetAddress.value.trim()) vetAddress.value = STORE_VET.address;
-    } else {
-      if (vetName) vetName.value = "";
-      if (vetPhone) vetPhone.value = "";
-      if (vetAddress) vetAddress.value = "";
-    }
-  }
-  document.querySelectorAll('input[name="vetMode"]').forEach(r => r.addEventListener("change", refreshVet));
-  refreshVet();
-
-  function refreshOtherInjury() {
-    if (!otherInjury || !otherWrap || !otherText) return;
-    const show = !!otherInjury.checked;
-    otherWrap.style.display = show ? "block" : "none";
-    if (!show) otherText.value = "";
-  }
-  if (otherInjury) otherInjury.addEventListener("change", refreshOtherInjury);
-  refreshOtherInjury();
-
-  function enforceMedicalExclusive() {
-    if (!mhNone) return;
-    if (mhNone.checked) {
-      mhBoxes.forEach(b => b.checked = false);
-      if (otherInjury) otherInjury.checked = false;
-      refreshOtherInjury();
-    } else {
-      const anyOther = mhBoxes.some(b => b.checked) || (otherInjury && otherInjury.checked);
-      if (anyOther) mhNone.checked = false;
-    }
-  }
-  if (mhNone) mhNone.addEventListener("change", enforceMedicalExclusive);
-  mhBoxes.forEach(b => b.addEventListener("change", enforceMedicalExclusive));
-  if (otherInjury) otherInjury.addEventListener("change", enforceMedicalExclusive);
-
-  function getMedicalHistory() {
-    const arr = [];
-    if (mhNone && mhNone.checked) arr.push(mhNone.value);
-    mhBoxes.forEach(el => { if (el.checked) arr.push(el.value); });
-    if (otherInjury && otherInjury.checked) arr.push(otherInjury.value);
-    return arr;
-  }
-
-  function getPetTemperament() {
-    const arr = [];
-    ptBoxes.forEach(el => { if (el.checked) arr.push(el.value); });
-    return arr;
-  }
-
-  function getCheckedValues(list) {
-    return list.filter(el => el.checked).map(el => el.value);
-  }
-
-  function refreshSvcWashOther() {
-    if (!svcWashOther || !svcWashOtherWrap) return;
-    const show = !!svcWashOther.checked;
-    svcWashOtherWrap.style.display = show ? "block" : "none";
-    if (!show) {
-      if (svcWashOtherText) svcWashOtherText.value = "";
-      if (svcWashOtherAmount) svcWashOtherAmount.value = "";
-    }
-  }
-  if (svcWashOther) svcWashOther.addEventListener("change", refreshSvcWashOther);
-  refreshSvcWashOther();
-
-  function refreshSvcStayOther() {
-    if (!svcStayOther || !svcStayOtherWrap) return;
-    const show = !!svcStayOther.checked;
-    svcStayOtherWrap.style.display = show ? "block" : "none";
-    if (!show && svcStayOtherText) {
-      svcStayOtherText.value = "";
-    }
-  }
-  if (svcStayOther) svcStayOther.addEventListener("change", refreshSvcStayOther);
-  refreshSvcStayOther();
-
-  function refreshServiceAmountInputs() {
-    serviceAmountToggles.forEach(box => {
-      const targetId = box.dataset.amountTarget;
-      if (!targetId) return;
-      const wrap = document.getElementById(targetId);
-      if (!wrap || wrap.classList.contains("otherInputWrap")) return;
-
-      wrap.style.display = box.checked ? "block" : "none";
-
-      if (!box.checked) {
-        const input = wrap.querySelector("input");
-        if (input) input.value = "";
-      }
-    });
-  }
-  serviceAmountToggles.forEach(box => box.addEventListener("change", refreshServiceAmountInputs));
-  refreshServiceAmountInputs();
-
-  function setupBodyCheckDetails() {
-    const groups = [
-      { name: "body_eyes", detailId: "bodyDetail_eyes" },
-      { name: "body_teeth", detailId: "bodyDetail_teeth" },
-      { name: "body_ears", detailId: "bodyDetail_ears" },
-      { name: "body_limbs", detailId: "bodyDetail_limbs" },
-      { name: "body_skin", detailId: "bodyDetail_skin" },
-      { name: "body_coat", detailId: "bodyDetail_coat" }
-    ];
-
-    groups.forEach(group => {
-      const radios = document.querySelectorAll(`input[name="${group.name}"]`);
-      const input = document.getElementById(group.detailId);
-      if (!input) return;
-      const wrap = input.closest(".bodyCheckDetail");
-
-      function refresh() {
-        const show = getRadio(group.name) === "異常";
-        if (wrap) wrap.style.display = show ? "block" : "none";
-        if (!show) input.value = "";
-      }
-
-      radios.forEach(r => r.addEventListener("change", refresh));
-      refresh();
-    });
-  }
-  setupBodyCheckDetails();
-
-  function getBodyChecks() {
-    const items = [
-      { label: "眼睛", key: "body_eyes", detailId: "bodyDetail_eyes" },
-      { label: "牙齒", key: "body_teeth", detailId: "bodyDetail_teeth" },
-      { label: "耳朵", key: "body_ears", detailId: "bodyDetail_ears" },
-      { label: "四肢", key: "body_limbs", detailId: "bodyDetail_limbs" },
-      { label: "皮膚", key: "body_skin", detailId: "bodyDetail_skin" },
-      { label: "皮毛", key: "body_coat", detailId: "bodyDetail_coat" }
-    ];
-
-    return items.map(item => ({
-      part: item.label,
-      status: getRadio(item.key) || "正常",
-      detail: (document.getElementById(item.detailId)?.value || "").trim()
-    }));
-  }
-
-  function refreshPayMethodAmount() {
-    payMethodBoxes.forEach(box => {
-      const targetId = box.dataset.target;
-      const wrap = document.getElementById(targetId);
-      if (!wrap) return;
-      wrap.style.display = box.checked ? "block" : "none";
-
-      if (!box.checked) {
-        const input = wrap.querySelector("input");
-        if (input) input.value = "";
-      }
-    });
-    updatePayTotal();
-  }
-  payMethodBoxes.forEach(box => box.addEventListener("change", refreshPayMethodAmount));
-  refreshPayMethodAmount();
-
-  function getPaymentDetailList() {
-    const list = [];
-    const cashBox = document.querySelector('.payMethod[value="現金"]');
-    const transferBox = document.querySelector('.payMethod[value="轉帳"]');
-    const epayBox = document.querySelector('.payMethod[value="電子支付"]');
-
-    if (cashBox && cashBox.checked) {
-      list.push({ method: "現金", amount: (payAmountCash.value || "").trim() });
-    }
-    if (transferBox && transferBox.checked) {
-      list.push({ method: "轉帳", amount: (payAmountTransfer.value || "").trim() });
-    }
-    if (epayBox && epayBox.checked) {
-      list.push({ method: "電子支付", amount: (payAmountEpay.value || "").trim() });
-    }
-    return list;
-  }
-
-  function getServiceDetailList(list) {
-    return list
+  function getServiceDetailList(selector) {
+    return Array.from(document.querySelectorAll(selector))
       .filter(el => el.checked)
       .map(el => {
         const wrap = document.getElementById(el.dataset.amountTarget || "");
@@ -1740,7 +1456,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getStayItemDetailList() {
-    return svcStayItemBoxes
+    return Array.from(document.querySelectorAll(".svcStayItem"))
       .filter(el => el.checked)
       .map(el => ({
         item: el.value,
@@ -1748,258 +1464,266 @@ document.addEventListener("DOMContentLoaded", function () {
       }));
   }
 
+  function getMedicalHistory() {
+    const arr = [];
+    const mhNone = document.getElementById("mh_none");
+    if (mhNone && mhNone.checked) arr.push(mhNone.value);
+
+    document.querySelectorAll(".mh").forEach(el => {
+      if (el.checked) arr.push(el.value);
+    });
+
+    if (otherInjury && otherInjury.checked) arr.push(otherInjury.value);
+    return arr;
+  }
+
+  function getBodyChecks() {
+    const items = [
+      { label: "眼睛", key: "body_eyes", detailId: "bodyDetail_eyes" },
+      { label: "牙齒", key: "body_teeth", detailId: "bodyDetail_teeth" },
+      { label: "耳朵", key: "body_ears", detailId: "bodyDetail_ears" },
+      { label: "四肢", key: "body_limbs", detailId: "bodyDetail_limbs" },
+      { label: "皮膚", key: "body_skin", detailId: "bodyDetail_skin" },
+      { label: "皮毛", key: "body_coat", detailId: "bodyDetail_coat" }
+    ];
+
+    return items.map(item => {
+      const detailEl = document.getElementById(item.detailId);
+      return {
+        part: item.label,
+        status: getRadio(item.key) || "正常",
+        detail: detailEl ? (detailEl.value || "").trim() : ""
+      };
+    });
+  }
+
   function formatServiceText(details) {
     if (!details || !details.length) return "（未勾選）";
     return details.map(item => item.amount ? `${item.item}（${item.amount}）` : item.item).join("、");
   }
 
-  function syncSize() {
-    const r = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.round(r.width * dpr);
-    canvas.height = Math.round(r.height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.lineWidth = 4;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.strokeStyle = "#3F342C";
+  function parseCurrency(v) {
+    const digits = String(v || "").replace(/\D/g, "");
+    return digits ? Number(digits) : 0;
   }
-  syncSize();
-  window.addEventListener("resize", syncSize);
 
-  let drawing = false;
   let hasStroke = false;
-
-  function point(e) {
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
     const r = canvas.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
+    if (ctx && r.width > 0) {
+      hasStroke = true;
+    }
   }
 
-  function lockScroll(lock) {
-    document.body.style.overflow = lock ? "hidden" : "";
-    document.body.style.touchAction = lock ? "none" : "";
+  if (!canvas) {
+    setError("找不到簽名區塊");
+    return;
   }
 
-  function down(e) {
-    e.preventDefault();
-    lockScroll(true);
-    drawing = true;
-    const p = point(e);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    msg.textContent = "";
-  }
-
-  function move(e) {
-    if (!drawing) return;
-    e.preventDefault();
-    const p = point(e);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-    hasStroke = true;
-  }
-
-  function up() {
-    drawing = false;
-    lockScroll(false);
-  }
-
-  canvas.addEventListener("pointerdown", down, { passive: false });
-  canvas.addEventListener("pointermove", move, { passive: false });
-  window.addEventListener("pointerup", up);
-  window.addEventListener("pointercancel", up);
-
-  clearBtn.addEventListener("click", () => {
-    const r = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, r.width, r.height);
-    hasStroke = false;
-    setError("已清除，請重新簽名");
+  const canvasData = canvas.toDataURL("image/png");
+  if (canvasData.length < 3000) {
+    setError("請先完成簽名");
     resetSubmit();
-  });
+    return;
+  }
 
-  async function initLIFF() {
+  if (!agree || !agree.checked) {
+    setError("請先勾選同意契約內容");
+    resetSubmit();
+    return;
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "謝謝您！資料上傳中...";
+  }
+
+  const isOwnerSelf = getRadio("isOwnerSelf") || "是";
+  const chipHas = getRadio("chipHas") || "有";
+  const neuterStatus = getRadio("neuterStatus") || "已絕育";
+  const vetMode = getRadio("vetMode") || "甲方指定";
+
+  const data = {
+    ownerName: requireValue(ownerName, "甲方姓名"),
+    ownerPhone: requireValue(ownerPhone, "聯絡電話"),
+    ownerAddress: requireValue(ownerAddress, "通訊地址"),
+    emergencyName: requireValue(emergencyName, "緊急聯絡人"),
+    emergencyPhone: requireValue(emergencyPhone, "緊急聯絡人電話"),
+    ownerEmail: requireValue(ownerEmail, "Email（寄送附本用）"),
+    ownerIdNo: requireValue(ownerIdNo, "身分證字號"),
+
+    isOwnerSelf,
+    ownerRelation: (isOwnerSelf === "否") ? requireValue(ownerRelation, "與飼主關係") : "",
+
+    petName: requireValue(petName, "寵物姓名"),
+    petBreed: requireValue(petBreed, "寵物品種"),
+    petSex: getRadio("petSex") || "男生",
+    petType: getRadio("petType") || "犬",
+    petAge: requireValue(petAge, "寵物年齡"),
+    petBirthday: requireValue(petBirthday, "寵物生日"),
+    petWeight: requireValue(petWeight, "體重"),
+    petTemperament: getCheckedValues(".pt"),
+    petTemperamentNote: (petTemperamentNote.value || "").trim(),
+
+    chipHas,
+    chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
+    neuterStatus,
+
+    medicalHistory: getMedicalHistory(),
+    otherInjuryNote: (otherInjury && otherInjury.checked) ? (otherText.value || "").trim() : "",
+    bodyChecks: getBodyChecks(),
+
+    vetMode,
+    vetName: requireValue(vetName, "動物醫院名稱"),
+    vetPhone: requireValue(vetPhone, "動物醫院電話"),
+    vetAddress: requireValue(vetAddress, "動物醫院地址"),
+
+    signDate: requireValue(signDate, "簽署日期"),
+
+    serviceWash: getServiceDetailList(".svcWash"),
+    serviceWashOther: (svcWashOther && svcWashOther.checked) ? {
+      item: (svcWashOtherText.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
+      amount: (svcWashOtherAmount.value || "").trim()
+    } : null,
+
+    serviceGroom: getServiceDetailList(".svcGroom"),
+    serviceSpa: getServiceDetailList(".svcSpa"),
+    serviceSingle: getServiceDetailList(".svcSingle"),
+
+    stayCheckin: (stayCheckin.value || "").trim(),
+    stayCheckout: (stayCheckout.value || "").trim(),
+    stayAmount: (stayAmount.value || "").trim(),
+    serviceStayItems: getStayItemDetailList(),
+    serviceStayOther: (svcStayOther && svcStayOther.checked) ? {
+      item: (svcStayOtherText.value || "").trim() ? `其他：${(svcStayOtherText.value || "").trim()}` : "其他",
+      amount: ""
+    } : null,
+
+    serviceOther: (serviceOtherNote.value || "").trim() ? {
+      item: (serviceOtherNote.value || "").trim(),
+      amount: (serviceOtherAmount.value || "").trim()
+    } : null,
+
+    payMethods: getCheckedValues(".payMethod"),
+    paymentDetails: [
+      ...(document.querySelector('.payMethod[value="現金"]')?.checked ? [{ method: "現金", amount: (payAmountCash.value || "").trim() }] : []),
+      ...(document.querySelector('.payMethod[value="轉帳"]')?.checked ? [{ method: "轉帳", amount: (payAmountTransfer.value || "").trim() }] : []),
+      ...(document.querySelector('.payMethod[value="電子支付"]')?.checked ? [{ method: "電子支付", amount: (payAmountEpay.value || "").trim() }] : [])
+    ],
+    payDate: (payDate.value || "").trim(),
+    payTotal: payTotalText ? payTotalText.textContent : "$0"
+  };
+
+  if (Object.values(data).some(v => v === null)) return;
+
+  if (!isValidEmail(data.ownerEmail)) {
+    setError("Email 格式不正確，請重新確認");
+    ownerEmail.focus();
+    resetSubmit();
+    return;
+  }
+
+  if (data.payMethods.length === 0) {
+    setError("請至少勾選一種支付方式");
+    resetSubmit();
+    return;
+  }
+
+  for (const item of data.paymentDetails) {
+    if (!item.amount) {
+      setError(`請填寫「${item.method}」金額`);
+      resetSubmit();
+      return;
+    }
+  }
+
+  try {
     if (!window.liff) {
       throw new Error("LIFF SDK 未載入");
     }
+
     await liff.init({ liffId: LIFF_ID });
+
     if (!liff.isInClient()) {
       throw new Error("請從 LINE 聊天室開啟此連結");
     }
+
     if (!liff.isLoggedIn()) {
       liff.login();
-      return false;
-    }
-    return true;
-  }
-
-  submitBtn.addEventListener("click", async () => {
-    msg.textContent = "";
-    submitBtn.disabled = true;
-    submitBtn.textContent = "謝謝您！資料上傳中...";
-
-    if (!agree.checked) {
-      setError("請先勾選同意契約內容");
       resetSubmit();
       return;
     }
 
-    const isOwnerSelf = getRadio("isOwnerSelf") || "是";
-    const chipHas = getRadio("chipHas") || "有";
-    const neuterStatus = getRadio("neuterStatus") || "已絕育";
-    const vetMode = getRadio("vetMode") || "甲方指定";
-
-    const medicalHistory = getMedicalHistory();
-    const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText.value || "").trim() : "";
-    const bodyChecks = getBodyChecks();
-
-    const serviceWash = getServiceDetailList(svcWashBoxes);
-    const serviceGroom = getServiceDetailList(svcGroomBoxes);
-    const serviceSpa = getServiceDetailList(svcSpaBoxes);
-    const serviceSingle = getServiceDetailList(svcSingleBoxes);
-    const serviceStayItems = getStayItemDetailList();
-    const payMethods = getCheckedValues(payMethodBoxes);
-    const paymentDetails = getPaymentDetailList();
-
-    const svcWashOtherDetail = svcWashOther && svcWashOther.checked ? {
-      item: (svcWashOtherText.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
-      amount: (svcWashOtherAmount.value || "").trim()
-    } : null;
-
-    const svcStayOtherDetail = svcStayOther && svcStayOther.checked ? {
-      item: (svcStayOtherText.value || "").trim() ? `其他：${(svcStayOtherText.value || "").trim()}` : "其他",
-      amount: ""
-    } : null;
-
-    const serviceOtherDetail = (serviceOtherNote.value || "").trim() ? {
-      item: (serviceOtherNote.value || "").trim(),
-      amount: (serviceOtherAmount.value || "").trim()
-    } : null;
-
-    const data = {
-      ownerName: requireValue(ownerName, "甲方姓名"),
-      ownerPhone: requireValue(ownerPhone, "聯絡電話"),
-      ownerAddress: requireValue(ownerAddress, "通訊地址"),
-      emergencyName: requireValue(emergencyName, "緊急聯絡人"),
-      emergencyPhone: requireValue(emergencyPhone, "緊急聯絡人電話"),
-      ownerEmail: requireValue(ownerEmail, "Email（寄送附本用）"),
-      ownerIdNo: requireValue(ownerIdNo, "身分證字號"),
-
-      isOwnerSelf,
-      ownerRelation: (isOwnerSelf === "否") ? requireValue(ownerRelation, "與飼主關係") : "",
-
-      petName: requireValue(petName, "寵物姓名"),
-      petBreed: requireValue(petBreed, "寵物品種"),
-      petSex: getRadio("petSex") || "男生",
-      petType: getRadio("petType") || "犬",
-      petAge: requireValue(petAge, "寵物年齡"),
-      petBirthday: requireValue(petBirthday, "寵物生日"),
-      petWeight: requireValue(petWeight, "體重"),
-      petTemperament: getPetTemperament(),
-      petTemperamentNote: (petTemperamentNote.value || "").trim(),
-
-      chipHas,
-      chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
-      neuterStatus,
-
-      medicalHistory,
-      otherInjuryNote,
-      bodyChecks,
-
-      vetMode,
-      vetName: requireValue(vetName, "動物醫院名稱"),
-      vetPhone: requireValue(vetPhone, "動物醫院電話"),
-      vetAddress: requireValue(vetAddress, "動物醫院地址"),
-
-      signDate: requireValue(signDate, "簽署日期"),
-
-      serviceWash,
-      serviceWashOther: svcWashOtherDetail,
-      serviceGroom,
-      serviceSpa,
-      serviceSingle,
-      stayCheckin: (stayCheckin.value || "").trim(),
-      stayCheckout: (stayCheckout.value || "").trim(),
-      stayAmount: (stayAmount.value || "").trim(),
-      serviceStayItems,
-      serviceStayOther: svcStayOtherDetail,
-      serviceOther: serviceOtherDetail,
-
-      payMethods,
-      paymentDetails,
-      payDate: (payDate.value || "").trim(),
-      payTotal: payTotalText.textContent
-    };
-
-    if (Object.values(data).some(v => v === null)) {
-      resetSubmit();
-      return;
-    }
-
-    if (!isValidEmail(data.ownerEmail)) {
-      setError("Email 格式不正確，請重新確認");
-      ownerEmail.focus();
-      resetSubmit();
-      return;
-    }
-
-    if (data.payMethods.length === 0) {
-      setError("請至少勾選一種支付方式");
-      resetSubmit();
-      return;
-    }
-
-    for (const item of data.paymentDetails) {
-      if (!item.amount) {
-        setError(`請填寫「${item.method}」金額`);
-        resetSubmit();
-        return;
-      }
-    }
-
-    if (!hasStroke) {
-      setError("請先完成簽名");
-      resetSubmit();
-      return;
-    }
-
+    let profile = null;
     try {
-      const ok = await initLIFF();
-      if (!ok) {
-        resetSubmit();
-        return;
-      }
+      profile = await liff.getProfile();
+    } catch (e) {
+      console.warn("getProfile failed:", e);
+    }
 
-      const chipText = (data.chipHas === "有")
-        ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
-        : "無";
+    const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
+    const signatureDataUrl = canvas.toDataURL("image/png");
 
-      const mhText = data.medicalHistory.length ? data.medicalHistory.join("、") : "（未勾選）";
-      const ptText = data.petTemperament.length ? data.petTemperament.join("、") : "（未勾選）";
-      const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
+    const gasRes = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify({
+        secret: SHARED_SECRET,
+        data,
+        signatureDataUrl,
+        line: {
+          userId: profile?.userId || "",
+          displayName: profile?.displayName || ""
+        },
+        contractText: contractTextValue
+      })
+    });
 
-      const otherInjuryTextLine =
-        otherInjury && otherInjury.checked
-          ? (data.otherInjuryNote ? `其他應注意：${data.otherInjuryNote}` : "其他應注意：（未填）")
-          : "其他應注意：—";
+    const gasText = await gasRes.text();
 
-      const bodyCheckText = data.bodyChecks.map(item => {
-        return item.status === "異常"
-          ? `${item.part}：異常${item.detail ? "（" + item.detail + "）" : ""}`
-          : `${item.part}：正常`;
-      }).join("、");
+    let gasJson = null;
+    try {
+      gasJson = JSON.parse(gasText);
+    } catch (e) {
+      throw new Error("GAS 回傳格式錯誤：" + gasText);
+    }
 
-      const paymentText = data.paymentDetails.map(item => `${item.method}${item.amount ? "：" + item.amount : ""}`).join("、");
+    if (!gasJson.ok) {
+      throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
+    }
 
-      const washTextList = [...data.serviceWash];
-      if (data.serviceWashOther) washTextList.push(data.serviceWashOther);
+    const chipText = (data.chipHas === "有")
+      ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
+      : "無";
 
-      const stayItemTextList = [...data.serviceStayItems];
-      if (data.serviceStayOther) stayItemTextList.push(data.serviceStayOther);
+    const mhText = data.medicalHistory.length ? data.medicalHistory.join("、") : "（未勾選）";
+    const ptText = data.petTemperament.length ? data.petTemperament.join("、") : "（未勾選）";
+    const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
 
-      const completeNote =
-        "（簽署資料與簽名已完成。\n副本已寄送至您的Email信箱。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
+    const otherInjuryTextLine =
+      (otherInjury && otherInjury.checked)
+        ? (data.otherInjuryNote ? `其他應注意：${data.otherInjuryNote}` : "其他應注意：（未填）")
+        : "其他應注意：—";
 
-      const textMsg =
+    const bodyCheckText = data.bodyChecks.map(item => {
+      return item.status === "異常"
+        ? `${item.part}：異常${item.detail ? "（" + item.detail + "）" : ""}`
+        : `${item.part}：正常`;
+    }).join("、");
+
+    const paymentText = data.paymentDetails.map(item => `${item.method}${item.amount ? "：" + item.amount : ""}`).join("、");
+
+    const washTextList = [...data.serviceWash];
+    if (data.serviceWashOther) washTextList.push(data.serviceWashOther);
+
+    const stayItemTextList = [...data.serviceStayItems];
+    if (data.serviceStayOther) stayItemTextList.push(data.serviceStayOther);
+
+    const completeNote =
+      "（簽署資料與簽名已完成。\n副本已寄送至您的Email信箱。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
+
+    const textMsg =
 `【犬貓美容契約簽署資料】
 甲方姓名：${data.ownerName}
 聯絡電話：${data.ownerPhone}
@@ -2043,55 +1767,318 @@ SPA：${formatServiceText(data.serviceSpa)}
 
 ${completeNote}`;
 
-      let profile = null;
-      try {
-        profile = await liff.getProfile();
-      } catch (e) {
-        console.warn("getProfile failed:", e);
-      }
+    await liff.sendMessages([{ type: "text", text: textMsg }]);
 
-      const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
-      const signatureDataUrl = canvas.toDataURL("image/png");
+    setOK("資料已送出！\n副本已寄送完成，可以回到聊天室了！");
+    resetSubmit();
 
-      const gasRes = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
-        body: JSON.stringify({
-          secret: SHARED_SECRET,
-          data,
-          signatureDataUrl,
-          line: {
-            userId: profile?.userId || "",
-            displayName: profile?.displayName || ""
-          },
-          contractText: contractTextValue
-        })
-      });
+  } catch (err) {
+    console.error(err);
+    setError(err.message || "送出失敗");
+    resetSubmit();
+  }
+};
 
-      const gasText = await gasRes.text();
-      let gasJson = null;
+document.addEventListener("DOMContentLoaded", function () {
+  const signDate = document.getElementById("signDate");
+  const payDate = document.getElementById("payDate");
+  const canvas = document.getElementById("sig");
+  const clearBtn = document.getElementById("clear");
+  const msg = document.getElementById("msg");
 
-      try {
-        gasJson = JSON.parse(gasText);
-      } catch (e) {
-        throw new Error("GAS 回傳格式錯誤：" + gasText);
-      }
+  function todayZh() {
+    const d = new Date();
+    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+  }
 
-      if (!gasJson.ok) {
-        throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
-      }
+  function todayYMD() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${y}/${m}/${dd}`;
+  }
 
-      await liff.sendMessages([{ type: "text", text: textMsg }]);
+  if (signDate) signDate.value = todayZh();
+  if (payDate) payDate.value = todayYMD();
 
-      setOK("資料已送出！\n副本已寄送完成，可以回到聊天室了！");
-      resetSubmit();
+  function formatYMD(value) {
+    const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
+    if (!digits) return "";
+    const y = digits.slice(0, 4);
+    const m = digits.slice(4, 6);
+    const d = digits.slice(6, 8);
 
-    } catch (err) {
-      console.error(err);
-      setError(err.message || "送出失敗");
-      resetSubmit();
-    }
+    let out = y;
+    if (digits.length > 4) out += "/" + m;
+    if (digits.length > 6) out += "/" + d;
+    return out;
+  }
+
+  document.querySelectorAll(".js-date").forEach(el => {
+    el.addEventListener("input", e => {
+      e.target.value = formatYMD(e.target.value);
+    });
   });
+
+  function formatCurrency(v) {
+    const digits = String(v || "").replace(/\D/g, "");
+    if (!digits) return "";
+    return "$" + Number(digits).toLocaleString("zh-TW");
+  }
+
+  function parseCurrency(v) {
+    const digits = String(v || "").replace(/\D/g, "");
+    return digits ? Number(digits) : 0;
+  }
+
+  function formatCurrencyNumber(n) {
+    return "$" + Number(n || 0).toLocaleString("zh-TW");
+  }
+
+  const payAmountCash = document.getElementById("payAmountCash");
+  const payAmountTransfer = document.getElementById("payAmountTransfer");
+  const payAmountEpay = document.getElementById("payAmountEpay");
+  const payTotalText = document.getElementById("payTotalText");
+
+  function updatePayTotal() {
+    const total =
+      parseCurrency(payAmountCash?.value) +
+      parseCurrency(payAmountTransfer?.value) +
+      parseCurrency(payAmountEpay?.value);
+    if (payTotalText) payTotalText.textContent = formatCurrencyNumber(total);
+  }
+
+  document.querySelectorAll(".js-currency").forEach(el => {
+    el.addEventListener("input", e => {
+      e.target.value = formatCurrency(e.target.value);
+      updatePayTotal();
+    });
+  });
+
+  function getRadio(name) {
+    return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+  }
+
+  const ownerRelationWrap = document.getElementById("ownerRelationWrap");
+  const ownerRelation = document.getElementById("ownerRelation");
+  document.querySelectorAll('input[name="isOwnerSelf"]').forEach(r => {
+    r.addEventListener("change", () => {
+      const notSelf = getRadio("isOwnerSelf") === "否";
+      if (ownerRelationWrap) ownerRelationWrap.classList.toggle("hidden", !notSelf);
+      if (!notSelf && ownerRelation) ownerRelation.value = "";
+    });
+  });
+
+  const chipNoWrap = document.getElementById("chipNoWrap");
+  const chipNo = document.getElementById("chipNo");
+  document.querySelectorAll('input[name="chipHas"]').forEach(r => {
+    r.addEventListener("change", () => {
+      const show = getRadio("chipHas") === "有";
+      if (chipNoWrap) chipNoWrap.classList.toggle("hidden", !show);
+      if (!show && chipNo) chipNo.value = "";
+    });
+  });
+
+  const vetName = document.getElementById("vetName");
+  const vetPhone = document.getElementById("vetPhone");
+  const vetAddress = document.getElementById("vetAddress");
+  const STORE_VET = {
+    name: "愛心動物醫院",
+    phone: "07-7156399",
+    address: "高雄市苓雅區建國一路74-3號"
+  };
+
+  document.querySelectorAll('input[name="vetMode"]').forEach(r => {
+    r.addEventListener("change", () => {
+      const mode = getRadio("vetMode");
+      if (mode === "乙方指定") {
+        if (vetName && !vetName.value.trim()) vetName.value = STORE_VET.name;
+        if (vetPhone && !vetPhone.value.trim()) vetPhone.value = STORE_VET.phone;
+        if (vetAddress && !vetAddress.value.trim()) vetAddress.value = STORE_VET.address;
+      } else {
+        if (vetName) vetName.value = "";
+        if (vetPhone) vetPhone.value = "";
+        if (vetAddress) vetAddress.value = "";
+      }
+    });
+  });
+
+  const otherInjury = document.getElementById("otherInjury");
+  const otherWrap = document.getElementById("otherInjuryWrap");
+  const otherText = document.getElementById("otherInjuryText");
+  const mhNone = document.getElementById("mh_none");
+  const mhBoxes = Array.from(document.querySelectorAll(".mh"));
+
+  function refreshOtherInjury() {
+    const show = !!otherInjury?.checked;
+    if (otherWrap) otherWrap.style.display = show ? "block" : "none";
+    if (!show && otherText) otherText.value = "";
+  }
+
+  if (otherInjury) {
+    otherInjury.addEventListener("change", refreshOtherInjury);
+  }
+  refreshOtherInjury();
+
+  function enforceMedicalExclusive() {
+    if (!mhNone) return;
+    if (mhNone.checked) {
+      mhBoxes.forEach(b => b.checked = false);
+      if (otherInjury) otherInjury.checked = false;
+      refreshOtherInjury();
+    } else {
+      const anyOther = mhBoxes.some(b => b.checked) || otherInjury?.checked;
+      if (anyOther) mhNone.checked = false;
+    }
+  }
+
+  if (mhNone) mhNone.addEventListener("change", enforceMedicalExclusive);
+  mhBoxes.forEach(b => b.addEventListener("change", enforceMedicalExclusive));
+  if (otherInjury) otherInjury.addEventListener("change", enforceMedicalExclusive);
+
+  const svcWashOther = document.getElementById("svcWashOther");
+  const svcWashOtherWrap = document.getElementById("svcWashOtherWrap");
+  const svcWashOtherText = document.getElementById("svcWashOtherText");
+  const svcWashOtherAmount = document.getElementById("svcWashOtherAmount");
+
+  if (svcWashOther) {
+    svcWashOther.addEventListener("change", () => {
+      const show = !!svcWashOther.checked;
+      if (svcWashOtherWrap) svcWashOtherWrap.style.display = show ? "block" : "none";
+      if (!show) {
+        if (svcWashOtherText) svcWashOtherText.value = "";
+        if (svcWashOtherAmount) svcWashOtherAmount.value = "";
+      }
+    });
+  }
+
+  const svcStayOther = document.getElementById("svcStayOther");
+  const svcStayOtherWrap = document.getElementById("svcStayOtherWrap");
+  const svcStayOtherText = document.getElementById("svcStayOtherText");
+
+  if (svcStayOther) {
+    svcStayOther.addEventListener("change", () => {
+      const show = !!svcStayOther.checked;
+      if (svcStayOtherWrap) svcStayOtherWrap.style.display = show ? "block" : "none";
+      if (!show && svcStayOtherText) svcStayOtherText.value = "";
+    });
+  }
+
+  document.querySelectorAll(".svcAmountToggle").forEach(box => {
+    box.addEventListener("change", () => {
+      const targetId = box.dataset.amountTarget;
+      if (!targetId) return;
+      const wrap = document.getElementById(targetId);
+      if (!wrap || wrap.classList.contains("otherInputWrap")) return;
+
+      wrap.style.display = box.checked ? "block" : "none";
+      if (!box.checked) {
+        const input = wrap.querySelector("input");
+        if (input) input.value = "";
+      }
+    });
+  });
+
+  const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
+  payMethodBoxes.forEach(box => {
+    box.addEventListener("change", () => {
+      const targetId = box.dataset.target;
+      const wrap = document.getElementById(targetId);
+      if (!wrap) return;
+
+      wrap.style.display = box.checked ? "block" : "none";
+      if (!box.checked) {
+        const input = wrap.querySelector("input");
+        if (input) input.value = "";
+      }
+      updatePayTotal();
+    });
+  });
+
+  document.querySelectorAll(".bodyCheckItem").forEach(item => {
+    const radios = item.querySelectorAll('input[type="radio"]');
+    const detailWrap = item.querySelector(".bodyCheckDetail");
+    const detailInput = detailWrap ? detailWrap.querySelector("input") : null;
+
+    function refresh() {
+      const checked = Array.from(radios).find(r => r.checked);
+      const show = checked && checked.value === "異常";
+      if (detailWrap) detailWrap.style.display = show ? "block" : "none";
+      if (!show && detailInput) detailInput.value = "";
+    }
+
+    radios.forEach(r => r.addEventListener("change", refresh));
+    refresh();
+  });
+
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+
+    function syncSize() {
+      const r = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(r.width * dpr);
+      canvas.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.lineWidth = 4;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#3F342C";
+    }
+
+    function point(e) {
+      const r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    function lockScroll(lock) {
+      document.body.style.overflow = lock ? "hidden" : "";
+      document.body.style.touchAction = lock ? "none" : "";
+    }
+
+    function down(e) {
+      e.preventDefault();
+      drawing = true;
+      lockScroll(true);
+      const p = point(e);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      if (msg) msg.textContent = "";
+    }
+
+    function move(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const p = point(e);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    }
+
+    function up() {
+      drawing = false;
+      lockScroll(false);
+    }
+
+    syncSize();
+    window.addEventListener("resize", syncSize);
+    canvas.addEventListener("pointerdown", down, { passive: false });
+    canvas.addEventListener("pointermove", move, { passive: false });
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        const r = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, r.width, r.height);
+        if (msg) {
+          msg.textContent = "已清除，請重新簽名";
+          msg.style.color = "#9E5E4A";
+        }
+      });
+    }
+  }
 });
 </script>
 </body>
