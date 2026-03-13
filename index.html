@@ -1329,7 +1329,7 @@
 
 <script>
 const LIFF_ID = "2009333840-1wawyJgg";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx85-EcoeiSCByH8z6YWIcOBXLuwzkRj4-bhJMpazRf-5koL5h6srHRFeP1cGucCgnr6A/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwsXsFMq0nNvzY0N_Mh9OYPXPO5SxmnKTBP_sZc-_HULyCbjWqrM83S26Noec2pcWxSSQ/exec";
 const SHARED_SECRET = "kumajima2025";
 
 const STORE_VET = {
@@ -1829,7 +1829,7 @@ ${completeNote}`;
     console.log(textMsg);
 
     const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
-    const signatureDataUrl = canvas.toDataURL("image/png");
+    const signatureDataUrl = canvas.toDataURL("image/jpeg", 0.7);
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 45000);
