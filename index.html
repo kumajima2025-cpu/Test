@@ -1,1177 +1,27 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>寵物美容服務定型化契約</title>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
-
-    :root{
-      --bg:#F5F0E8;
-      --card:#FFFDF9;
-      --border:#D9C8B5;
-      --text:#3F342C;
-      --muted:#857469;
-      --latte:#8B735F;
-      --danger:#9E5E4A;
-      --radius:22px;
-      --radius-sm:16px;
-      --shadow:0 10px 28px rgba(73, 58, 46, .08);
-      --soft:#F2EAE1;
-      --soft-2:#EFE5DA;
-    }
-
-    *{ box-sizing:border-box; }
-    html,body{ overscroll-behavior:none; }
-
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
-      overflow-x:hidden;
-      letter-spacing:.2px;
-    }
-
-    .wrap{
-      max-width:680px;
-      margin:0 auto;
-      padding:18px 14px 32px;
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:18px 16px;
-      margin:14px 0;
-      border:1px solid rgba(217,200,181,.95);
-      box-shadow:var(--shadow);
-    }
-
-    .logoBox{
-      text-align:center;
-      margin:2px 0 12px;
-    }
-
-    .logoBox img{
-      max-width:120px;
-      max-height:120px;
-      width:auto;
-      height:auto;
-      object-fit:contain;
-      display:inline-block;
-    }
-
-    .title{
-      font-size:26px;
-      font-weight:800;
-      margin:2px 0 10px;
-      letter-spacing:.5px;
-      text-align:center;
-      color:var(--text);
-    }
-
-    .plainBox{
-      padding:2px 0 0;
-    }
-
-    .infoBox{
-      border:1.6px solid var(--border);
-      border-radius:16px;
-      padding:14px 16px;
-      background:#FAF6F1;
-    }
-
-    .meta{
-      color:rgba(63,52,44,.9);
-      font-weight:600;
-      line-height:1.8;
-      text-align:left;
-    }
-
-    .sectionTitle{
-      font-size:22px;
-      font-weight:900;
-      margin:4px 0 10px;
-      letter-spacing:.6px;
-      text-align:left;
-      color:var(--text);
-    }
-
-    .subText{
-      color:var(--muted);
-      font-weight:600;
-      margin:0 0 12px;
-      line-height:1.7;
-    }
-
-    .label{
-      font-size:18px;
-      font-weight:800;
-      margin:16px 0 10px;
-      color:var(--text);
-    }
-
-    .miniLabel{
-      margin:0 0 8px;
-      font-size:16px;
-      font-weight:800;
-      color:var(--text);
-    }
-
-    .input{
-      width:100%;
-      border:1.6px solid var(--border);
-      border-radius:var(--radius-sm);
-      padding:14px 14px;
-      font-size:18px;
-      font-weight:600;
-      background:#FCF8F3;
-      color:var(--text);
-      outline:none;
-    }
-
-    .input::placeholder{ color:rgba(63,52,44,.42); }
-
-    .input:focus{
-      border-color:var(--latte);
-      box-shadow:0 0 0 4px rgba(139,115,95,.12);
-    }
-
-    .grid2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .grid3{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:12px 20px;
-    }
-
-    @media (max-width:560px){
-      .grid2{ grid-template-columns:1fr; }
-      .grid3{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-    }
-
-    .contractTitle{
-      font-size:22px;
-      font-weight:900;
-      margin:0 0 12px;
-      letter-spacing:.6px;
-      text-align:left;
-      color:var(--text);
-    }
-
-    .contractScrollCard{
-      border:1.4px solid rgba(217,200,181,.95);
-      border-radius:18px;
-      background:#FAF6F1;
-      padding:14px 14px;
-      max-height:420px;
-      overflow-y:auto;
-      overflow-x:hidden;
-    }
-
-    .contractScrollCard::-webkit-scrollbar{
-      width:10px;
-    }
-
-    .contractScrollCard::-webkit-scrollbar-thumb{
-      background:rgba(139,115,95,.35);
-      border-radius:999px;
-    }
-
-    .contractScrollCard::-webkit-scrollbar-track{
-      background:rgba(217,200,181,.2);
-      border-radius:999px;
-    }
-
-    .contractBox{
-      padding:0;
-      text-align:left;
-    }
-
-    .contractBox pre{
-      margin:0;
-      white-space:pre-wrap;
-      word-break:break-word;
-      line-height:1.75;
-      font-size:15px;
-      font-weight:500;
-      color:rgba(63,52,44,.96);
-      text-align:left;
-    }
-
-    .checkRow{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      margin-top:14px;
-      padding:0;
-    }
-
-    .checkRow input{
-      width:22px;
-      height:22px;
-      accent-color:var(--latte);
-      margin-top:2px;
-      flex-shrink:0;
-    }
-
-    .checkRow label{
-      font-size:17px;
-      font-weight:800;
-      color:var(--text);
-      line-height:1.5;
-    }
-
-    .choiceRow{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:center;
-      padding:0;
-      background:transparent;
-      border:none;
-    }
-
-    .choice{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      font-weight:800;
-      min-height:40px;
-      color:var(--text);
-    }
-
-    .choice input{
-      width:20px;
-      height:20px;
-      accent-color:var(--latte);
-    }
-
-    .checkGrid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px 24px;
-      padding:0;
-      background:transparent;
-      border:none;
-    }
-
-    .checkGrid.oneLine{
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px 22px;
-      align-items:flex-start;
-    }
-
-    .serviceRow3{
-      display:flex;
-      flex-wrap:wrap;
-      gap:14px 22px;
-      align-items:flex-start;
-    }
-
-    .serviceRow3 .serviceOptionBlock{
-      min-width:120px;
-    }
-
-    .ck{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-weight:600;
-      font-size:14px;
-      line-height:1.4;
-      min-height:28px;
-      color:var(--text);
-    }
-
-    .ck input{
-      width:18px;
-      height:18px;
-      accent-color:var(--latte);
-      flex-shrink:0;
-    }
-
-    .fullRow{ grid-column:1 / -1; }
-
-    .otherInputWrap{
-      display:none;
-      margin-top:10px;
-    }
-
-    .bodyCheckItem{
-      padding:12px 0;
-      border-bottom:1px solid rgba(217,200,181,.6);
-    }
-
-    .bodyCheckItem:last-child{
-      border-bottom:none;
-      padding-bottom:0;
-    }
-
-    .bodyCheckHead{
-      font-weight:800;
-      margin-bottom:10px;
-      font-size:16px;
-      color:var(--text);
-    }
-
-    .bodyCheckDetail{
-      display:none;
-      margin-top:10px;
-    }
-
-    .methodAmountWrap{
-      display:none;
-      margin-top:8px;
-      margin-left:28px;
-    }
-
-    .payMethodBlock + .payMethodBlock{
-      margin-top:12px;
-    }
-
-    .payHeader{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-
-    .payTotal{
-      font-size:16px;
-      font-weight:900;
-      color:var(--latte);
-      white-space:nowrap;
-    }
-
-    .serviceOptionBlock{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .serviceAmountWrap{
-      display:none;
-      margin-left:26px;
-      width:calc(100% - 26px);
-    }
-
-    .serviceAmountWrap.showInline{
-      display:block;
-    }
-
-    .serviceAmountWrap .input{
-      padding:11px 12px;
-      font-size:15px;
-      border-radius:14px;
-    }
-
-    .serviceAmountHint{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-      margin-bottom:6px;
-    }
-
-    #sig{
-      width:100%;
-      height:320px;
-      border:1.6px solid var(--border);
-      border-radius:var(--radius-sm);
-      background:#fff;
-      touch-action:none;
-    }
-
-    .btn{
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:15px 16px;
-      font-size:18px;
-      font-weight:900;
-      cursor:pointer;
-      margin-top:12px;
-      letter-spacing:.3px;
-      box-shadow:0 10px 20px rgba(73,58,46,.10);
-      transition:.15s ease;
-    }
-
-    .btn:active{ transform:scale(.98); }
-    .btnClear{ background:var(--soft-2); color:var(--text); }
-    .btnSubmit{ background:var(--latte); color:#fff; }
-
-    .msg{
-      margin-top:10px;
-      color:var(--danger);
-      font-weight:900;
-      text-align:center;
-      line-height:1.6;
-      white-space:pre-line;
-    }
-
-    .dangerNote{
-      margin-top:10px;
-      color:var(--muted);
-      font-weight:800;
-      font-size:14px;
-      text-align:center;
-    }
-
-    .hidden{ display:none !important; }
-  </style>
-
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-</head>
-
-<body>
-  <div class="wrap">
-
-    <div class="card">
-      <div class="logoBox">
-        <img src="logo.png" alt="店家 LOGO">
-      </div>
-
-      <div class="title">寵物美容服務定型化契約</div>
-
-      <div class="infoBox">
-        <div class="meta">
-          公司名稱：熊汪寵物美容<br>
-          營業地址：高雄市苓雅區正義路150號<br>
-          官方LINE：@911xgwmz
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="contractTitle">契約內容（請完整閱讀）</div>
-
-      <div class="contractScrollCard">
-        <div class="contractBox">
-          <pre id="contractText">(契約內容)
-</pre>
-        </div>
-      </div>
-
-      <div class="checkRow">
-        <input id="agree" type="checkbox">
-        <label for="agree">我已完整閱讀並同意上述契約內容</label>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sectionTitle">基本資料表</div>
-      <div class="subText">以下資料將作為契約附件之一部分</div>
-
-      <div class="label">甲方姓名（飼主）</div>
-      <input id="ownerName" class="input" placeholder="請輸入飼主姓名">
-
-      <div class="label">身分證字號</div>
-      <input id="ownerIdNo" class="input" placeholder="請輸入身分證字號">
-
-      <div class="label">聯絡電話</div>
-      <input id="ownerPhone" class="input" inputmode="tel" placeholder="請輸入聯絡電話">
-
-      <div class="label">通訊地址</div>
-      <input id="ownerAddress" class="input" placeholder="請輸入通訊地址">
-
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <div class="miniLabel">緊急聯絡人</div>
-          <input id="emergencyName" class="input" placeholder="請輸入緊急聯絡人姓名">
-        </div>
-        <div>
-          <div class="miniLabel">緊急聯絡人電話</div>
-          <input id="emergencyPhone" class="input" inputmode="tel" placeholder="請輸入緊急聯絡人電話">
-        </div>
-      </div>
-
-      <div class="label">Email（寄送附本用）</div>
-      <input id="ownerEmail" class="input" inputmode="email" placeholder="例：abc@gmail.com">
-
-      <div class="label">是否為飼主本人</div>
-      <div class="choiceRow" id="isOwnerSelfRow">
-        <label class="choice"><input type="radio" name="isOwnerSelf" value="是" checked>是</label>
-        <label class="choice"><input type="radio" name="isOwnerSelf" value="否">否</label>
-      </div>
-
-      <div id="ownerRelationWrap" class="hidden">
-        <div class="label">與飼主關係</div>
-        <input id="ownerRelation" class="input" placeholder="例：家人 / 朋友 / 代送">
-      </div>
-
-      <div class="label">寵物姓名</div>
-      <input id="petName" class="input" placeholder="請輸入寵物姓名">
-
-      <div class="label">寵物品種</div>
-      <input id="petBreed" class="input" placeholder="例：比熊犬">
-
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <div class="miniLabel">性別</div>
-          <div class="choiceRow" id="petSexRow">
-            <label class="choice"><input type="radio" name="petSex" value="男生" checked>男生</label>
-            <label class="choice"><input type="radio" name="petSex" value="女生">女生</label>
-          </div>
-        </div>
-        <div>
-          <div class="miniLabel">種類</div>
-          <div class="choiceRow" id="petTypeRow">
-            <label class="choice"><input type="radio" name="petType" value="犬" checked>犬</label>
-            <label class="choice"><input type="radio" name="petType" value="貓">貓</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <div class="miniLabel">寵物年齡</div>
-          <input id="petAge" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="例：3">
-        </div>
-        <div>
-          <div class="miniLabel">寵物生日</div>
-          <input id="petBirthday" class="input js-date" type="text" inputmode="numeric" placeholder="YYYY/MM/DD" maxlength="10">
-        </div>
-      </div>
-
-      <div class="label">晶片</div>
-      <div class="choiceRow" id="chipRow">
-        <label class="choice"><input type="radio" name="chipHas" value="有" checked>有</label>
-        <label class="choice"><input type="radio" name="chipHas" value="無">無</label>
-      </div>
-
-      <div id="chipNoWrap" class="hidden">
-        <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
-        <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
-      </div>
-
-      <div class="label">絕育狀況</div>
-      <div class="choiceRow" id="neuterRow">
-        <label class="choice"><input type="radio" name="neuterStatus" value="已絕育" checked>已絕育</label>
-        <label class="choice"><input type="radio" name="neuterStatus" value="未絕育">未絕育</label>
-      </div>
-
-      <div class="label">體重（公斤）</div>
-      <input id="petWeight" class="input" inputmode="decimal" placeholder="例：6.5">
-
-      <div class="label">寵物個性（可複選）</div>
-      <div class="checkGrid" id="temperamentGrid">
-        <label class="ck"><input type="checkbox" class="pt" value="親人">親人</label>
-        <label class="ck"><input type="checkbox" class="pt" value="不親人">不親人</label>
-        <label class="ck"><input type="checkbox" class="pt" value="親狗">親狗</label>
-        <label class="ck"><input type="checkbox" class="pt" value="不親狗">不親狗</label>
-        <label class="ck"><input type="checkbox" class="pt" value="不會咬人">不會咬人</label>
-        <label class="ck"><input type="checkbox" class="pt" value="會咬人">會咬人</label>
-        <label class="ck"><input type="checkbox" class="pt" value="不會咬狗">不會咬狗</label>
-        <label class="ck"><input type="checkbox" class="pt" value="會咬狗">會咬狗</label>
-        <label class="ck"><input type="checkbox" class="pt" value="容易緊張">容易緊張</label>
-        <label class="ck"><input type="checkbox" class="pt" value="過度焦慮">過度焦慮</label>
-      </div>
-
-      <div style="margin-top:10px;">
-        <div class="miniLabel">其他應注意（選填）</div>
-        <input id="petTemperamentNote" class="input" placeholder="例如：怕吹風、不喜歡剪磨指甲等">
-      </div>
-
-      <div class="label">寵物身體狀況檢視（目視）</div>
-
-      <div class="plainBox" style="margin-top:6px;">
-        <div class="bodyCheckItem">
-          <div class="bodyCheckHead">眼睛</div>
-          <div class="choiceRow">
-            <label class="choice"><input type="radio" name="body_eyes" value="正常" checked>正常</label>
-            <label class="choice"><input type="radio" name="body_eyes" value="異常">異常</label>
-          </div>
-          <div class="bodyCheckDetail">
-            <input class="input" id="bodyDetail_eyes" placeholder="請填寫眼睛異常狀況（選填）">
-          </div>
-        </div>
-
-        <div class="bodyCheckItem">
-          <div class="bodyCheckHead">牙齒</div>
-          <div class="choiceRow">
-            <label class="choice"><input type="radio" name="body_teeth" value="正常" checked>正常</label>
-            <label class="choice"><input type="radio" name="body_teeth" value="異常">異常</label>
-          </div>
-          <div class="bodyCheckDetail">
-            <input class="input" id="bodyDetail_teeth" placeholder="請填寫牙齒異常狀況（選填）">
-          </div>
-        </div>
-
-        <div class="bodyCheckItem">
-          <div class="bodyCheckHead">耳朵</div>
-          <div class="choiceRow">
-            <label class="choice"><input type="radio" name="body_ears" value="正常" checked>正常</label>
-            <label class="choice"><input type="radio" name="body_ears" value="異常">異常</label>
-          </div>
-          <div class="bodyCheckDetail">
-            <input class="input" id="bodyDetail_ears" placeholder="請填寫耳朵異常狀況（選填）">
-          </div>
-        </div>
-
-        <div class="bodyCheckItem">
-          <div class="bodyCheckHead">四肢</div>
-          <div class="choiceRow">
-            <label class="choice"><input type="radio" name="body_limbs" value="正常" checked>正常</label>
-            <label class="choice"><input type="radio" name="body_limbs" value="異常">異常</label>
-          </div>
-          <div class="bodyCheckDetail">
-            <input class="input" id="bodyDetail_limbs" placeholder="請填寫四肢異常狀況（選填）">
-          </div>
-        </div>
-
-        <div class="bodyCheckItem">
-          <div class="bodyCheckHead">皮膚</div>
-          <div class="choiceRow">
-            <label class="choice"><input type="radio" name="body_skin" value="正常" checked>正常</label>
-            <label class="choice"><input type="radio" name="body_skin" value="異常">異常</label>
-          </div>
-          <div class="bodyCheckDetail">
-            <input class="input" id="bodyDetail_skin" placeholder="請填寫皮膚異常狀況（選填）">
-          </div>
-        </div>
-
-        <div class="bodyCheckItem">
-          <div class="bodyCheckHead">皮毛</div>
-          <div class="choiceRow">
-            <label class="choice"><input type="radio" name="body_coat" value="正常" checked>正常</label>
-            <label class="choice"><input type="radio" name="body_coat" value="異常">異常</label>
-          </div>
-          <div class="bodyCheckDetail">
-            <input class="input" id="bodyDetail_coat" placeholder="請填寫皮毛異常狀況（選填，例如：打結、跳蚤壁蝨）">
-          </div>
-        </div>
-      </div>
-
-      <div class="label">寵物病史</div>
-      <div class="checkGrid" id="medicalGrid">
-        <label class="ck fullRow"><input type="checkbox" id="mh_none" value="狀況良好，無病史">狀況良好，無病史</label>
-        <label class="ck"><input type="checkbox" class="mh" value="心臟病">心臟病</label>
-        <label class="ck"><input type="checkbox" class="mh" value="氣喘">氣喘</label>
-        <label class="ck"><input type="checkbox" class="mh" value="氣管塌陷">氣管塌陷</label>
-        <label class="ck"><input type="checkbox" class="mh" value="白內障">白內障</label>
-        <label class="ck"><input type="checkbox" class="mh" value="癲癇">癲癇</label>
-        <label class="ck"><input type="checkbox" class="mh" value="心絲蟲">心絲蟲</label>
-        <label class="ck"><input type="checkbox" class="mh" value="艾利希體">艾利希體</label>
-        <label class="ck"><input type="checkbox" class="mh" value="腹膜炎">腹膜炎</label>
-        <label class="ck"><input type="checkbox" class="mh" value="腹積水">腹積水</label>
-        <label class="ck"><input type="checkbox" class="mh" value="手術外傷未癒合">手術外傷未癒合</label>
-        <label class="ck"><input type="checkbox" class="mh" value="髖關節問題">髖關節問題</label>
-        <label class="ck"><input type="checkbox" class="mh" value="骨折">骨折</label>
-        <label class="ck"><input type="checkbox" class="mh" value="腸炎">腸炎</label>
-        <label class="ck"><input type="checkbox" class="mh" value="血便">血便</label>
-        <label class="ck"><input type="checkbox" class="mh" value="血尿">血尿</label>
-        <label class="ck"><input type="checkbox" class="mh" value="懷孕">懷孕</label>
-        <label class="ck"><input type="checkbox" class="mh" value="傳染疾病">傳染疾病</label>
-        <label class="ck"><input type="checkbox" class="mh" value="耳朵發炎">耳朵發炎</label>
-        <label class="ck"><input type="checkbox" class="mh" value="肥胖">肥胖</label>
-        <label class="ck fullRow"><input type="checkbox" class="mh" id="otherInjury" value="其他應注意">其他應注意</label>
-      </div>
-
-      <div id="otherInjuryWrap" class="otherInputWrap">
-        <input id="otherInjuryText" class="input" type="text" placeholder="請填寫其他應注意事項">
-      </div>
-
-      <div class="subText" style="margin-top:10px; color:var(--text); font-weight:800;">
-        飼主應盡告知義務，若因隱瞞病況發生意外或死亡，經法定程序判定店家無疏失，店家不負損害賠償責任。
-      </div>
-
-      <div class="label">緊急就醫機構</div>
-      <div class="choiceRow" id="vetModeRow">
-        <label class="choice"><input type="radio" name="vetMode" value="甲方指定" checked>甲方指定</label>
-        <label class="choice"><input type="radio" name="vetMode" value="乙方指定">乙方指定鄰近動物醫院</label>
-      </div>
-
-      <div id="vetDetailWrap">
-        <div class="grid2" style="margin-top:10px;">
-          <div>
-            <div class="miniLabel">動物醫院名稱</div>
-            <input id="vetName" class="input" placeholder="請輸入動物醫院名稱">
-          </div>
-          <div>
-            <div class="miniLabel">動物醫院電話</div>
-            <input id="vetPhone" class="input" inputmode="tel" placeholder="請輸入電話">
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <div class="miniLabel">動物醫院地址</div>
-          <input id="vetAddress" class="input" placeholder="請輸入地址">
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sectionTitle">服務內容</div>
-
-      <div class="label">洗澡</div>
-      <div class="checkGrid oneLine">
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcWash svcAmountToggle" value="洗澡" data-amount-target="svcWashAmt0">
-            洗澡
-          </label>
-          <div id="svcWashAmt0" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcWash svcAmountToggle" value="廢毛" data-amount-target="svcWashAmt1">
-            廢毛
-          </label>
-          <div id="svcWashAmt1" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcWash svcAmountToggle" value="打結" data-amount-target="svcWashAmt2">
-            打結
-          </label>
-          <div id="svcWashAmt2" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" id="svcWashOther" class="svcAmountToggle" value="其他" data-amount-target="svcWashOtherWrap">
-            其他
-          </label>
-        </div>
-      </div>
-
-      <div id="svcWashOtherWrap" class="otherInputWrap">
-        <input id="svcWashOtherText" class="input" type="text" placeholder="請填寫其他洗澡服務內容">
-        <div class="serviceAmountWrap showInline" style="margin-top:8px;">
-          <div class="serviceAmountHint">金額（選填）</div>
-          <input id="svcWashOtherAmount" class="input js-currency" inputmode="numeric" placeholder="請輸入金額">
-        </div>
-      </div>
-
-      <div class="subText" style="margin-top:10px; color:var(--text);">
-        洗澡包含：剪指甲、清耳朵、腳底毛、肛門清潔、修腳緣、眼睛周圍毛髮修剪以不遮蓋眼睛為主（部分品種不適用改屁股雜毛修剪）
-      </div>
-
-      <div class="label">大美容（含洗澡）</div>
-      <div class="checkGrid">
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcGroom svcAmountToggle" value="3分留頭尾" data-amount-target="svcGroomAmt1">
-            3分留頭尾
-          </label>
-          <div id="svcGroomAmt1" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcGroom svcAmountToggle" value="6分留頭尾" data-amount-target="svcGroomAmt2">
-            6分留頭尾
-          </label>
-          <div id="svcGroomAmt2" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcGroom svcAmountToggle" value="9分留頭尾+100元" data-amount-target="svcGroomAmt3">
-            9分留頭尾+100元
-          </label>
-          <div id="svcGroomAmt3" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcGroom svcAmountToggle" value="半手剪留腳柱" data-amount-target="svcGroomAmt4">
-            半手剪留腳柱
-          </label>
-          <div id="svcGroomAmt4" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock fullRow">
-          <label class="ck">
-            <input type="checkbox" class="svcGroom svcAmountToggle" value="全手剪（現場討論造型）" data-amount-target="svcGroomAmt5">
-            全手剪（現場討論造型）
-          </label>
-          <div id="svcGroomAmt5" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-      </div>
-
-      <div class="label">SPA</div>
-      <div class="serviceRow3">
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSpa svcAmountToggle" value="草本泥" data-amount-target="svcSpaAmt1">
-            草本泥
-          </label>
-          <div id="svcSpaAmt1" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSpa svcAmountToggle" value="草本泥輕保養" data-amount-target="svcSpaAmt2">
-            草本泥輕保養
-          </label>
-          <div id="svcSpaAmt2" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSpa svcAmountToggle" value="臭氧" data-amount-target="svcSpaAmt3">
-            臭氧
-          </label>
-          <div id="svcSpaAmt3" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSpa svcAmountToggle" value="碳酸" data-amount-target="svcSpaAmt4">
-            碳酸
-          </label>
-          <div id="svcSpaAmt4" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSpa svcAmountToggle" value="皮膚調理" data-amount-target="svcSpaAmt5">
-            皮膚調理
-          </label>
-          <div id="svcSpaAmt5" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-      </div>
-
-      <div class="label">單次項目</div>
-      <div class="serviceRow3">
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSingle svcAmountToggle" value="剪指甲" data-amount-target="svcSingleAmt1">
-            剪指甲
-          </label>
-          <div id="svcSingleAmt1" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSingle svcAmountToggle" value="清耳朵" data-amount-target="svcSingleAmt2">
-            清耳朵
-          </label>
-          <div id="svcSingleAmt2" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSingle svcAmountToggle" value="刷牙" data-amount-target="svcSingleAmt3">
-            刷牙
-          </label>
-          <div id="svcSingleAmt3" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSingle svcAmountToggle" value="貴賓腳" data-amount-target="svcSingleAmt4">
-            貴賓腳
-          </label>
-          <div id="svcSingleAmt4" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSingle svcAmountToggle" value="腳底毛" data-amount-target="svcSingleAmt5">
-            腳底毛
-          </label>
-          <div id="svcSingleAmt5" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcSingle svcAmountToggle" value="頭部大修" data-amount-target="svcSingleAmt6">
-            頭部大修
-          </label>
-          <div id="svcSingleAmt6" class="serviceAmountWrap">
-            <div class="serviceAmountHint">金額（選填）</div>
-            <input class="input js-currency svcAmountInput" inputmode="numeric" placeholder="請輸入金額">
-          </div>
-        </div>
-      </div>
-
-      <div class="label">住宿</div>
-      <div class="grid2" style="margin-top:10px;">
-        <div>
-          <div class="miniLabel">入住</div>
-          <input id="stayCheckin" class="input js-date" inputmode="numeric" placeholder="YYYY/MM/DD" maxlength="10">
-        </div>
-        <div>
-          <div class="miniLabel">退宿</div>
-          <input id="stayCheckout" class="input js-date" inputmode="numeric" placeholder="YYYY/MM/DD" maxlength="10">
-        </div>
-      </div>
-
-      <div style="margin-top:10px;">
-        <div class="miniLabel">住宿金額（選填）</div>
-        <input id="stayAmount" class="input js-currency" inputmode="numeric" placeholder="請輸入住宿金額">
-      </div>
-
-      <div class="subText" style="margin-top:10px; color:var(--text); font-weight:800;">
-        逾時將酌收$200/小時
-      </div>
-
-      <div class="miniLabel" style="margin-top:12px;">住宿用品</div>
-      <div class="checkGrid">
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="飼料">
-            飼料
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="罐頭">
-            罐頭
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="碗">
-            碗
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="牙刷">
-            牙刷
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="睡墊">
-            睡墊
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="外出籠（袋）">
-            外出籠（袋）
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="衣服">
-            衣服
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="項圈">
-            項圈
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock">
-          <label class="ck">
-            <input type="checkbox" class="svcStayItem" value="牽繩、胸背帶">
-            牽繩、胸背帶
-          </label>
-        </div>
-
-        <div class="serviceOptionBlock fullRow">
-          <label class="ck">
-            <input type="checkbox" id="svcStayOther" value="其他">
-            其他
-          </label>
-        </div>
-      </div>
-
-      <div id="svcStayOtherWrap" class="otherInputWrap">
-        <input id="svcStayOtherText" class="input" type="text" placeholder="請填寫其他住宿用品">
-      </div>
-
-      <div class="label">其他服務</div>
-      <input id="serviceOtherNote" class="input" placeholder="請填寫其他服務內容">
-      <div style="margin-top:8px;">
-        <input id="serviceOtherAmount" class="input js-currency" inputmode="numeric" placeholder="其他服務金額（選填）">
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="payHeader">
-        <div class="sectionTitle" style="margin:0;">支付方式</div>
-        <div class="payTotal">總金額：<span id="payTotalText">$0</span></div>
-      </div>
-
-      <div class="payMethodBlock">
-        <label class="choice">
-          <input type="checkbox" class="payMethod" value="現金" data-target="cashAmountWrap">
-          現金
-        </label>
-        <div id="cashAmountWrap" class="methodAmountWrap">
-          <input id="payAmountCash" class="input js-currency" inputmode="numeric" placeholder="請輸入現金金額">
-        </div>
-      </div>
-
-      <div class="payMethodBlock">
-        <label class="choice">
-          <input type="checkbox" class="payMethod" value="轉帳" data-target="transferAmountWrap">
-          轉帳
-        </label>
-        <div id="transferAmountWrap" class="methodAmountWrap">
-          <input id="payAmountTransfer" class="input js-currency" inputmode="numeric" placeholder="請輸入轉帳金額">
-        </div>
-      </div>
-
-      <div class="payMethodBlock">
-        <label class="choice">
-          <input type="checkbox" class="payMethod" value="電子支付" data-target="epayAmountWrap">
-          電子支付
-        </label>
-        <div id="epayAmountWrap" class="methodAmountWrap">
-          <input id="payAmountEpay" class="input js-currency" inputmode="numeric" placeholder="請輸入電子支付金額">
-        </div>
-      </div>
-
-      <div class="grid2" style="margin-top:12px;">
-        <div>
-          <div class="miniLabel">支付時間</div>
-          <input id="payDate" class="input js-date" inputmode="numeric" placeholder="YYYY/MM/DD" maxlength="10">
-        </div>
-        <div></div>
-      </div>
-
-      <div class="subText" style="margin-top:10px; color:var(--text); font-weight:800;">
-        履約保障內容：預收費用總額逾 1 萬元以上者，超過支部分應提供至少 1 年履約保障
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sectionTitle">其他約定事項</div>
-      <div class="contractBox">
-        <pre>以上資料由飼主本人提供，並同意將資料內容提供於公司存續期間以電話、簡訊和寄發DM方式，提供相關活動或促銷訊息、或帶寵物到動物醫院留存相關資料使用。
-1. 除本契約另有約定、特殊緊急情況、或不可抗力之情況外，未經飼主同意，店家不得將寵物帶離美容場所（同上店家地址）、轉售、轉讓或以其他變相方法作為其他用途。
-2. 飼主應於美容當日，將寵物領回，如經通知1日內未領回，依動保法第29條第一款通知主管機關，為飼主惡意棄養，相關罰金為3萬～15萬元，其他衍生性費用將跟飼主求償，例：人員加班費等。
-3. 寵物發生攻擊行為，如因飼主未善盡告知義務而造成店內人員傷亡、財物損毀等費用，將全額向飼主（寵物占有權人）求償。
-4. 店家應按本契約約定內容提供一定品質之美容服務。若因可歸責於店家或其受僱人之事由，導致其提供之美容服務有瑕疵，造成飼主發生損失的情況，飼主得要求減少價金或解除契約。
-5. 本契約之任一方得隨時終止本契約，若因本契約之中止而生損害之一方得向他方請求賠償。
-6. 於美容服務期間，如發現寵物有異常狀態，應立即通知飼主並妥善處理，如發生異常狀態的原因可歸責店家之操作行為，店家應負損害賠償責任，例：摔傷寵物等。
-7. 因本契約所生之訴訟，雙方合意以高雄地方法院為管轄法院。
-8. 美容契約相關法條，附件如店内張貼之公告，如有需求請自行拍照留存。
-9. 其他：
-</pre>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sectionTitle">簽名</div>
-      <div class="subText">簽名送出後，將寄送副本到您的 Email</div>
-
-      <div class="label">審閱 / 簽署日期</div>
-      <input type="text" id="signDate" class="input" readonly>
-
-      <div class="label">甲方簽名</div>
-      <canvas id="sig"></canvas>
-
-      <div class="dangerNote">簽名完成後將自動回傳至聊天室</div>
-
-      <button id="clear" class="btn btnClear" type="button">清除簽名</button>
-      <div id="msg" class="msg"></div>
-      <button id="submit" class="btn btnSubmit" type="button" onclick="handleSubmit()">送出簽名</button>
-    </div>
-
-  </div>
-
 <script>
 const LIFF_ID = "2009333840-1wawyJgg";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0n-CvPyU3HdqPaonyVJ3sFN80jl0b5idQXUNCNUT0MueeKdxsrRWFm0x1IFJyk6JQvA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdS0rdSl-Lcbco_fpIh1mBcxEePZORTYAITf12DyidwaNhcbDvR7NhoYXrf4EtM7Ngrg/exec";
 const SHARED_SECRET = "kumajima2025";
 
-function initLIFF() {
-  return new Promise(async (resolve) => {
-    try {
-      if (!window.liff) {
-        alert("LIFF 載入失敗");
-        resolve(false);
-        return;
-      }
+const STORE_VET = {
+  name: "愛心動物醫院",
+  phone: "07-7156399",
+  address: "高雄市苓雅區建國一路74-3號"
+};
 
-      if (!liff.isInClient() && !liff.isLoggedIn()) {
-        await liff.init({ liffId: LIFF_ID });
-        liff.login();
-        resolve(false);
-        return;
-      }
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
-      await liff.init({ liffId: LIFF_ID });
-      resolve(true);
-    } catch (e) {
-      console.error(e);
-      alert("LIFF 初始化失敗");
-      resolve(false);
-    }
-  });
+function getRadio(name) {
+  return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+}
+
+function getCheckedValues(selectorOrElements) {
+  const list = Array.isArray(selectorOrElements)
+    ? selectorOrElements
+    : Array.from(document.querySelectorAll(selectorOrElements));
+  return list.filter(el => el.checked).map(el => el.value);
 }
 
 function getPetTemperament() {
@@ -1180,27 +30,153 @@ function getPetTemperament() {
     .map(el => el.value);
 }
 
-function getPaymentDetailList() {
+function getServiceDetailList(list) {
+  return list
+    .filter(el => el.checked)
+    .map(el => {
+      const wrap = document.getElementById(el.dataset.amountTarget || "");
+      const amountInput = wrap ? wrap.querySelector("input") : null;
+      return {
+        item: el.value,
+        amount: amountInput ? (amountInput.value || "").trim() : ""
+      };
+    });
+}
+
+function getStayItemDetailList() {
+  return Array.from(document.querySelectorAll(".svcStayItem"))
+    .filter(el => el.checked)
+    .map(el => ({
+      item: el.value,
+      amount: ""
+    }));
+}
+
+function getMedicalHistory() {
   const arr = [];
-  const cash = document.getElementById("payAmountCash");
-  const transfer = document.getElementById("payAmountTransfer");
-  const epay = document.getElementById("payAmountEpay");
+  const mhNone = document.getElementById("mh_none");
+  const otherInjury = document.getElementById("otherInjury");
 
-  const cashBox = document.querySelector('.payMethod[value="現金"]');
-  const transferBox = document.querySelector('.payMethod[value="轉帳"]');
-  const epayBox = document.querySelector('.payMethod[value="電子支付"]');
+  if (mhNone && mhNone.checked) arr.push(mhNone.value);
 
-  if (cashBox && cashBox.checked) {
-    arr.push({ method: "現金", amount: (cash?.value || "").trim() });
-  }
-  if (transferBox && transferBox.checked) {
-    arr.push({ method: "轉帳", amount: (transfer?.value || "").trim() });
-  }
-  if (epayBox && epayBox.checked) {
-    arr.push({ method: "電子支付", amount: (epay?.value || "").trim() });
+  document.querySelectorAll(".mh").forEach(el => {
+    if (el.checked) arr.push(el.value);
+  });
+
+  if (otherInjury && otherInjury.checked && !arr.includes(otherInjury.value)) {
+    arr.push(otherInjury.value);
   }
 
   return arr;
+}
+
+function getBodyChecks() {
+  const items = [
+    { label: "眼睛", key: "body_eyes", detailId: "bodyDetail_eyes" },
+    { label: "牙齒", key: "body_teeth", detailId: "bodyDetail_teeth" },
+    { label: "耳朵", key: "body_ears", detailId: "bodyDetail_ears" },
+    { label: "四肢", key: "body_limbs", detailId: "bodyDetail_limbs" },
+    { label: "皮膚", key: "body_skin", detailId: "bodyDetail_skin" },
+    { label: "皮毛", key: "body_coat", detailId: "bodyDetail_coat" }
+  ];
+
+  return items.map(item => {
+    const detailEl = document.getElementById(item.detailId);
+    return {
+      part: item.label,
+      status: getRadio(item.key) || "正常",
+      detail: detailEl ? (detailEl.value || "").trim() : ""
+    };
+  });
+}
+
+function getPaymentDetailList() {
+  const arr = [];
+  const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
+
+  payMethodBoxes.forEach(box => {
+    if (!box.checked) return;
+
+    let amount = "";
+    const targetId = box.dataset.target;
+    const wrap = document.getElementById(targetId || "");
+    const input = wrap ? wrap.querySelector("input") : null;
+    if (input) amount = (input.value || "").trim();
+
+    arr.push({
+      method: box.value,
+      amount
+    });
+  });
+
+  return arr;
+}
+
+function formatServiceText(details) {
+  if (!details || !details.length) return "（未勾選）";
+  return details
+    .map(item => item.amount ? `${item.item}（${item.amount}）` : item.item)
+    .join("、");
+}
+
+function parseCurrency(v) {
+  const digits = String(v || "").replace(/\D/g, "");
+  return digits ? Number(digits) : 0;
+}
+
+function formatCurrency(v) {
+  const digits = String(v || "").replace(/\D/g, "");
+  if (!digits) return "";
+  return "$" + Number(digits).toLocaleString("zh-TW");
+}
+
+function formatCurrencyNumber(n) {
+  return "$" + Number(n || 0).toLocaleString("zh-TW");
+}
+
+function formatYMD(value) {
+  const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
+  if (!digits) return "";
+
+  const y = digits.slice(0, 4);
+  const m = digits.slice(4, 6);
+  const d = digits.slice(6, 8);
+
+  let out = y;
+  if (digits.length > 4) out += "/" + m;
+  if (digits.length > 6) out += "/" + d;
+  return out;
+}
+
+function todayZh() {
+  const d = new Date();
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+}
+
+function todayYMD() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${y}/${m}/${dd}`;
+}
+
+async function initLIFF() {
+  try {
+    if (!window.liff) throw new Error("LIFF SDK 載入失敗");
+
+    await liff.init({ liffId: LIFF_ID });
+
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return false;
+    }
+
+    return true;
+  } catch (e) {
+    console.error(e);
+    throw new Error("LINE 初始化失敗，請重新開啟表單");
+  }
 }
 
 window.handleSubmit = async function () {
@@ -1224,7 +200,6 @@ window.handleSubmit = async function () {
   const petBirthday = document.getElementById("petBirthday");
   const petWeight = document.getElementById("petWeight");
   const signDate = document.getElementById("signDate");
-
   const chipNo = document.getElementById("chipNo");
   const petTemperamentNote = document.getElementById("petTemperamentNote");
 
@@ -1257,18 +232,24 @@ window.handleSubmit = async function () {
   const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
 
   function setError(t) {
-    msg.textContent = t || "";
-    msg.style.color = "#9E5E4A";
+    if (msg) {
+      msg.textContent = t || "";
+      msg.style.color = "#9E5E4A";
+    }
   }
 
   function setOK(t) {
-    msg.textContent = t || "";
-    msg.style.color = "#3F342C";
+    if (msg) {
+      msg.textContent = t || "";
+      msg.style.color = "#3F342C";
+    }
   }
 
   function resetSubmit() {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "送出簽名";
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送出簽名";
+    }
   }
 
   function requireValue(inputEl, label) {
@@ -1287,87 +268,12 @@ window.handleSubmit = async function () {
     return v;
   }
 
-  function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!canvas) {
+    setError("找不到簽名區塊");
+    return;
   }
 
-  function getRadio(name) {
-    const el = document.querySelector('input[name="' + name + '"]:checked');
-    return el ? el.value : "";
-  }
-
-  function getCheckedValues(selectorOrEls) {
-    const list = Array.isArray(selectorOrEls)
-      ? selectorOrEls
-      : Array.from(document.querySelectorAll(selectorOrEls));
-    return list.filter(el => el.checked).map(el => el.value);
-  }
-
-  function getServiceDetailList(list) {
-    return list
-      .filter(el => el.checked)
-      .map(el => {
-        const wrap = document.getElementById(el.dataset.amountTarget || "");
-        const amountInput = wrap ? wrap.querySelector("input") : null;
-        return {
-          item: el.value,
-          amount: amountInput ? (amountInput.value || "").trim() : ""
-        };
-      });
-  }
-
-  function getStayItemDetailList() {
-    const baseItems = Array.from(document.querySelectorAll(".svcStayItem"))
-      .filter(el => el.checked)
-      .map(el => ({
-        item: el.value,
-        amount: ""
-      }));
-
-    if (svcStayOther && svcStayOther.checked) {
-      baseItems.push({
-        item: "其他",
-        detail: (svcStayOtherText?.value || "").trim(),
-        amount: ""
-      });
-    }
-
-    return baseItems;
-  }
-
-  function getMedicalHistory() {
-    const arr = [];
-    const mhNone = document.getElementById("mh_none");
-    if (mhNone && mhNone.checked) arr.push(mhNone.value);
-
-    document.querySelectorAll(".mh").forEach(el => {
-      if (el.checked) arr.push(el.value);
-    });
-
-    return arr;
-  }
-
-  function getBodyChecks() {
-    const items = [
-      { label: "眼睛", key: "body_eyes", detailId: "bodyDetail_eyes" },
-      { label: "牙齒", key: "body_teeth", detailId: "bodyDetail_teeth" },
-      { label: "耳朵", key: "body_ears", detailId: "bodyDetail_ears" },
-      { label: "四肢", key: "body_limbs", detailId: "bodyDetail_limbs" },
-      { label: "皮膚", key: "body_skin", detailId: "bodyDetail_skin" },
-      { label: "皮毛", key: "body_coat", detailId: "bodyDetail_coat" }
-    ];
-
-    return items.map(item => {
-      const detailEl = document.getElementById(item.detailId);
-      return {
-        part: item.label,
-        status: getRadio(item.key) || "正常",
-        detail: detailEl ? (detailEl.value || "").trim() : ""
-      };
-    });
-  }
-
-  if (!agree.checked) {
+  if (!agree || !agree.checked) {
     setError("請先勾選同意契約內容");
     return;
   }
@@ -1378,9 +284,11 @@ window.handleSubmit = async function () {
     return;
   }
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = "資料送出中…請稍候";
-  msg.textContent = "";
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "謝謝您！資料上傳中...";
+  }
+  if (msg) msg.textContent = "";
 
   const isOwnerSelf = getRadio("isOwnerSelf") || "是";
   const chipHas = getRadio("chipHas") || "有";
@@ -1391,7 +299,32 @@ window.handleSubmit = async function () {
   const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText?.value || "").trim() : "";
   const bodyChecks = getBodyChecks();
 
-  const washOtherChecked = !!(svcWashOther && svcWashOther.checked);
+  const serviceWash = getServiceDetailList(svcWashBoxes);
+  const serviceGroom = getServiceDetailList(svcGroomBoxes);
+  const serviceSpa = getServiceDetailList(svcSpaBoxes);
+  const serviceSingle = getServiceDetailList(svcSingleBoxes);
+  const serviceStayItems = getStayItemDetailList();
+  const payMethods = getCheckedValues(payMethodBoxes);
+  const paymentDetails = getPaymentDetailList();
+
+  const svcWashOtherDetail = svcWashOther && svcWashOther.checked ? {
+    item: (svcWashOtherText?.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
+    amount: (svcWashOtherAmount?.value || "").trim()
+  } : null;
+
+  const svcStayOtherDetail = svcStayOther && svcStayOther.checked ? {
+    item: (svcStayOtherText?.value || "").trim() ? `其他：${(svcStayOtherText.value || "").trim()}` : "其他",
+    amount: ""
+  } : null;
+
+  const serviceOtherDetail = (serviceOtherNote?.value || "").trim() ? {
+    item: (serviceOtherNote.value || "").trim(),
+    amount: (serviceOtherAmount?.value || "").trim()
+  } : null;
+
+  const finalVetName = vetMode === "乙方指定" ? STORE_VET.name : (vetName?.value || "").trim();
+  const finalVetPhone = vetMode === "乙方指定" ? STORE_VET.phone : (vetPhone?.value || "").trim();
+  const finalVetAddress = vetMode === "乙方指定" ? STORE_VET.address : (vetAddress?.value || "").trim();
 
   const data = {
     ownerName: requireValue(ownerName, "甲方姓名"),
@@ -1424,33 +357,26 @@ window.handleSubmit = async function () {
     bodyChecks,
 
     vetMode,
-    vetName: requireValue(vetName, "動物醫院名稱"),
-    vetPhone: requireValue(vetPhone, "動物醫院電話"),
-    vetAddress: requireValue(vetAddress, "動物醫院地址"),
+    vetName: vetMode === "乙方指定" ? finalVetName : requireValue(vetName, "動物醫院名稱"),
+    vetPhone: vetMode === "乙方指定" ? finalVetPhone : requireValue(vetPhone, "動物醫院電話"),
+    vetAddress: vetMode === "乙方指定" ? finalVetAddress : requireValue(vetAddress, "動物醫院地址"),
 
     signDate: requireValue(signDate, "簽署日期"),
 
-    serviceWash: getServiceDetailList(svcWashBoxes),
-    serviceWashOther: washOtherChecked ? {
-      item: "其他",
-      detail: (svcWashOtherText?.value || "").trim(),
-      amount: (svcWashOtherAmount?.value || "").trim()
-    } : null,
-
-    serviceGroom: getServiceDetailList(svcGroomBoxes),
-    serviceSpa: getServiceDetailList(svcSpaBoxes),
-    serviceSingle: getServiceDetailList(svcSingleBoxes),
-
+    serviceWash,
+    serviceWashOther: svcWashOtherDetail,
+    serviceGroom,
+    serviceSpa,
+    serviceSingle,
     stayCheckin: (stayCheckin?.value || "").trim(),
     stayCheckout: (stayCheckout?.value || "").trim(),
     stayAmount: (stayAmount?.value || "").trim(),
-    serviceStayItems: getStayItemDetailList(),
+    serviceStayItems,
+    serviceStayOther: svcStayOtherDetail,
+    serviceOther: serviceOtherDetail,
 
-    serviceOtherNote: (serviceOtherNote?.value || "").trim(),
-    serviceOtherAmount: (serviceOtherAmount?.value || "").trim(),
-
-    payMethods: getCheckedValues(payMethodBoxes),
-    paymentDetails: getPaymentDetailList(),
+    payMethods,
+    paymentDetails,
     payDate: (payDate?.value || "").trim(),
     payTotal: payTotalText ? payTotalText.textContent : "$0"
   };
@@ -1464,48 +390,170 @@ window.handleSubmit = async function () {
     return;
   }
 
+  if (data.payMethods.length === 0) {
+    setError("請至少勾選一種支付方式");
+    resetSubmit();
+    return;
+  }
+
+  for (const item of data.paymentDetails) {
+    if (!item.amount) {
+      setError(`請填寫「${item.method}」金額`);
+      resetSubmit();
+      return;
+    }
+  }
+
   try {
+    setOK("正在初始化 LINE...");
     const ok = await initLIFF();
     if (!ok) {
       resetSubmit();
       return;
     }
 
+    let profile = null;
+    try {
+      profile = await liff.getProfile();
+    } catch (e) {
+      console.warn("getProfile failed:", e);
+    }
+
+    const chipText = (data.chipHas === "有")
+      ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
+      : "無";
+
+    const mhText = data.medicalHistory.length ? data.medicalHistory.join("、") : "（未勾選）";
+    const ptText = data.petTemperament.length ? data.petTemperament.join("、") : "（未勾選）";
+    const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
+
+    const otherInjuryTextLine =
+      (otherInjury && otherInjury.checked)
+        ? (data.otherInjuryNote ? `其他應注意：${data.otherInjuryNote}` : "其他應注意：（未填）")
+        : "其他應注意：—";
+
+    const bodyCheckText = data.bodyChecks.map(item => {
+      return item.status === "異常"
+        ? `${item.part}：異常${item.detail ? "（" + item.detail + "）" : ""}`
+        : `${item.part}：正常`;
+    }).join("、");
+
+    const paymentText = data.paymentDetails
+      .map(item => `${item.method}${item.amount ? "：" + item.amount : ""}`)
+      .join("、");
+
+    const washTextList = [...data.serviceWash];
+    if (data.serviceWashOther) washTextList.push(data.serviceWashOther);
+
+    const stayItemTextList = [...data.serviceStayItems];
+    if (data.serviceStayOther) stayItemTextList.push(data.serviceStayOther);
+
+    const completeNote =
+`（簽署資料與簽名已完成。
+副本已寄送至您的Email信箱。
+
+若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）`;
+
+    const textMsg =
+`【犬貓美容契約簽署資料】
+甲方姓名：${data.ownerName}
+聯絡電話：${data.ownerPhone}
+通訊地址：${data.ownerAddress}
+緊急聯絡人：${data.emergencyName}
+緊急聯絡人電話：${data.emergencyPhone}
+Email：${data.ownerEmail}
+身分證字號：${data.ownerIdNo}
+是否飼主本人：${data.isOwnerSelf}${data.ownerRelation ? "（關係：" + data.ownerRelation + "）" : ""}
+
+寵物名字：${data.petName}
+品種：${data.petBreed}
+性別：${data.petSex}
+種類：${data.petType}
+年齡：${data.petAge}
+生日：${data.petBirthday}
+體重（公斤）：${data.petWeight}
+晶片：${chipText}
+絕育狀況：${data.neuterStatus}
+寵物個性：${ptText}
+個性其他應注意：${ptNoteText}
+身體狀況檢視：${bodyCheckText}
+病史：${mhText}
+${otherInjuryTextLine}
+
+洗澡服務：${formatServiceText(washTextList)}
+大美容（含洗澡）：${formatServiceText(data.serviceGroom)}
+SPA：${formatServiceText(data.serviceSpa)}
+單次項目：${formatServiceText(data.serviceSingle)}
+住宿入住：${data.stayCheckin || "（未填）"}
+住宿退宿：${data.stayCheckout || "（未填）"}
+住宿金額：${data.stayAmount || "（未填）"}
+住宿用品：${formatServiceText(stayItemTextList)}
+其他服務：${data.serviceOther ? formatServiceText([data.serviceOther]) : "（未填）"}
+支付方式 / 金額：${paymentText || "（未填）"}
+支付總金額：${data.payTotal || "$0"}
+支付時間：${data.payDate || "（未填）"}
+
+緊急就醫：${data.vetMode}／${data.vetName}／${data.vetPhone}／${data.vetAddress}
+審閱 / 簽署日期：${data.signDate}
+
+${completeNote}`;
+
     const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
     const signatureDataUrl = canvas.toDataURL("image/png");
 
-    const gasRes = await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body: JSON.stringify({
-        secret: SHARED_SECRET,
-        data,
-        signatureDataUrl,
-        contractText: contractTextValue
-      })
-    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+    let gasRes;
+    try {
+      gasRes = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify({
+          secret: SHARED_SECRET,
+          data,
+          signatureDataUrl,
+          line: {
+            userId: profile?.userId || "",
+            displayName: profile?.displayName || ""
+          },
+          contractText: contractTextValue
+        }),
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     const gasText = await gasRes.text();
-    const gasJson = JSON.parse(gasText);
+    let gasJson = null;
+
+    try {
+      gasJson = JSON.parse(gasText);
+    } catch (e) {
+      throw new Error("GAS 回傳格式錯誤：" + gasText);
+    }
 
     if (!gasJson.ok) {
       throw new Error("GAS 錯誤：" + (gasJson.error || "未知錯誤"));
     }
 
-    setOK("契約已完成簽署 ✔\n副本已寄送到您的 Email");
 
-    submitBtn.textContent = "完成";
-    submitBtn.disabled = true;
+    await liff.sendMessages([{ type: "text", text: textMsg }]);
 
-    setTimeout(() => {
-      if (window.liff && liff.isInClient()) {
-        liff.closeWindow();
-      }
-    }, 2000);
+    setOK("資料已送出！\n副本已寄送完成，可以回到聊天室了！");
+    resetSubmit();
 
   } catch (err) {
     console.error(err);
-    setError(err.message || "送出失敗");
+
+    if (err.name === "AbortError") {
+      setError("GAS 連線逾時，請檢查 Apps Script 是否已重新部署最新版本");
+    } else {
+      setError(err.message || "送出失敗");
+    }
+
     resetSubmit();
   }
 };
@@ -1517,55 +565,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const clearBtn = document.getElementById("clear");
   const msg = document.getElementById("msg");
 
-  function todayZh() {
-    const d = new Date();
-    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
-  }
-
-  function todayYMD() {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${y}/${m}/${dd}`;
-  }
-
   if (signDate) signDate.value = todayZh();
   if (payDate) payDate.value = todayYMD();
-
-  function formatYMD(value) {
-    const digits = String(value || "").replace(/\D/g, "").slice(0, 8);
-    if (!digits) return "";
-    const y = digits.slice(0, 4);
-    const m = digits.slice(4, 6);
-    const d = digits.slice(6, 8);
-
-    let out = y;
-    if (digits.length > 4) out += "/" + m;
-    if (digits.length > 6) out += "/" + d;
-    return out;
-  }
 
   document.querySelectorAll(".js-date").forEach(el => {
     el.addEventListener("input", e => {
       e.target.value = formatYMD(e.target.value);
     });
   });
-
-  function formatCurrency(v) {
-    const digits = String(v || "").replace(/\D/g, "");
-    if (!digits) return "";
-    return "$" + Number(digits).toLocaleString("zh-TW");
-  }
-
-  function parseCurrency(v) {
-    const digits = String(v || "").replace(/\D/g, "");
-    return digits ? Number(digits) : 0;
-  }
-
-  function formatCurrencyNumber(n) {
-    return "$" + Number(n || 0).toLocaleString("zh-TW");
-  }
 
   const payAmountCash = document.getElementById("payAmountCash");
   const payAmountTransfer = document.getElementById("payAmountTransfer");
@@ -1587,55 +594,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  function getRadio(name) {
-    return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
-  }
-
   const ownerRelationWrap = document.getElementById("ownerRelationWrap");
   const ownerRelation = document.getElementById("ownerRelation");
-
-  function refreshOwnerRelation() {
-    const notSelf = getRadio("isOwnerSelf") === "否";
-    ownerRelationWrap?.classList.toggle("hidden", !notSelf);
-    if (!notSelf && ownerRelation) ownerRelation.value = "";
-  }
-
   document.querySelectorAll('input[name="isOwnerSelf"]').forEach(r => {
-    r.addEventListener("change", refreshOwnerRelation);
+    r.addEventListener("change", () => {
+      const notSelf = getRadio("isOwnerSelf") === "否";
+      if (ownerRelationWrap) ownerRelationWrap.classList.toggle("hidden", !notSelf);
+      if (!notSelf && ownerRelation) ownerRelation.value = "";
+    });
   });
-  refreshOwnerRelation();
 
   const chipNoWrap = document.getElementById("chipNoWrap");
   const chipNo = document.getElementById("chipNo");
-
-  function refreshChipNo() {
+  function refreshChipWrap() {
     const show = getRadio("chipHas") === "有";
-    chipNoWrap?.classList.toggle("hidden", !show);
+    if (chipNoWrap) chipNoWrap.classList.toggle("hidden", !show);
     if (!show && chipNo) chipNo.value = "";
   }
-
   document.querySelectorAll('input[name="chipHas"]').forEach(r => {
-    r.addEventListener("change", refreshChipNo);
+    r.addEventListener("change", refreshChipWrap);
   });
-  refreshChipNo();
+  refreshChipWrap();
 
   const vetName = document.getElementById("vetName");
   const vetPhone = document.getElementById("vetPhone");
   const vetAddress = document.getElementById("vetAddress");
-
-  const STORE_VET = {
-    name: "愛心動物醫院",
-    phone: "07-7156399",
-    address: "高雄市苓雅區建國一路74-3號"
-  };
-
   document.querySelectorAll('input[name="vetMode"]').forEach(r => {
     r.addEventListener("change", () => {
       const mode = getRadio("vetMode");
       if (mode === "乙方指定") {
-        if (vetName && !vetName.value.trim()) vetName.value = STORE_VET.name;
-        if (vetPhone && !vetPhone.value.trim()) vetPhone.value = STORE_VET.phone;
-        if (vetAddress && !vetAddress.value.trim()) vetAddress.value = STORE_VET.address;
+        if (vetName) vetName.value = STORE_VET.name;
+        if (vetPhone) vetPhone.value = STORE_VET.phone;
+        if (vetAddress) vetAddress.value = STORE_VET.address;
       } else {
         if (vetName) vetName.value = "";
         if (vetPhone) vetPhone.value = "";
@@ -1656,86 +646,77 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!show && otherText) otherText.value = "";
   }
 
-  otherInjury?.addEventListener("change", refreshOtherInjury);
+  if (otherInjury) otherInjury.addEventListener("change", refreshOtherInjury);
   refreshOtherInjury();
 
   function enforceMedicalExclusive() {
     if (!mhNone) return;
 
-    const otherChecked = mhBoxes.some(b => b.checked);
-
-    if (mhNone.checked && otherChecked) {
-      mhNone.checked = false;
-    }
-
     if (mhNone.checked) {
-      mhBoxes.forEach(b => { b.checked = false; });
+      mhBoxes.forEach(b => {
+        if (b !== mhNone) b.checked = false;
+      });
+      if (otherInjury) otherInjury.checked = false;
       refreshOtherInjury();
-      return;
+    } else {
+      const anyOther = mhBoxes.some(b => b.checked) || !!otherInjury?.checked;
+      if (anyOther) mhNone.checked = false;
     }
-
-    if (otherChecked) {
-      mhNone.checked = false;
-    }
-
-    refreshOtherInjury();
   }
 
-  mhNone?.addEventListener("change", enforceMedicalExclusive);
+  if (mhNone) mhNone.addEventListener("change", enforceMedicalExclusive);
   mhBoxes.forEach(b => b.addEventListener("change", enforceMedicalExclusive));
-  otherInjury?.addEventListener("change", enforceMedicalExclusive);
+  if (otherInjury) otherInjury.addEventListener("change", enforceMedicalExclusive);
 
   const svcWashOther = document.getElementById("svcWashOther");
   const svcWashOtherWrap = document.getElementById("svcWashOtherWrap");
   const svcWashOtherText = document.getElementById("svcWashOtherText");
   const svcWashOtherAmount = document.getElementById("svcWashOtherAmount");
 
-  function refreshSvcWashOther() {
-    const show = !!svcWashOther?.checked;
-    if (svcWashOtherWrap) svcWashOtherWrap.style.display = show ? "block" : "none";
-    if (!show) {
-      if (svcWashOtherText) svcWashOtherText.value = "";
-      if (svcWashOtherAmount) svcWashOtherAmount.value = "";
-    }
+  if (svcWashOther) {
+    svcWashOther.addEventListener("change", () => {
+      const show = !!svcWashOther.checked;
+      if (svcWashOtherWrap) svcWashOtherWrap.style.display = show ? "block" : "none";
+      if (!show) {
+        if (svcWashOtherText) svcWashOtherText.value = "";
+        if (svcWashOtherAmount) svcWashOtherAmount.value = "";
+      }
+    });
   }
-
-  svcWashOther?.addEventListener("change", refreshSvcWashOther);
-  refreshSvcWashOther();
 
   const svcStayOther = document.getElementById("svcStayOther");
   const svcStayOtherWrap = document.getElementById("svcStayOtherWrap");
   const svcStayOtherText = document.getElementById("svcStayOtherText");
 
-  function refreshSvcStayOther() {
-    const show = !!svcStayOther?.checked;
-    if (svcStayOtherWrap) svcStayOtherWrap.style.display = show ? "block" : "none";
-    if (!show && svcStayOtherText) svcStayOtherText.value = "";
+  if (svcStayOther) {
+    svcStayOther.addEventListener("change", () => {
+      const show = !!svcStayOther.checked;
+      if (svcStayOtherWrap) svcStayOtherWrap.style.display = show ? "block" : "none";
+      if (!show && svcStayOtherText) svcStayOtherText.value = "";
+    });
   }
 
-  svcStayOther?.addEventListener("change", refreshSvcStayOther);
-  refreshSvcStayOther();
-
   document.querySelectorAll(".svcAmountToggle").forEach(box => {
-    function refreshServiceAmountBox() {
+    box.addEventListener("change", () => {
       const targetId = box.dataset.amountTarget;
       if (!targetId) return;
+
       const wrap = document.getElementById(targetId);
-      if (!wrap || wrap.classList.contains("otherInputWrap")) return;
+      if (!wrap) return;
+
+      if (wrap.classList.contains("otherInputWrap")) return;
 
       wrap.style.display = box.checked ? "block" : "none";
       if (!box.checked) {
         const input = wrap.querySelector("input");
         if (input) input.value = "";
       }
-    }
-
-    box.addEventListener("change", refreshServiceAmountBox);
-    refreshServiceAmountBox();
+    });
   });
 
   const payMethodBoxes = Array.from(document.querySelectorAll(".payMethod"));
   payMethodBoxes.forEach(box => {
-    function refreshPayMethodAmount() {
+    box.addEventListener("change", () => {
       const targetId = box.dataset.target;
       const wrap = document.getElementById(targetId);
       if (!wrap) return;
@@ -1746,10 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (input) input.value = "";
       }
       updatePayTotal();
-    }
-
-    box.addEventListener("change", refreshPayMethodAmount);
-    refreshPayMethodAmount();
+    });
   });
 
   document.querySelectorAll(".bodyCheckItem").forEach(item => {
@@ -1782,6 +760,8 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.strokeStyle = "#3F342C";
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, r.width, r.height);
     }
 
     function point(e) {
@@ -1824,16 +804,18 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("pointerup", up);
     window.addEventListener("pointercancel", up);
 
-    clearBtn?.addEventListener("click", () => {
-      const r = canvas.getBoundingClientRect();
-      ctx.clearRect(0, 0, r.width, r.height);
-      if (msg) {
-        msg.textContent = "已清除，請重新簽名";
-        msg.style.color = "#9E5E4A";
-      }
-    });
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        const r = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, r.width, r.height);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, r.width, r.height);
+        if (msg) {
+          msg.textContent = "已清除，請重新簽名";
+          msg.style.color = "#9E5E4A";
+        }
+      });
+    }
   }
 });
 </script>
-</body>
-</html>
