@@ -1568,7 +1568,10 @@ window.handleSubmit = async function () {
       msg.textContent = t || "";
       msg.style.color = "#9E5E4A";
     }
-    if (submitBtn) submitBtn.textContent = "送出簽名";
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送出簽名";
+    }
   }
 
   function setOK(t) {
@@ -1598,14 +1601,12 @@ window.handleSubmit = async function () {
   function requireValue(inputEl, label) {
     if (!inputEl) {
       setError("系統缺少欄位：" + label);
-      resetSubmit();
       return null;
     }
-    const v = (inputEl.value || "").trim();
+    const v = String(inputEl.value || "").trim();
     if (!v) {
       setError("請填寫：" + label);
       inputEl.focus();
-      resetSubmit();
       return null;
     }
     return v;
@@ -1632,99 +1633,184 @@ window.handleSubmit = async function () {
       return;
     }
 
-    if (submitBtn) {
-      submitBtn.disabled = true;
-    }
+    if (submitBtn) submitBtn.disabled = true;
 
-   setStep("正在檢查資料...");
+    setStep("正在檢查資料...");
 
-console.log("[CHECK] start basic helpers");
+    const isOwnerSelf = getRadio("isOwnerSelf") || "是";
+    const chipHas = getRadio("chipHas") || "有";
+    const neuterStatus = getRadio("neuterStatus") || "已絕育";
+    const vetMode = getRadio("vetMode") || "甲方指定";
 
-const isOwnerSelf = getRadio("isOwnerSelf") || "是";
-console.log("[CHECK] getRadio isOwnerSelf ok");
+    const medicalHistory = getMedicalHistory();
+    const otherInjuryNote = otherInjury && otherInjury.checked ? String(otherText?.value || "").trim() : "";
+    const bodyChecks = getBodyChecks();
 
-const chipHas = getRadio("chipHas") || "有";
-console.log("[CHECK] getRadio chipHas ok");
-
-const neuterStatus = getRadio("neuterStatus") || "已絕育";
-console.log("[CHECK] getRadio neuterStatus ok");
-
-const vetMode = getRadio("vetMode") || "甲方指定";
-console.log("[CHECK] getRadio vetMode ok");
-
-const medicalHistory = getMedicalHistory();
-console.log("[CHECK] getMedicalHistory ok", medicalHistory);
-
-const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText?.value || "").trim() : "";
-console.log("[CHECK] otherInjuryNote ok", otherInjuryNote);
-
-const bodyChecks = getBodyChecks();
-console.log("[CHECK] getBodyChecks ok", bodyChecks);
-
-const serviceWash = getServiceDetailList(svcWashBoxes);
-console.log("[CHECK] serviceWash ok", serviceWash);
-
-const serviceGroom = getServiceDetailList(svcGroomBoxes);
-console.log("[CHECK] serviceGroom ok", serviceGroom);
-
-const serviceSpa = getServiceDetailList(svcSpaBoxes);
-console.log("[CHECK] serviceSpa ok", serviceSpa);
-
-const serviceSingle = getServiceDetailList(svcSingleBoxes);
-console.log("[CHECK] serviceSingle ok", serviceSingle);
-
-const serviceStayItems = getStayItemDetailList();
-console.log("[CHECK] serviceStayItems ok", serviceStayItems);
-
-const payMethods = getCheckedValues(payMethodBoxes);
-console.log("[CHECK] payMethods ok", payMethods);
-
-const paymentDetails = getPaymentDetailList();
-console.log("[CHECK] paymentDetails ok", paymentDetails);
+    const serviceWash = getServiceDetailList(svcWashBoxes);
+    const serviceGroom = getServiceDetailList(svcGroomBoxes);
+    const serviceSpa = getServiceDetailList(svcSpaBoxes);
+    const serviceSingle = getServiceDetailList(svcSingleBoxes);
+    const serviceStayItems = getStayItemDetailList();
+    const payMethods = getCheckedValues(payMethodBoxes);
+    const paymentDetails = getPaymentDetailList();
 
     const svcWashOtherDetail = svcWashOther && svcWashOther.checked ? {
-      item: (svcWashOtherText?.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
-      amount: (svcWashOtherAmount?.value || "").trim()
+      item: String(svcWashOtherText?.value || "").trim()
+        ? `其他：${String(svcWashOtherText.value || "").trim()}`
+        : "其他",
+      amount: String(svcWashOtherAmount?.value || "").trim()
     } : null;
 
     const svcStayOtherDetail = svcStayOther && svcStayOther.checked ? {
-      item: (svcStayOtherText?.value || "").trim() ? `其他：${(svcStayOtherText.value || "").trim()}` : "其他",
+      item: String(svcStayOtherText?.value || "").trim()
+        ? `其他：${String(svcStayOtherText.value || "").trim()}`
+        : "其他",
       amount: ""
     } : null;
 
-    const serviceOtherDetail = (serviceOtherNote?.value || "").trim() ? {
-      item: (serviceOtherNote.value || "").trim(),
-      amount: (serviceOtherAmount?.value || "").trim()
+    const serviceOtherDetail = String(serviceOtherNote?.value || "").trim() ? {
+      item: String(serviceOtherNote.value || "").trim(),
+      amount: String(serviceOtherAmount?.value || "").trim()
     } : null;
 
-    const finalVetName = vetMode === "乙方指定" ? STORE_VET.name : (vetName?.value || "").trim();
-    const finalVetPhone = vetMode === "乙方指定" ? STORE_VET.phone : (vetPhone?.value || "").trim();
-    const finalVetAddress = vetMode === "乙方指定" ? STORE_VET.address : (vetAddress?.value || "").trim();
+    const finalVetName = vetMode === "乙方指定" ? STORE_VET.name : String(vetName?.value || "").trim();
+    const finalVetPhone = vetMode === "乙方指定" ? STORE_VET.phone : String(vetPhone?.value || "").trim();
+    const finalVetAddress = vetMode === "乙方指定" ? STORE_VET.address : String(vetAddress?.value || "").trim();
+
+    // ===== 必填欄位檢查（依你指定的規則）=====
+    const ownerNameVal = requireValue(ownerName, "甲方姓名");
+    if (ownerNameVal === null) return;
+
+    const ownerIdNoVal = requireValue(ownerIdNo, "身分證字號");
+    if (ownerIdNoVal === null) return;
+
+    const ownerPhoneVal = requireValue(ownerPhone, "聯絡電話");
+    if (ownerPhoneVal === null) return;
+
+    const ownerAddressVal = requireValue(ownerAddress, "通訊地址");
+    if (ownerAddressVal === null) return;
+
+    const emergencyNameVal = requireValue(emergencyName, "緊急聯絡人");
+    if (emergencyNameVal === null) return;
+
+    const emergencyPhoneVal = requireValue(emergencyPhone, "緊急聯絡人電話");
+    if (emergencyPhoneVal === null) return;
+
+    const ownerEmailVal = requireValue(ownerEmail, "Email");
+    if (ownerEmailVal === null) return;
+
+    if (isOwnerSelf === "否") {
+      const ownerRelationVal = requireValue(ownerRelation, "與飼主關係");
+      if (ownerRelationVal === null) return;
+    }
+
+    const petNameVal = requireValue(petName, "寵物姓名");
+    if (petNameVal === null) return;
+
+    const petBreedVal = requireValue(petBreed, "寵物品種");
+    if (petBreedVal === null) return;
+
+    const petAgeVal = requireValue(petAge, "寵物年齡");
+    if (petAgeVal === null) return;
+
+    const petWeightVal = requireValue(petWeight, "體重");
+    if (petWeightVal === null) return;
+
+    if (!getRadio("petSex")) {
+      setError("請選擇：性別");
+      resetSubmit();
+      return;
+    }
+
+    if (!getRadio("petType")) {
+      setError("請選擇：種類");
+      resetSubmit();
+      return;
+    }
+
+    if (!getRadio("chipHas")) {
+      setError("請選擇：晶片有無");
+      resetSubmit();
+      return;
+    }
+
+    if (!getRadio("neuterStatus")) {
+      setError("請選擇：絕育狀況");
+      resetSubmit();
+      return;
+    }
+
+    const petTemperament = getPetTemperament();
+    if (!petTemperament.length) {
+      setError("請至少勾選一項：寵物個性");
+      resetSubmit();
+      return;
+    }
+
+    if (!medicalHistory.length) {
+      setError("請至少勾選一項：寵物病史");
+      resetSubmit();
+      return;
+    }
+
+    if (!getRadio("vetMode")) {
+      setError("請選擇：緊急就醫機構");
+      resetSubmit();
+      return;
+    }
+
+    if (vetMode === "甲方指定") {
+      if (!finalVetName) {
+        setError("請填寫：動物醫院名稱");
+        vetName.focus();
+        resetSubmit();
+        return;
+      }
+      if (!finalVetPhone) {
+        setError("請填寫：動物醫院電話");
+        vetPhone.focus();
+        resetSubmit();
+        return;
+      }
+      if (!finalVetAddress) {
+        setError("請填寫：動物醫院地址");
+        vetAddress.focus();
+        resetSubmit();
+        return;
+      }
+    }
+
+    const signDateVal = requireValue(signDate, "簽署日期");
+    if (signDateVal === null) return;
+
+    // 寵物生日你原本程式是必填，若你現在要改成選填，把下面這三行刪掉
+    const petBirthdayVal = requireValue(petBirthday, "寵物生日");
+    if (petBirthdayVal === null) return;
 
     const data = {
-      ownerName: requireValue(ownerName, "甲方姓名"),
-      ownerPhone: requireValue(ownerPhone, "聯絡電話"),
-      ownerAddress: requireValue(ownerAddress, "通訊地址"),
-      emergencyName: requireValue(emergencyName, "緊急聯絡人"),
-      emergencyPhone: requireValue(emergencyPhone, "緊急聯絡人電話"),
-      ownerEmail: requireValue(ownerEmail, "Email（寄送附本用）"),
-      ownerIdNo: requireValue(ownerIdNo, "身分證字號"),
+      ownerName: ownerNameVal,
+      ownerPhone: ownerPhoneVal,
+      ownerAddress: ownerAddressVal,
+      emergencyName: emergencyNameVal,
+      emergencyPhone: emergencyPhoneVal,
+      ownerEmail: ownerEmailVal,
+      ownerIdNo: ownerIdNoVal,
 
       isOwnerSelf,
-      ownerRelation: isOwnerSelf === "否" ? requireValue(ownerRelation, "與飼主關係") : "",
+      ownerRelation: isOwnerSelf === "否" ? String(ownerRelation?.value || "").trim() : "",
 
-      petName: requireValue(petName, "寵物姓名"),
-      petBreed: requireValue(petBreed, "寵物品種"),
+      petName: petNameVal,
+      petBreed: petBreedVal,
       petSex: getRadio("petSex") || "男生",
       petType: getRadio("petType") || "犬",
-      petAge: requireValue(petAge, "寵物年齡"),
-      petBirthday: requireValue(petBirthday, "寵物生日"),
-      petWeight: requireValue(petWeight, "體重"),
-      petTemperament: getPetTemperament(),
-      petTemperamentNote: (petTemperamentNote?.value || "").trim(),
+      petAge: petAgeVal,
+      petBirthday: petBirthdayVal,
+      petWeight: petWeightVal,
+      petTemperament,
+      petTemperamentNote: String(petTemperamentNote?.value || "").trim(),
 
       chipHas,
-      chipNo: chipHas === "有" ? (chipNo?.value || "").trim() : "",
+      chipNo: chipHas === "有" ? String(chipNo?.value || "").trim() : "",
       neuterStatus,
 
       medicalHistory,
@@ -1732,40 +1818,31 @@ console.log("[CHECK] paymentDetails ok", paymentDetails);
       bodyChecks,
 
       vetMode,
-      vetName: vetMode === "乙方指定" ? finalVetName : requireValue(vetName, "動物醫院名稱"),
-      vetPhone: vetMode === "乙方指定" ? finalVetPhone : requireValue(vetPhone, "動物醫院電話"),
-      vetAddress: vetMode === "乙方指定" ? finalVetAddress : requireValue(vetAddress, "動物醫院地址"),
+      vetName: finalVetName,
+      vetPhone: finalVetPhone,
+      vetAddress: finalVetAddress,
 
-      signDate: requireValue(signDate, "簽署日期"),
+      signDate: signDateVal,
 
       serviceWash,
       serviceWashOther: svcWashOtherDetail,
       serviceGroom,
       serviceSpa,
       serviceSingle,
-      stayCheckin: (stayCheckin?.value || "").trim(),
-      stayCheckout: (stayCheckout?.value || "").trim(),
-      stayAmount: (stayAmount?.value || "").trim(),
+      stayCheckin: String(stayCheckin?.value || "").trim(),
+      stayCheckout: String(stayCheckout?.value || "").trim(),
+      stayAmount: String(stayAmount?.value || "").trim(),
       serviceStayItems,
       serviceStayOther: svcStayOtherDetail,
       serviceOther: serviceOtherDetail,
 
       payMethods,
       paymentDetails,
-      payDate: (payDate?.value || "").trim(),
+      payDate: String(payDate?.value || "").trim(),
       payTotal: payTotalText ? payTotalText.textContent : "$0"
     };
 
-    console.log("[DEBUG] data before null check:", data);
-
-const nullKeys = Object.keys(data).filter(k => data[k] === null);
-console.log("[DEBUG] null keys:", nullKeys);
-
-if (nullKeys.length) {
-  setError("有必填欄位未完成：" + nullKeys.join("、"));
-  resetSubmit();
-  return;
-}
+    console.log("[DEBUG] form data ready:", data);
 
     if (!isValidEmail(data.ownerEmail)) {
       setError("Email 格式不正確，請重新確認");
@@ -1787,8 +1864,6 @@ if (nullKeys.length) {
         return;
       }
     }
-
-    console.log("[DEBUG] form data ready:", data);
 
     setStep("正在初始化 LINE...");
     const ok = await initLIFF();
