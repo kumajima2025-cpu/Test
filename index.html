@@ -1783,7 +1783,6 @@ if (!signatureDataUrl || signatureDataUrl.length < 3000) {
     const signDateVal = requireValue(signDate, "簽署日期");
     if (signDateVal === null) return;
 
-    // 寵物生日你原本程式是必填，若你現在要改成選填，把下面這三行刪掉
     const petBirthdayVal = requireValue(petBirthday, "寵物生日");
     if (petBirthdayVal === null) return;
 
@@ -2314,9 +2313,6 @@ if (canvas) {
   }
 
   syncSize(false);
-
-  // 先不要綁 resize，避免 LIFF / 視窗變動把簽名洗掉
-  // window.addEventListener("resize", () => syncSize(true));
 
   canvas.addEventListener("pointerdown", down, { passive: false });
   canvas.addEventListener("pointermove", move, { passive: false });
