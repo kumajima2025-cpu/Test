@@ -1625,13 +1625,13 @@ window.handleSubmit = async function () {
       return;
     }
 
-    const signatureDataUrlCheck = canvas.toDataURL("image/png");
-    console.log("[DEBUG] signature length:", signatureDataUrlCheck?.length || 0);
+    const signatureDataUrl = canvas.toDataURL("image/png");
+console.log("[DEBUG] signature length:", signatureDataUrl?.length || 0);
 
-    if (!signatureDataUrlCheck || signatureDataUrlCheck.length < 3000) {
-      setError("請先完成簽名");
-      return;
-    }
+if (!signatureDataUrl || signatureDataUrl.length < 3000) {
+  setError("請先完成簽名");
+  return;
+}
 
     if (submitBtn) submitBtn.disabled = true;
 
@@ -1960,7 +1960,6 @@ SPA：${formatServiceText(data.serviceSpa)}
 ${completeNote}`;
 
     const contractTextValue = (document.getElementById("contractText")?.innerText || "").trim();
-    const signatureDataUrl = canvas.toDataURL("image/png");
 
     console.log("[DEBUG] contractText length:", contractTextValue.length);
     console.log("[DEBUG] signatureDataUrl length:", signatureDataUrl.length);
@@ -2233,77 +2232,111 @@ document.addEventListener("DOMContentLoaded", function () {
     refresh();
   });
 
-  if (canvas) {
-    const ctx = canvas.getContext("2d");
-    let drawing = false;
+if (canvas) {
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
 
-    function syncSize() {
-      const r = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.round(r.width * dpr);
-      canvas.height = Math.round(r.height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.lineWidth = 4;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = "#3F342C";
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(0, 0, r.width, r.height);
+  function setupContext() {
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#3F342C";
+    ctx.fillStyle = "#FFFFFF";
+  }
+
+  function syncSize(preserveDrawing = true) {
+    const r = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    let oldDataUrl = "";
+    if (preserveDrawing) {
+      try {
+        oldDataUrl = canvas.toDataURL("image/png");
+      } catch (e) {
+        oldDataUrl = "";
+      }
     }
 
-    function point(e) {
-      const r = canvas.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
-    }
+    canvas.width = Math.max(1, Math.round(r.width * dpr));
+    canvas.height = Math.max(1, Math.round(r.height * dpr));
 
-    function lockScroll(lock) {
-      document.body.style.overflow = lock ? "hidden" : "";
-      document.body.style.touchAction = lock ? "none" : "";
-    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    setupContext();
+    ctx.fillRect(0, 0, r.width, r.height);
 
-    function down(e) {
-      e.preventDefault();
-      drawing = true;
-      lockScroll(true);
-      const p = point(e);
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-      if (msg) msg.textContent = "";
-    }
-
-    function move(e) {
-      if (!drawing) return;
-      e.preventDefault();
-      const p = point(e);
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
-    }
-
-    function up() {
-      drawing = false;
-      lockScroll(false);
-    }
-
-    syncSize();
-    window.addEventListener("resize", syncSize);
-    canvas.addEventListener("pointerdown", down, { passive: false });
-    canvas.addEventListener("pointermove", move, { passive: false });
-    window.addEventListener("pointerup", up);
-    window.addEventListener("pointercancel", up);
-
-    if (clearBtn) {
-      clearBtn.addEventListener("click", () => {
-        const r = canvas.getBoundingClientRect();
-        ctx.clearRect(0, 0, r.width, r.height);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(0, 0, r.width, r.height);
-        if (msg) {
-          msg.textContent = "已清除，請重新簽名";
-          msg.style.color = "#9E5E4A";
-        }
-      });
+    if (oldDataUrl && oldDataUrl.length > 3000) {
+      const img = new Image();
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0, r.width, r.height);
+      };
+      img.src = oldDataUrl;
     }
   }
+
+  function point(e) {
+    const r = canvas.getBoundingClientRect();
+    return {
+      x: e.clientX - r.left,
+      y: e.clientY - r.top
+    };
+  }
+
+  function lockScroll(lock) {
+    document.body.style.overflow = lock ? "hidden" : "";
+    document.body.style.touchAction = lock ? "none" : "";
+  }
+
+  function down(e) {
+    e.preventDefault();
+    drawing = true;
+    lockScroll(true);
+
+    const p = point(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+
+    if (msg) msg.textContent = "";
+  }
+
+  function move(e) {
+    if (!drawing) return;
+    e.preventDefault();
+
+    const p = point(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+  }
+
+  function up() {
+    if (!drawing) return;
+    drawing = false;
+    lockScroll(false);
+  }
+
+  syncSize(false);
+
+  // 先不要綁 resize，避免 LIFF / 視窗變動把簽名洗掉
+  // window.addEventListener("resize", () => syncSize(true));
+
+  canvas.addEventListener("pointerdown", down, { passive: false });
+  canvas.addEventListener("pointermove", move, { passive: false });
+  window.addEventListener("pointerup", up);
+  window.addEventListener("pointercancel", up);
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      const r = canvas.getBoundingClientRect();
+      setupContext();
+      ctx.clearRect(0, 0, r.width, r.height);
+      ctx.fillRect(0, 0, r.width, r.height);
+
+      if (msg) {
+        msg.textContent = "已清除，請重新簽名";
+        msg.style.color = "#9E5E4A";
+      }
+    });
+  }
+}
 });
 </script>
 </body>
