@@ -1636,24 +1636,51 @@ window.handleSubmit = async function () {
       submitBtn.disabled = true;
     }
 
-    setStep("正在檢查資料...");
+   setStep("正在檢查資料...");
 
-    const isOwnerSelf = getRadio("isOwnerSelf") || "是";
-    const chipHas = getRadio("chipHas") || "有";
-    const neuterStatus = getRadio("neuterStatus") || "已絕育";
-    const vetMode = getRadio("vetMode") || "甲方指定";
+console.log("[CHECK] start basic helpers");
 
-    const medicalHistory = getMedicalHistory();
-    const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText?.value || "").trim() : "";
-    const bodyChecks = getBodyChecks();
+const isOwnerSelf = getRadio("isOwnerSelf") || "是";
+console.log("[CHECK] getRadio isOwnerSelf ok");
 
-    const serviceWash = getServiceDetailList(svcWashBoxes);
-    const serviceGroom = getServiceDetailList(svcGroomBoxes);
-    const serviceSpa = getServiceDetailList(svcSpaBoxes);
-    const serviceSingle = getServiceDetailList(svcSingleBoxes);
-    const serviceStayItems = getStayItemDetailList();
-    const payMethods = getCheckedValues(payMethodBoxes);
-    const paymentDetails = getPaymentDetailList();
+const chipHas = getRadio("chipHas") || "有";
+console.log("[CHECK] getRadio chipHas ok");
+
+const neuterStatus = getRadio("neuterStatus") || "已絕育";
+console.log("[CHECK] getRadio neuterStatus ok");
+
+const vetMode = getRadio("vetMode") || "甲方指定";
+console.log("[CHECK] getRadio vetMode ok");
+
+const medicalHistory = getMedicalHistory();
+console.log("[CHECK] getMedicalHistory ok", medicalHistory);
+
+const otherInjuryNote = otherInjury && otherInjury.checked ? (otherText?.value || "").trim() : "";
+console.log("[CHECK] otherInjuryNote ok", otherInjuryNote);
+
+const bodyChecks = getBodyChecks();
+console.log("[CHECK] getBodyChecks ok", bodyChecks);
+
+const serviceWash = getServiceDetailList(svcWashBoxes);
+console.log("[CHECK] serviceWash ok", serviceWash);
+
+const serviceGroom = getServiceDetailList(svcGroomBoxes);
+console.log("[CHECK] serviceGroom ok", serviceGroom);
+
+const serviceSpa = getServiceDetailList(svcSpaBoxes);
+console.log("[CHECK] serviceSpa ok", serviceSpa);
+
+const serviceSingle = getServiceDetailList(svcSingleBoxes);
+console.log("[CHECK] serviceSingle ok", serviceSingle);
+
+const serviceStayItems = getStayItemDetailList();
+console.log("[CHECK] serviceStayItems ok", serviceStayItems);
+
+const payMethods = getCheckedValues(payMethodBoxes);
+console.log("[CHECK] payMethods ok", payMethods);
+
+const paymentDetails = getPaymentDetailList();
+console.log("[CHECK] paymentDetails ok", paymentDetails);
 
     const svcWashOtherDetail = svcWashOther && svcWashOther.checked ? {
       item: (svcWashOtherText?.value || "").trim() ? `其他：${(svcWashOtherText.value || "").trim()}` : "其他",
