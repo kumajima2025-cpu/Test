@@ -1729,7 +1729,16 @@ window.handleSubmit = async function () {
       payTotal: payTotalText ? payTotalText.textContent : "$0"
     };
 
-    if (Object.values(data).some(v => v === null)) return;
+    console.log("[DEBUG] data before null check:", data);
+
+const nullKeys = Object.keys(data).filter(k => data[k] === null);
+console.log("[DEBUG] null keys:", nullKeys);
+
+if (nullKeys.length) {
+  setError("有必填欄位未完成：" + nullKeys.join("、"));
+  resetSubmit();
+  return;
+}
 
     if (!isValidEmail(data.ownerEmail)) {
       setError("Email 格式不正確，請重新確認");
