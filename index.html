@@ -9,23 +9,23 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
 
 :root{
-  --bg:#fbf7f2;
+  --bg:#fff7ed;
   --card:#FFFFFF;
-  --border:#8b5e3c;
-  --text:#3E2A1F;
-  --muted:#7A6253;
-  --stone:#EFE5DB;
-  --dusty:#C9A891;
-  --latte:#8b5e3c;
+  --border:#c35a2e;
+  --text:#2F201B;
+  --muted:#8B6F61;
+  --stone:#EFE6DD;
+  --dusty:#E9B18F;
+  --latte:#c35a2e;
   --danger:#C0392B;
 
   --surface:#FFFFFF;
-  --soft-bg:color-mix(in srgb, #fbf7f2 78%, white 22%);
-  --soft-panel:color-mix(in srgb, #fbf7f2 88%, white 12%);
-  --soft-accent:color-mix(in srgb, #8b5e3c 22%, white 78%);
-  --soft-accent-2:color-mix(in srgb, #8b5e3c 10%, white 90%);
-  --btn-dark:color-mix(in srgb, #8b5e3c 78%, black 22%);
-  --btn-darker:color-mix(in srgb, #8b5e3c 60%, black 40%);
+  --soft-bg:color-mix(in srgb, #fff7ed 78%, white 22%);
+  --soft-panel:color-mix(in srgb, #fff7ed 88%, white 12%);
+  --soft-accent:color-mix(in srgb, #c35a2e 22%, white 78%);
+  --soft-accent-2:color-mix(in srgb, #c35a2e 10%, white 90%);
+  --btn-dark:color-mix(in srgb, #c35a2e 78%, black 22%);
+  --btn-darker:color-mix(in srgb, #c35a2e 60%, black 40%);
 
   --radius:22px;
   --radius-sm:16px;
@@ -681,12 +681,18 @@ ______________________________________________。
       </div>
 
       <div id="chipNoWrap" class="hidden">
-        <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
-        <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
-      </div>
+  <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
+  <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
+</div>
 
-      <div class="label">體重（公斤）</div>
-      <input id="petWeight" class="input" inputmode="decimal" placeholder="例：6.5">
+<div class="label">絕育</div>
+<div class="choiceRow" id="neuterRow">
+  <label class="choice"><input type="radio" name="isNeutered" value="有"> 有</label>
+  <label class="choice"><input type="radio" name="isNeutered" value="無" checked> 無</label>
+</div>
+
+<div class="label">體重（公斤）</div>
+<input id="petWeight" class="input" inputmode="decimal" placeholder="例：6.5">
 
       <div class="label">寵物個性（可複選）</div>
       <div class="checkGrid" id="temperamentGrid">
@@ -1129,6 +1135,7 @@ ______________________________________________。
 
     const isOwnerSelf = getRadio("isOwnerSelf") || "是";
     const chipHas = getRadio("chipHas") || "無";
+    const isNeutered = getRadio("isNeutered") || "無";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
@@ -1162,6 +1169,7 @@ ______________________________________________。
 
       chipHas,
       chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
+      isNeutered,
 
       foodAllergy,
       allergyDetail: allergyDetailText,
@@ -1268,6 +1276,7 @@ Email：${data.ownerEmail}
 寵物個性：${ptText}
 個性其他應注意：${ptNoteText}
 晶片：${chipText}
+絕育：${data.isNeutered}
 食物過敏：${allergyText}
 零食：${data.treatAllowed}
 病史：${mhText}
