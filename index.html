@@ -308,6 +308,20 @@ body{
   font-size:14px;
   text-align:center;
 }
+.logoWrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:4px 0 12px;
+}
+
+.logoImg{
+  width:140px;
+  max-width:48vw;
+  height:auto;
+  display:block;
+}
+    
   </style>
 
  <script>
@@ -330,16 +344,21 @@ window.STORE_CONFIG = {
 <body>
   <div class="wrap">
 
-    <div class="card">
-      <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
-      <div class="infoBox">
-        <div class="meta">
-          公司名稱：<span id="storeNameText">XX寵物有限公司</span><br>
-          營業地址：<span id="storeAddressText">XXXXX</span><br>
-          官方LINE：<span id="storeLineText">@xxxxxxx</span>
-        </div>
-      </div>
+<div class="card">
+  <div class="logoWrap">
+    <img src="logo.png" alt="米默毛孩寓所 LOGO" class="logoImg">
+  </div>
+
+  <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
+
+  <div class="infoBox">
+    <div class="meta">
+      公司名稱：<span id="storeNameText">XX寵物有限公司</span><br>
+      營業地址：<span id="storeAddressText">XXXXX</span><br>
+      官方LINE：<span id="storeLineText">@xxxxxxx</span>
     </div>
+  </div>
+</div>
 
     <div class="card" style="padding:18px 16px;">
       <div class="contractTitle">契約內容（請完整閱讀）</div>
