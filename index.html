@@ -20,12 +20,12 @@
   --danger:#B94A48;
 
   --surface:#FFFFFF;
-  --soft-bg:color-mix(in srgb, #C2A891 78%, white 22%);
-  --soft-panel:color-mix(in srgb, #FFFFFF 92%, #C2A891 8%);
-  --soft-accent:color-mix(in srgb, #664C33 16%, white 84%);
-  --soft-accent-2:color-mix(in srgb, #664C33 8%, white 92%);
+  --soft-bg:#E9DDD2;
+  --soft-panel:#FFFFFF;
+  --soft-accent:#F1E8E0;
+  --soft-accent-2:#F8F3EE;
   --btn-dark:#664C33;
-  --btn-darker:#543D29;
+  --btn-darker:#664C33;
 
   --radius:22px;
   --radius-sm:16px;
@@ -56,10 +56,8 @@ body{
   border-radius:var(--radius);
   padding:18px 16px;
   margin:14px 0;
-  border:1px solid color-mix(in srgb, var(--border) 45%, rgba(0,0,0,.10) 55%);
-  box-shadow:
-    0 16px 40px rgba(0,0,0,.07),
-    0  2px 10px rgba(0,0,0,.03);
+  border:1px solid var(--border);
+  box-shadow:0 6px 14px rgba(36, 26, 22, .06);
 }
 
 .title{
@@ -75,7 +73,7 @@ body{
   border:1.4px solid var(--border);
   border-radius:var(--radius-sm);
   padding:12px 12px;
-  background:linear-gradient(180deg, #FFFFFF 0%, var(--soft-bg) 100%);
+  background:var(--card);
   box-shadow:var(--shadow-sm);
 }
 
@@ -290,7 +288,7 @@ body{
 }
 
 .btnSubmit{
-  background:#664C33;
+  background:var(--btn-dark);
   color:#fff;
 }
 
