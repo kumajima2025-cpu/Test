@@ -9,10 +9,10 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
 
   :root{
-    --bg:#CBBDB5; 
-    --card:#D7CFCB:
-    --card-soft:#E2DBD7;
-    --border:#B7AAA2;
+    --bg:#F4EFEA;
+    --card:#FFFCFA;
+    --card-soft:#F2ECE7;
+    --border:#CDBFB5;
     --text:#5D514B;
     --muted:#887B75;
     --stone:#E8E1DC;
@@ -44,20 +44,30 @@
     padding:18px 14px 28px;
   }
 
+  .logoBox{
+    text-align:center;
+    margin:18px 0 8px;
+  }
+
+  .logoBox img{
+    width:84px;
+    opacity:.96;
+    display:block;
+    margin:0 auto;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.06));
+  }
+
   .card{
-    background:rgba(215,207,203,.92);
+    background:rgba(255,252,250,.94);
     border-radius:var(--radius);
     padding:18px 16px;
     margin:14px 0;
-    border:1px solid rgba(183,170,162,.48);
+    border:1px solid rgba(205,191,181,.52);
     box-shadow:
       0 14px 32px rgba(73, 61, 54, .06),
       0  2px 10px rgba(73, 61, 54, .03);
     backdrop-filter: blur(2px);
   }
-
-  .logoBox{ text-align:center; margin:10px 0 8px; }
-  .logoBox img{ width:72px; opacity:.96; }
 
   .title{
     font-size:26px;
@@ -110,7 +120,7 @@
     padding:14px 14px;
     font-size:18px;
     font-weight:600;
-    background:#ECE6E2;
+    background:#F8F4F1;
     color:var(--text);
     outline:none;
     box-shadow:0 1px 0 rgba(73,61,54,.03) inset;
@@ -124,7 +134,7 @@
   }
 
   .input[readonly]{
-    background:#E3DBD6;
+    background:#EDE5DF;
     color:#6B5F59;
   }
 
@@ -146,7 +156,7 @@
     text-align:left;
     color:var(--text);
     padding-bottom:8px;
-    border-bottom:1px solid rgba(183,170,162,.55);
+    border-bottom:1px solid rgba(205,191,181,.65);
   }
 
   .contractBox{
@@ -179,7 +189,7 @@
     margin-top:14px;
     padding:12px;
     border-radius:16px;
-    background:#E6DFDA;
+    background:#F3ECE7;
     border:1px solid var(--border);
   }
 
@@ -204,7 +214,7 @@
     padding:12px;
     border:1px solid var(--border);
     border-radius:16px;
-    background:#E7E0DB;
+    background:#F5EFEB;
     box-shadow:var(--shadow-sm);
   }
 
@@ -227,7 +237,7 @@
     padding:14px 16px;
     border:1px solid var(--border);
     border-radius:16px;
-    background:#E7E0DB;
+    background:#F5EFEB;
     box-shadow:var(--shadow-sm);
   }
 
@@ -255,7 +265,7 @@
     margin-top:10px;
     border:1.4px solid var(--border);
     border-radius:16px;
-    background:#E5DDD8;
+    background:#F1EAE5;
     padding:14px 14px;
     line-height:1.8;
     font-weight:700;
@@ -268,7 +278,7 @@
     height:320px;
     border:1.4px solid var(--border);
     border-radius:var(--radius-sm);
-    background:#F2EDE9;
+    background:#FCFAF8;
     touch-action:none;
     box-shadow:var(--shadow-sm);
   }
@@ -290,7 +300,7 @@
   .btn:active{ transform:scale(.98); }
 
   .btnClear{
-    background:#D8CDC6;
+    background:#E2D8D1;
     color:#554944;
   }
 
@@ -336,6 +346,10 @@
 
 <body>
   <div class="wrap">
+
+    <div class="logoBox">
+      <img src="你的LOGO網址" alt="logo">
+    </div>
 
     <div class="card">
       <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
@@ -955,7 +969,7 @@ ______________________________________________。
     if(!el) return;
     el.classList.toggle("hidden", !!hidden);
   }
-  
+
   function refreshOwnerRelation(){
     const v = getRadio("isOwnerSelf");
     const notSelf = (v === "否");
@@ -1348,4 +1362,3 @@ ${completeNote}`;
 
 </body>
 </html>
-
