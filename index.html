@@ -8,20 +8,22 @@
   <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
 
-   :root{
-    --bg:#CABDB5;
-    --card:#F7F3F0; 
-    --border:#A29187;
-    --text:#5E4A3F;
-    --muted:#88766B;
-    --stone:#EFE8E3;
-    --dusty:#DDD2CB;
-    --latte:#8E7769;
-    --danger:#A14F4F;
+  :root{
+    --bg:#CBBDB5; 
+    --card:#D7CFCB:
+    --card-soft:#E2DBD7;
+    --border:#B7AAA2;
+    --text:#5D514B;
+    --muted:#887B75;
+    --stone:#E8E1DC;
+    --dusty:#DDD5D0;
+    --latte:#8C7E77;
+    --danger:#9A6666;
+    --ok:#5E5752;
     --radius:22px;
     --radius-sm:16px;
-    --shadow:0 10px 28px rgba(67, 51, 41, .10);
-    --shadow-sm:0 6px 16px rgba(67, 51, 41, .06);
+    --shadow:0 10px 28px rgba(73, 61, 54, .08);
+    --shadow-sm:0 6px 16px rgba(73, 61, 54, .05);
   }
 
   *{box-sizing:border-box}
@@ -43,14 +45,14 @@
   }
 
   .card{
-    background:rgba(247,243,240,.96);
+    background:rgba(215,207,203,.92);
     border-radius:var(--radius);
     padding:18px 16px;
     margin:14px 0;
-    border:1px solid rgba(162,145,135,.55);
+    border:1px solid rgba(183,170,162,.48);
     box-shadow:
-      0 18px 45px rgba(67, 51, 41, .10),
-      0  2px 10px rgba(67, 51, 41, .05);
+      0 14px 32px rgba(73, 61, 54, .06),
+      0  2px 10px rgba(73, 61, 54, .03);
     backdrop-filter: blur(2px);
   }
 
@@ -66,15 +68,15 @@
   }
 
   .infoBox{
-    border:1.6px solid var(--border);
+    border:1.4px solid var(--border);
     border-radius:var(--radius-sm);
     padding:12px 12px;
-    background:#F2ECE7;
+    background:var(--card-soft);
     box-shadow:var(--shadow-sm);
   }
 
   .meta{
-    color:rgba(94,74,63,.92);
+    color:rgba(93,81,75,.92);
     font-weight:600;
     line-height:1.7;
     text-align:left;
@@ -103,27 +105,27 @@
 
   .input{
     width:100%;
-    border:1.6px solid var(--border);
+    border:1.4px solid var(--border);
     border-radius:var(--radius-sm);
     padding:14px 14px;
     font-size:18px;
     font-weight:600;
-    background:#F8F4F1;
+    background:#ECE6E2;
     color:var(--text);
     outline:none;
-    box-shadow:0 1px 0 rgba(67,51,41,.04) inset;
+    box-shadow:0 1px 0 rgba(73,61,54,.03) inset;
   }
 
-  .input::placeholder{ color:rgba(94,74,63,.45); }
+  .input::placeholder{ color:rgba(93,81,75,.42); }
 
   .input:focus{
     border-color:var(--latte);
-    box-shadow:0 0 0 4px rgba(142,119,105,.18);
+    box-shadow:0 0 0 4px rgba(140,126,119,.14);
   }
 
   .input[readonly]{
-    background:#ECE4DE;
-    color:#6E5A4D;
+    background:#E3DBD6;
+    color:#6B5F59;
   }
 
   .grid2{
@@ -144,14 +146,14 @@
     text-align:left;
     color:var(--text);
     padding-bottom:8px;
-    border-bottom:1px solid rgba(162,145,135,.55);
+    border-bottom:1px solid rgba(183,170,162,.55);
   }
 
   .contractBox{
-    border:1.6px solid var(--border);
+    border:1.4px solid var(--border);
     border-radius:var(--radius-sm);
     padding:14px;
-    background:#F2ECE7;
+    background:var(--card-soft);
     max-height:440px;
     overflow-y:auto;
     overflow-x:hidden;
@@ -166,7 +168,7 @@
     line-height:1.75;
     font-size:15px;
     font-weight:500;
-    color:rgba(94,74,63,.96);
+    color:rgba(93,81,75,.96);
     text-align:left;
   }
 
@@ -177,7 +179,7 @@
     margin-top:14px;
     padding:12px;
     border-radius:16px;
-    background:#EFE7E1;
+    background:#E6DFDA;
     border:1px solid var(--border);
   }
 
@@ -202,7 +204,7 @@
     padding:12px;
     border:1px solid var(--border);
     border-radius:16px;
-    background:#F4EEEA;
+    background:#E7E0DB;
     box-shadow:var(--shadow-sm);
   }
 
@@ -225,7 +227,7 @@
     padding:14px 16px;
     border:1px solid var(--border);
     border-radius:16px;
-    background:#F4EEEA;
+    background:#E7E0DB;
     box-shadow:var(--shadow-sm);
   }
 
@@ -251,9 +253,9 @@
 
   .vetPresetBox{
     margin-top:10px;
-    border:1.6px solid var(--border);
+    border:1.4px solid var(--border);
     border-radius:16px;
-    background:#EEE7E1;
+    background:#E5DDD8;
     padding:14px 14px;
     line-height:1.8;
     font-weight:700;
@@ -264,9 +266,9 @@
   #sig{
     width:100%;
     height:320px;
-    border:1.6px solid var(--border);
+    border:1.4px solid var(--border);
     border-radius:var(--radius-sm);
-    background:#FCFAF8;
+    background:#F2EDE9;
     touch-action:none;
     box-shadow:var(--shadow-sm);
   }
@@ -281,19 +283,19 @@
     cursor:pointer;
     margin-top:12px;
     letter-spacing:.3px;
-    box-shadow:0 10px 20px rgba(67,51,41,.12);
+    box-shadow:0 8px 18px rgba(73,61,54,.08);
     transition:.15s ease;
   }
 
   .btn:active{ transform:scale(.98); }
 
   .btnClear{
-    background:#D9CCC2;
-    color:#4E3C31;
+    background:#D8CDC6;
+    color:#554944;
   }
 
   .btnSubmit{
-    background:#8E7769;
+    background:#8C7E77;
     color:#fff;
   }
 
@@ -321,7 +323,7 @@
     window.STORE_CONFIG = {
       contractTitle: "寵物美容服務定型化契約",
       storeName: "XX寵物有限公司",
-      storeAddress: "店家地址",
+      storeAddress: "XXXXX",
       storeLine: "@xxxxxxx",
       liffId: "你的Liff ID",
       googleScriptUrl: "你部署的網址",
@@ -677,6 +679,12 @@ ______________________________________________。
         </div>
       </div>
 
+      <div class="label">絕育</div>
+      <div class="choiceRow" id="neuteredRow">
+        <label class="choice"><input type="radio" name="neutered" value="有" checked> 有</label>
+        <label class="choice"><input type="radio" name="neutered" value="無"> 無</label>
+      </div>
+
       <div class="label">晶片</div>
       <div class="choiceRow" id="chipRow">
         <label class="choice"><input type="radio" name="chipHas" value="有"> 有</label>
@@ -883,11 +891,11 @@ ______________________________________________。
   }
   function setError(t){
     msg.textContent = t || "";
-    msg.style.color = "#8A2B2B";
+    msg.style.color = "#9A6666";
   }
   function setOK(t){
     msg.textContent = t || "";
-    msg.style.color = "#111";
+    msg.style.color = "#5E5752";
   }
 
   function requireValue(inputEl, label){
@@ -1035,7 +1043,7 @@ ______________________________________________。
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "#111";
+    ctx.strokeStyle = "#5D514B";
   }
   syncSize();
 
@@ -1132,6 +1140,7 @@ ______________________________________________。
 
     const isOwnerSelf = getRadio("isOwnerSelf") || "是";
     const chipHas = getRadio("chipHas") || "無";
+    const neutered = getRadio("neutered") || "有";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
@@ -1158,6 +1167,7 @@ ______________________________________________。
       petSex: getRadio("petSex") || "不確定",
       petAge: requireValue(petAge, "寵物年齡"),
       petBirthday: requireValue(petBirthday, "寵物生日"),
+      neutered,
       petWeight: requireValue(petWeight, "體重"),
       petTemperament: getPetTemperament(),
       petTemperamentNote: (petTemperamentNote?.value || "").trim(),
@@ -1267,6 +1277,7 @@ Email：${data.ownerEmail}
 性別：${data.petSex}
 年齡：${data.petAge}
 生日：${data.petBirthday}
+絕育：${data.neutered}
 體重(公斤)：${data.petWeight}
 寵物個性：${ptText}
 個性其他應注意：${ptNoteText}
@@ -1337,3 +1348,4 @@ ${completeNote}`;
 
 </body>
 </html>
+
