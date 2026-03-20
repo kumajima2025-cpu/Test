@@ -51,6 +51,20 @@ body{
   padding:18px 14px;
 }
 
+.logoWrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:4px 0 14px;
+}
+
+.logoImg{
+  width:180px;
+  max-width:48vw;
+  height:auto;
+  display:block;
+}
+
 .card{
   background:var(--card);
   border-radius:var(--radius);
@@ -63,7 +77,7 @@ body{
 .title{
   font-size:26px;
   font-weight:800;
-  margin:2px 0 10px;
+  margin:2px 0 14px;
   letter-spacing:.5px;
   text-align:center;
   color:var(--text);
@@ -291,6 +305,7 @@ body{
   background:var(--btn-dark);
   color:#fff;
 }
+
 .msg{
   margin-top:10px;
   color:var(--danger);
@@ -307,23 +322,9 @@ body{
   font-size:14px;
   text-align:center;
 }
-
-    .logoWrap{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:4px 0 12px;
-}
-
-.logoImg{
-  width:180px;
-  max-width:48vw;
-  height:auto;
-  display:block;
-}
   </style>
 
- <script>
+  <script>
 window.STORE_CONFIG = {
   contractTitle: "寵物美容服務定型化契約",
   storeName: "米默毛孩寓所",
@@ -342,21 +343,22 @@ window.STORE_CONFIG = {
 
 <body>
   <div class="wrap">
-      <div class="logoWrap">
-<div class="card">
-    <img src="logo.png" alt="米默毛孩寓所 LOGO" class="logoImg">
-  </div>
 
-  <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
-
-  <div class="infoBox">
-    <div class="meta">
-      公司名稱：<span id="storeNameText">XX寵物有限公司</span><br>
-      營業地址：<span id="storeAddressText">XXXXX</span><br>
-      官方LINE：<span id="storeLineText">@xxxxxxx</span>
+    <div class="logoWrap">
+      <img src="logo.png" alt="米默毛孩寓所 LOGO" class="logoImg">
     </div>
-  </div>
-</div>
+
+    <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
+
+    <div class="card">
+      <div class="infoBox">
+        <div class="meta">
+          公司名稱：<span id="storeNameText">XX寵物有限公司</span><br>
+          營業地址：<span id="storeAddressText">XXXXX</span><br>
+          官方LINE：<span id="storeLineText">@xxxxxxx</span>
+        </div>
+      </div>
+    </div>
 
     <div class="card" style="padding:18px 16px;">
       <div class="contractTitle">契約內容（請完整閱讀）</div>
@@ -696,18 +698,18 @@ ______________________________________________。
       </div>
 
       <div id="chipNoWrap" class="hidden">
-  <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
-  <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
-</div>
+        <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
+        <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
+      </div>
 
-<div class="label">絕育</div>
-<div class="choiceRow" id="neuterRow">
-  <label class="choice"><input type="radio" name="isNeutered" value="有"> 有</label>
-  <label class="choice"><input type="radio" name="isNeutered" value="無" checked> 無</label>
-</div>
+      <div class="label">絕育</div>
+      <div class="choiceRow" id="neuterRow">
+        <label class="choice"><input type="radio" name="isNeutered" value="有"> 有</label>
+        <label class="choice"><input type="radio" name="isNeutered" value="無" checked> 無</label>
+      </div>
 
-<div class="label">體重（公斤）</div>
-<input id="petWeight" class="input" inputmode="decimal" placeholder="例：6.5">
+      <div class="label">體重（公斤）</div>
+      <input id="petWeight" class="input" inputmode="decimal" placeholder="例：6.5">
 
       <div class="label">寵物個性（可複選）</div>
       <div class="checkGrid" id="temperamentGrid">
@@ -899,29 +901,30 @@ ______________________________________________。
     submitBtn.disabled = false;
     submitBtn.textContent = "送出簽名";
   }
+
   function setError(t){
     msg.textContent = t || "";
     msg.style.color = "#8A2B2B";
   }
+
   function setOK(t){
     msg.textContent = t || "";
     msg.style.color = "#111";
   }
 
-  function requireValue(inputEl, label){
-    if(!inputEl){
-      setError(`系統缺少欄位：${label}（請聯絡店家）`);
-      resetSubmit();
-      return null;
-    }
-    const v = (inputEl.value || "").trim();
+  function requireBasic(inputEl, label){
+    const v = (inputEl?.value || "").trim();
     if(!v){
       setError(`請填寫：${label}`);
-      inputEl.focus();
+      inputEl?.focus();
       resetSubmit();
       return null;
     }
     return v;
+  }
+
+  function getValue(inputEl){
+    return (inputEl?.value || "").trim();
   }
 
   function isValidEmail(email){
@@ -947,6 +950,7 @@ ______________________________________________。
     if(d) out += "/" + d;
     return out;
   }
+
   if(petBirthday){
     petBirthday.addEventListener("input", (e) => {
       const start = e.target.selectionStart || 0;
@@ -961,11 +965,12 @@ ______________________________________________。
   function getRadio(name){
     return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
   }
+
   function setHidden(el, hidden){
     if(!el) return;
     el.classList.toggle("hidden", !!hidden);
   }
-  
+
   function refreshOwnerRelation(){
     const v = getRadio("isOwnerSelf");
     const notSelf = (v === "否");
@@ -1054,8 +1059,11 @@ ______________________________________________。
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.strokeStyle = "#111";
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, r.width, r.height);
   }
   syncSize();
+  window.addEventListener("resize", syncSize);
 
   let drawing = false;
   let hasStroke = false;
@@ -1117,6 +1125,9 @@ ______________________________________________。
 
   clearBtn.onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const r = canvas.getBoundingClientRect();
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, r.width, r.height);
     hasStroke = false;
     setError("已清除，請重新簽名");
     resetSubmit();
@@ -1148,6 +1159,10 @@ ______________________________________________。
       return;
     }
 
+    const requiredOwnerName = requireBasic(ownerName, "甲方姓名");
+    const requiredPetName = requireBasic(petName, "寵物姓名");
+    if(requiredOwnerName === null || requiredPetName === null) return;
+
     const isOwnerSelf = getRadio("isOwnerSelf") || "是";
     const chipHas = getRadio("chipHas") || "無";
     const isNeutered = getRadio("isNeutered") || "無";
@@ -1155,72 +1170,62 @@ ______________________________________________。
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
 
-    const medicalHistory = getMedicalHistory();
-    const medicalNoteText = (medicalNote?.value || "").trim();
-    const allergyDetailText = (foodAllergy === "有") ? requireValue(allergyDetail, "過敏內容") : "";
-    const otherInjuryNote = (otherInjury && otherInjury.checked) ? (otherText?.value || "").trim() : "";
-
     const data = {
-      ownerName: requireValue(ownerName, "甲方姓名"),
-      ownerPhone: requireValue(ownerPhone, "聯絡電話"),
-      emergencyName: requireValue(emergencyName, "緊急聯絡人"),
-      emergencyPhone: requireValue(emergencyPhone, "緊急聯絡人電話"),
-      ownerEmail: requireValue(ownerEmail, "Email（寄送附本用）"),
-      ownerIdNo: requireValue(ownerIdNo, "身分證字號"),
-      ownerAddress: requireValue(ownerAddress, "通訊地址"),
+      ownerName: requiredOwnerName,
+      ownerPhone: getValue(ownerPhone),
+      emergencyName: getValue(emergencyName),
+      emergencyPhone: getValue(emergencyPhone),
+      ownerEmail: getValue(ownerEmail),
+      ownerIdNo: getValue(ownerIdNo),
+      ownerAddress: getValue(ownerAddress),
 
       isOwnerSelf,
-      ownerRelation: (isOwnerSelf === "否") ? requireValue(ownerRelation, "與飼主關係") : "",
+      ownerRelation: getValue(ownerRelation),
 
-      petName: requireValue(petName, "寵物姓名"),
-      petBreed: requireValue(petBreed, "寵物品種"),
+      petName: requiredPetName,
+      petBreed: getValue(petBreed),
       petSex: getRadio("petSex") || "不確定",
-      petAge: requireValue(petAge, "寵物年齡"),
-      petBirthday: requireValue(petBirthday, "寵物生日"),
-      petWeight: requireValue(petWeight, "體重"),
+      petAge: getValue(petAge),
+      petBirthday: getValue(petBirthday),
+      petWeight: getValue(petWeight),
       petTemperament: getPetTemperament(),
-      petTemperamentNote: (petTemperamentNote?.value || "").trim(),
-      signDate: requireValue(signDate, "簽署日期"),
+      petTemperamentNote: getValue(petTemperamentNote),
+      signDate: getValue(signDate),
 
       chipHas,
-      chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
+      chipNo: (chipHas === "有") ? getValue(chipNo) : "",
       isNeutered,
 
       foodAllergy,
-      allergyDetail: allergyDetailText,
+      allergyDetail: (foodAllergy === "有") ? getValue(allergyDetail) : "",
 
       treatAllowed,
 
-      medicalHistory,
-      medicalNote: medicalNoteText,
-      otherInjuryNote,
+      medicalHistory: getMedicalHistory(),
+      medicalNote: getValue(medicalNote),
+      otherInjuryNote: (otherInjury && otherInjury.checked) ? getValue(otherText) : "",
 
       vetMode,
-      vetName: (vetMode === "甲方指定") ? requireValue(vetName, "動物醫院名稱") : "",
-      vetPhone: (vetMode === "甲方指定") ? requireValue(vetPhone, "動物醫院電話") : "",
-      vetAddress: (vetMode === "甲方指定") ? requireValue(vetAddress, "動物醫院地址") : ""
+      vetName: (vetMode === "甲方指定") ? getValue(vetName) : "",
+      vetPhone: (vetMode === "甲方指定") ? getValue(vetPhone) : "",
+      vetAddress: (vetMode === "甲方指定") ? getValue(vetAddress) : ""
     };
 
-    if(Object.values(data).some(v => v === null)){
-      resetSubmit();
-      return;
-    }
-
-    if(!isValidDateString(data.petBirthday)){
+    if(data.petBirthday && !isValidDateString(data.petBirthday)){
       setError("寵物生日格式不正確，請輸入有效日期");
       petBirthday.focus();
       resetSubmit();
       return;
     }
 
-    if(!isValidWeight(data.petWeight)){
+    if(data.petWeight && !isValidWeight(data.petWeight)){
       setError("體重格式不正確，請輸入數字，例如：6.5");
       petWeight.focus();
       resetSubmit();
       return;
     }
 
-    if(!isValidEmail(data.ownerEmail)){
+    if(data.ownerEmail && !isValidEmail(data.ownerEmail)){
       setError("Email 格式不正確，請重新確認");
       ownerEmail.focus();
       resetSubmit();
@@ -1241,16 +1246,20 @@ ______________________________________________。
       }
 
       const chipText = (data.chipHas === "有")
-        ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
+        ? `有${data.chipNo ? "（" + data.chipNo + "）" : ""}`
         : "無";
 
       const allergyText = (data.foodAllergy === "有")
-        ? `有（${data.allergyDetail}）`
+        ? `有${data.allergyDetail ? "（" + data.allergyDetail + "）" : ""}`
         : "無";
 
       const vetText = (data.vetMode === "乙方指定")
         ? "乙方指定"
-        : `甲方指定：${data.vetName} / ${data.vetPhone}`;
+        : [
+            data.vetName ? `醫院：${data.vetName}` : "",
+            data.vetPhone ? `電話：${data.vetPhone}` : "",
+            data.vetAddress ? `地址：${data.vetAddress}` : ""
+          ].filter(Boolean).join(" / ") || "甲方指定（未填）";
 
       const mhText = (data.medicalHistory && data.medicalHistory.length)
         ? data.medicalHistory.join("、")
@@ -1269,25 +1278,26 @@ ______________________________________________。
       const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
 
       const completeNote =
-      "（簽署資料與簽名已完成。\n副本將寄送至Email。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
+`（簽署資料與簽名已完成。
+若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）`;
 
       const textMsg =
 `【犬貓美容契約簽署資料】
 甲方姓名：${data.ownerName}
-聯絡電話：${data.ownerPhone}
-緊急聯絡人：${data.emergencyName}
-緊急聯絡人電話：${data.emergencyPhone}
-Email：${data.ownerEmail}
-身分證字號：${data.ownerIdNo}
-通訊地址：${data.ownerAddress}
+聯絡電話：${data.ownerPhone || "（未填）"}
+緊急聯絡人：${data.emergencyName || "（未填）"}
+緊急聯絡人電話：${data.emergencyPhone || "（未填）"}
+Email：${data.ownerEmail || "（未填）"}
+身分證字號：${data.ownerIdNo || "（未填）"}
+通訊地址：${data.ownerAddress || "（未填）"}
 是否飼主本人：${data.isOwnerSelf}${data.ownerRelation ? "（關係：" + data.ownerRelation + "）" : ""}
 
 寵物名字：${data.petName}
-品種：${data.petBreed}
-性別：${data.petSex}
-年齡：${data.petAge}
-生日：${data.petBirthday}
-體重(公斤)：${data.petWeight}
+品種：${data.petBreed || "（未填）"}
+性別：${data.petSex || "（未填）"}
+年齡：${data.petAge || "（未填）"}
+生日：${data.petBirthday || "（未填）"}
+體重(公斤)：${data.petWeight || "（未填）"}
 寵物個性：${ptText}
 個性其他應注意：${ptNoteText}
 晶片：${chipText}
@@ -1298,7 +1308,7 @@ Email：${data.ownerEmail}
 ${otherInjuryTextLine}
 病史其他應注意：${noteText}
 緊急就醫：${vetText}
-審閱/簽署日期：${data.signDate}
+審閱/簽署日期：${data.signDate || "（未填）"}
 
 ${completeNote}`;
 
