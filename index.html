@@ -6,43 +6,43 @@
   <title>寵物美容服務定型化契約</title>
 
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
 
-:root{
-  --bg:#F3FAFB;
-  --card:#FFFFFF;
-  --border:#BFE5EA;
-  --text:#234047;
-  --muted:#6D8A91;
-  --stone:#EAF6F8;
-  --dusty:#D7EFF3;
-  --latte:#64C4D2;
-  --danger:#B45454;
-  --radius:22px;
-  --radius-sm:16px;
-  --shadow:0 14px 34px rgba(100, 196, 210, .12);
-  --shadow-sm:0 6px 16px rgba(100, 196, 210, .08);
-}
+   :root{
+    --bg:#CABDB5;
+    --card:#F7F3F0; 
+    --border:#A29187;
+    --text:#5E4A3F;
+    --muted:#88766B;
+    --stone:#EFE8E3;
+    --dusty:#DDD2CB;
+    --latte:#8E7769;
+    --danger:#A14F4F;
+    --radius:22px;
+    --radius-sm:16px;
+    --shadow:0 10px 28px rgba(67, 51, 41, .10);
+    --shadow-sm:0 6px 16px rgba(67, 51, 41, .06);
+  }
 
-*{box-sizing:border-box}
-html,body{ overscroll-behavior:none; }
+  *{box-sizing:border-box}
+  html,body{ overscroll-behavior:none; }
 
-body{
-  margin:0;
-  background:#ECF7F9;
-  color:var(--text);
-  font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
-  overflow-x:hidden;
-  letter-spacing:.2px;
-}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
+    overflow-x:hidden;
+    letter-spacing:.2px;
+  }
 
-.wrap{
-  max-width:680px;
-  margin:0 auto;
-  padding:18px 14px;
-}
+  .wrap{
+    max-width:680px;
+    margin:0 auto;
+    padding:18px 14px 28px;
+  }
 
-    .brandHeader{
+.brandHeader{
   text-align:center;
   margin-bottom:12px;
 }
@@ -60,295 +60,304 @@ body{
   display:none;
 }
 
-.card{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:18px 16px;
-  margin:14px 0;
-  border:1px solid rgba(100,196,210,.22);
-  box-shadow:
-    0 16px 40px rgba(100,196,210,.10),
-    0  2px 10px rgba(35,64,71,.04);
-}
+  .card{
+    background:rgba(247,243,240,.96);
+    border-radius:var(--radius);
+    padding:18px 16px;
+    margin:14px 0;
+    border:1px solid rgba(162,145,135,.55);
+    box-shadow:
+      0 18px 45px rgba(67, 51, 41, .10),
+      0  2px 10px rgba(67, 51, 41, .05);
+    backdrop-filter: blur(2px);
+  }
 
-.title{
-  font-size:26px;
-  font-weight:800;
-  margin:2px 0 10px;
-  letter-spacing:.5px;
-  text-align:center;
-  color:var(--text);
-}
+  .logoBox{ text-align:center; margin:10px 0 8px; }
+  .logoBox img{ width:72px; opacity:.96; }
 
-.infoBox{
-  border:1.4px solid var(--border);
-  border-radius:var(--radius-sm);
-  padding:12px 12px;
-  background:linear-gradient(180deg, #FFFFFF 0%, #F1FBFC 100%);
-  box-shadow:var(--shadow-sm);
-}
+  .title{
+    font-size:26px;
+    font-weight:800;
+    margin:2px 0 10px;
+    letter-spacing:.5px;
+    text-align:center;
+  }
 
-.meta{
-  color:rgba(35,64,71,.90);
-  font-weight:600;
-  line-height:1.7;
-  text-align:left;
-}
+  .infoBox{
+    border:1.6px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:12px 12px;
+    background:#F2ECE7;
+    box-shadow:var(--shadow-sm);
+  }
 
-.sectionTitle{
-  font-size:22px;
-  font-weight:900;
-  margin:4px 0 10px;
-  letter-spacing:.6px;
-  text-align:left;
-  color:var(--text);
-}
+  .meta{
+    color:rgba(94,74,63,.92);
+    font-weight:600;
+    line-height:1.7;
+    text-align:left;
+  }
 
-.subText{
-  color:var(--muted);
-  font-weight:600;
-  margin:0 0 12px;
-  line-height:1.7;
-}
+  .sectionTitle{
+    font-size:22px;
+    font-weight:900;
+    margin:4px 0 10px;
+    letter-spacing:.6px;
+    text-align:left;
+  }
 
-.label{
-  font-size:18px;
-  font-weight:800;
-  margin:16px 0 10px;
-  color:var(--text);
-}
+  .subText{
+    color:var(--muted);
+    font-weight:600;
+    margin:0 0 12px;
+    line-height:1.7;
+  }
 
-.input{
-  width:100%;
-  border:1.4px solid var(--border);
-  border-radius:var(--radius-sm);
-  padding:14px 14px;
-  font-size:18px;
-  font-weight:600;
-  background:#F9FEFE;
-  color:var(--text);
-  outline:none;
-  box-shadow:0 1px 0 rgba(0,0,0,.02) inset;
-}
+  .label{
+    font-size:18px;
+    font-weight:800;
+    margin:16px 0 10px;
+  }
 
-.input::placeholder{
-  color:rgba(35,64,71,.38);
-}
-.input-lock{
-  background:#DDECEF;
-  color:#1F3B40;
-  border:1.4px dashed #BFE5EA;
-  font-weight:700;
-  cursor:not-allowed;
-}
+  .input{
+    width:100%;
+    border:1.6px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:14px 14px;
+    font-size:18px;
+    font-weight:600;
+    background:#F8F4F1;
+    color:var(--text);
+    outline:none;
+    box-shadow:0 1px 0 rgba(67,51,41,.04) inset;
+  }
 
-.input:focus{
-  border-color:rgba(100,196,210,.95);
-  box-shadow:0 0 0 4px rgba(100,196,210,.18);
-}
+  .input::placeholder{ color:rgba(94,74,63,.45); }
 
-.grid2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-@media (max-width:560px){
-  .grid2{ grid-template-columns:1fr; }
-}
+  .input:focus{
+    border-color:var(--latte);
+    box-shadow:0 0 0 4px rgba(142,119,105,.18);
+  }
 
-.contractTitle{
-  font-size:22px;
-  font-weight:900;
-  margin:0 0 12px;
-  letter-spacing:.6px;
-  text-align:left;
-  color:var(--text);
-  padding-bottom:8px;
-  border-bottom:1px solid rgba(100,196,210,.28);
-}
+  .input[readonly]{
+    background:#ECE4DE;
+    color:#6E5A4D;
+  }
 
-.contractBox{
-  border:1.4px solid var(--border);
-  border-radius:var(--radius-sm);
-  padding:14px;
-  background:#F9FEFE;
-  max-height:440px;
-  overflow-y:auto;
-  overflow-x:hidden;
-  box-shadow:var(--shadow-sm);
-  text-align:left;
-}
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
 
-.contractBox pre{
-  margin:0;
-  white-space:pre-wrap;
-  word-break:break-word;
-  line-height:1.75;
-  font-size:15px;
-  font-weight:500;
-  color:rgba(35,64,71,.94);
-  text-align:left;
-}
+  @media (max-width:560px){
+    .grid2{ grid-template-columns:1fr; }
+  }
 
-.checkRow{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  margin-top:14px;
-  padding:12px;
-  border-radius:16px;
-  background:#F1FBFC;
-  border:1px solid rgba(100,196,210,.24);
-}
+  .contractTitle{
+    font-size:22px;
+    font-weight:900;
+    margin:0 0 12px;
+    letter-spacing:.6px;
+    text-align:left;
+    color:var(--text);
+    padding-bottom:8px;
+    border-bottom:1px solid rgba(162,145,135,.55);
+  }
 
-.checkRow input{
-  width:22px;
-  height:22px;
-  accent-color:var(--latte);
-  margin-top:2px;
-}
+  .contractBox{
+    border:1.6px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:14px;
+    background:#F2ECE7;
+    max-height:440px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    box-shadow:var(--shadow-sm);
+    text-align:left;
+  }
 
-.checkRow label{
-  font-size:17px;
-  font-weight:800;
-  color:var(--text);
-  line-height:1.5;
-}
+  .contractBox pre{
+    margin:0;
+    white-space:pre-wrap;
+    word-break:break-word;
+    line-height:1.75;
+    font-size:15px;
+    font-weight:500;
+    color:rgba(94,74,63,.96);
+    text-align:left;
+  }
 
-.choiceRow{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-  align-items:center;
-  padding:12px;
-  border:1.4px solid var(--border);
-  border-radius:16px;
-  background:#F9FEFE;
-  box-shadow:var(--shadow-sm);
-}
+  .checkRow{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin-top:14px;
+    padding:12px;
+    border-radius:16px;
+    background:#EFE7E1;
+    border:1px solid var(--border);
+  }
 
-.choice{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  font-weight:800;
-  color:rgba(35,64,71,.92);
-}
+  .checkRow input{
+    width:22px; height:22px;
+    accent-color:var(--latte);
+    margin-top:2px;
+  }
 
-.choice input{
-  width:20px;
-  height:20px;
-  accent-color:var(--latte);
-}
+  .checkRow label{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text);
+    line-height:1.5;
+  }
 
-.checkGrid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap:12px 40px;
-  padding:14px 16px;
-  border:1.4px solid var(--border);
-  border-radius:16px;
-  background:#F9FEFE;
-  box-shadow:var(--shadow-sm);
-}
+  .choiceRow{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:center;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:#F4EEEA;
+    box-shadow:var(--shadow-sm);
+  }
 
-.ck{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-weight:600;
-  font-size:14px;
-  line-height:1.4;
-  color:rgba(35,64,71,.92);
-}
+  .choice{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    font-weight:800;
+  }
 
-.ck input{
-  width:18px;
-  height:18px;
-  accent-color:var(--latte);
-  flex-shrink:0;
-}
+  .choice input{
+    width:20px; height:20px;
+    accent-color:var(--latte);
+  }
 
-.fullRow{ grid-column: 1 / -1; }
+  .checkGrid{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:12px 40px;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:#F4EEEA;
+    box-shadow:var(--shadow-sm);
+  }
 
-.hidden{ display:none !important; }
+  .ck{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    font-size:14px;
+    line-height:1.4;
+  }
 
-#sig{
-  width:100%;
-  height:320px;
-  border:1.4px solid var(--border);
-  border-radius:var(--radius-sm);
-  background:#FFFFFF;
-  touch-action:none;
-  box-shadow:var(--shadow-sm);
-}
+  .ck input{
+    width:18px;
+    height:18px;
+    accent-color:var(--latte);
+    flex-shrink:0;
+  }
 
-.btn{
-  width:100%;
-  border:none;
-  border-radius:18px;
-  padding:15px 16px;
-  font-size:18px;
-  font-weight:900;
-  cursor:pointer;
-  margin-top:12px;
-  letter-spacing:.3px;
-  box-shadow:0 10px 20px rgba(100,196,210,.14);
-  transition:.15s ease;
-}
+  .fullRow{ grid-column: 1 / -1; }
+  .otherInputWrap{ display:none; margin-top:10px; }
+  .otherInputWrap .input{ width:100%; }
 
-.btn:active{ transform:scale(.98); }
+  .vetPresetBox{
+    margin-top:10px;
+    border:1.6px solid var(--border);
+    border-radius:16px;
+    background:#EEE7E1;
+    padding:14px 14px;
+    line-height:1.8;
+    font-weight:700;
+    color:var(--text);
+    box-shadow:var(--shadow-sm);
+  }
 
-.btnClear{
-  background:#E8F6F8;
-  color:rgba(35,64,71,.92);
-}
+  #sig{
+    width:100%;
+    height:320px;
+    border:1.6px solid var(--border);
+    border-radius:var(--radius-sm);
+    background:#FCFAF8;
+    touch-action:none;
+    box-shadow:var(--shadow-sm);
+  }
 
-.btnSubmit{
-  background:linear-gradient(180deg, #7AD2DE 0%, #64C4D2 55%, #4FB2C2 100%);
-  color:#fff;
-}
+  .btn{
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:15px 16px;
+    font-size:18px;
+    font-weight:900;
+    cursor:pointer;
+    margin-top:12px;
+    letter-spacing:.3px;
+    box-shadow:0 10px 20px rgba(67,51,41,.12);
+    transition:.15s ease;
+  }
 
-.msg{
-  margin-top:10px;
-  color:var(--danger);
-  font-weight:900;
-  text-align:center;
-  line-height:1.6;
-  white-space:pre-line;
-}
+  .btn:active{ transform:scale(.98); }
 
-.dangerNote{
-  margin-top:10px;
-  color:var(--muted);
-  font-weight:800;
-  font-size:14px;
-  text-align:center;
-}
+  .btnClear{
+    background:#D9CCC2;
+    color:#4E3C31;
+  }
+
+  .btnSubmit{
+    background:#8E7769;
+    color:#fff;
+  }
+
+  .msg{
+    margin-top:10px;
+    color:var(--danger);
+    font-weight:900;
+    text-align:center;
+    line-height:1.6;
+    white-space:pre-line;
+  }
+
+  .dangerNote{
+    margin-top:10px;
+    color:var(--muted);
+    font-weight:800;
+    font-size:14px;
+    text-align:center;
+  }
+
+  .hidden{ display:none !important; }
+
 .brandHeader{
   text-align:center;
   margin-bottom:12px;
 }
 
 .brandLogo{
+  width:auto;
   max-width:220px;
   max-height:90px;
   display:block;
   margin:0 auto 10px;
   object-fit:contain;
 }
-    
-</style>
+  </style>
 
   <script>
     window.STORE_CONFIG = {
       contractTitle: "寵物美容服務定型化契約",
-      storeName: "XX寵物有限公司",
-      storeAddress: "XXXXX",
-      storeLine: "@xxxxxxx",
-      liffId: "2009333840-1wawyJgg",
-      googleScriptUrl: "https://script.google.com/macros/s/AKfycbyX_Ja4o6zsHgr4q6ASXC2C_4eFt7ehiYgiiphl2gvsfXxOhCwlzK7RlryJN4cCfRePSA/exec",
-      sharedSecret: "kumajima"
+      storeName: "店家名稱",
+      storeAddress: "店家地址",
+      storeLine: "店家官方LINE",
+      liffId: "後台Liff ID",
+      googleScriptUrl: "GAS部署的網址",
+      sharedSecret: "自訂密碼"
     };
   </script>
 
@@ -363,15 +372,14 @@ body{
     <img class="brandLogo" src="logo.jpg" alt="店家Logo">
     <div class="title">寵物美容服務定型化契約</div>
   </div>
-
-  <div class="infoBox">
-    <div class="meta">
-      公司名稱：熊嶼寵物有限公司<br>
-      營業地址：新北市板橋區<br>
-      官方LINE：@xxxx
+      <div class="infoBox">
+        <div class="meta">
+          公司名稱：<span id="storeNameText">顯示在頁面最上方的店家名稱</span><br>
+          營業地址：<span id="storeAddressText">顯示在頁面最上方的店家地址</span><br>
+          官方LINE：<span id="storeLineText">顯示在頁面最上方的店家官方LINE</span>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <div class="card" style="padding:18px 16px;">
       <div class="contractTitle">契約內容（請完整閱讀）</div>
@@ -646,6 +654,9 @@ ______________________________________________。
       <div class="label">甲方姓名（飼主）</div>
       <input id="ownerName" class="input" placeholder="請輸入飼主姓名">
 
+      <div class="label">身分證字號</div>
+      <input id="ownerIdNo" class="input" placeholder="請輸入身分證字號">
+
       <div class="label">聯絡電話</div>
       <input id="ownerPhone" class="input" inputmode="tel" placeholder="請輸入聯絡電話">
 
@@ -680,12 +691,6 @@ ______________________________________________。
       <div class="label">寵物姓名</div>
       <input id="petName" class="input" placeholder="請輸入寵物姓名">
 
-      <div class="label">寵物種類</div>
-      <div class="choiceRow" id="petTypeRow">
-        <label class="choice"><input type="radio" name="petType" value="狗" checked> 狗</label>
-        <label class="choice"><input type="radio" name="petType" value="貓"> 貓</label>
-      </div>
-
       <div class="label">寵物品種</div>
       <input id="petBreed" class="input" placeholder="例：比熊犬">
 
@@ -698,12 +703,22 @@ ______________________________________________。
       <div class="grid2" style="margin-top:10px;">
         <div>
           <div class="label" style="margin:0 0 8px; font-size:16px;">寵物生日</div>
-          <input id="petBirthday" class="input" type="text" name="petBirthday"
-            placeholder="YYYY/MM/DD" inputmode="numeric" pattern="\d{4}/\d{1,2}/\d{1,2}">
+          <input id="petBirthday"
+                 class="input"
+                 type="text"
+                 name="petBirthday"
+                 placeholder="YYYY/MM/DD"
+                 inputmode="numeric"
+                 pattern="\d{4}/\d{1,2}/\d{1,2}"
+                 required>
         </div>
+
         <div>
           <div class="label" style="margin:0 0 8px; font-size:16px;">寵物年齡</div>
-          <input id="petAge" class="input input-lock" placeholder="" readonly>
+          <input id="petAge"
+                 class="input"
+                 placeholder="自動計算"
+                 readonly>
         </div>
       </div>
 
@@ -873,6 +888,7 @@ ______________________________________________。
   const agree = document.getElementById("agree");
 
   const ownerName = document.getElementById("ownerName");
+  const ownerIdNo = document.getElementById("ownerIdNo");
   const ownerPhone = document.getElementById("ownerPhone");
   const ownerEmail = document.getElementById("ownerEmail");
   const ownerAddress = document.getElementById("ownerAddress");
@@ -893,8 +909,6 @@ ______________________________________________。
 
   const chipNoWrap = document.getElementById("chipNoWrap");
   const chipNo = document.getElementById("chipNo");
-  const chipIdentifyWrap = document.getElementById("chipIdentifyWrap");
-  const chipIdentifyInfo = document.getElementById("chipIdentifyInfo");
 
   const allergyDetailWrap = document.getElementById("allergyDetailWrap");
   const allergyDetail = document.getElementById("allergyDetail");
@@ -971,42 +985,6 @@ ______________________________________________。
     if(d) out += "/" + d;
     return out;
   }
-
-  function parseYMD(v){
-    const m = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(String(v || "").trim());
-    if(!m) return null;
-    const y = Number(m[1]);
-    const mm = Number(m[2]);
-    const d = Number(m[3]);
-    const dt = new Date(y, mm - 1, d);
-    if(
-      dt.getFullYear() !== y ||
-      dt.getMonth() !== mm - 1 ||
-      dt.getDate() !== d
-    ){
-      return null;
-    }
-    return dt;
-  }
-
-  function calcPetAgeText(birthdayStr){
-    const birth = parseYMD(birthdayStr);
-    if(!birth) return "";
-    const now = new Date();
-    let years = now.getFullYear() - birth.getFullYear();
-    const m = now.getMonth() - birth.getMonth();
-    if(m < 0 || (m === 0 && now.getDate() < birth.getDate())){
-      years--;
-    }
-    if(years < 0) return "";
-    return `${years}歲`;
-  }
-
-  function updatePetAge(){
-    if(!petBirthday || !petAge) return;
-    petAge.value = calcPetAgeText(petBirthday.value);
-  }
-
   if(petBirthday){
     petBirthday.addEventListener("input", (e) => {
       const start = e.target.selectionStart || 0;
@@ -1015,9 +993,7 @@ ______________________________________________。
       if(before.length < e.target.value.length) {
         e.target.setSelectionRange(Math.min(start+1, e.target.value.length), Math.min(start+1, e.target.value.length));
       }
-      updatePetAge();
     });
-    petBirthday.addEventListener("blur", updatePetAge);
   }
 
   function getRadio(name){
@@ -1027,7 +1003,7 @@ ______________________________________________。
     if(!el) return;
     el.classList.toggle("hidden", !!hidden);
   }
-
+  
   function refreshOwnerRelation(){
     const v = getRadio("isOwnerSelf");
     const notSelf = (v === "否");
@@ -1039,14 +1015,9 @@ ______________________________________________。
 
   function refreshChip(){
     const has = getRadio("chipHas");
-    const showChipNo = (has === "有");
-    const showIdentify = (has === "無");
-
-    setHidden(chipNoWrap, !showChipNo);
-    setHidden(chipIdentifyWrap, !showIdentify);
-
-    if(!showChipNo && chipNo) chipNo.value = "";
-    if(!showIdentify && chipIdentifyInfo) chipIdentifyInfo.value = "";
+    const show = (has === "有");
+    setHidden(chipNoWrap, !show);
+    if(!show && chipNo) chipNo.value = "";
   }
   document.querySelectorAll('input[name="chipHas"]').forEach(r => r.addEventListener("change", refreshChip));
   refreshChip();
@@ -1162,7 +1133,15 @@ ______________________________________________。
   }
 
   function isValidDateString(v){
-    return !!parseYMD(v);
+    const m = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(v);
+    if(!m) return false;
+    const y = Number(m[1]);
+    const mm = Number(m[2]);
+    const d = Number(m[3]);
+    const dt = new Date(y, mm - 1, d);
+    return dt.getFullYear() === y &&
+           dt.getMonth() === mm - 1 &&
+           dt.getDate() === d;
   }
 
   function isValidWeight(v){
@@ -1208,12 +1187,11 @@ ______________________________________________。
     }
 
     const isOwnerSelf = getRadio("isOwnerSelf") || "是";
-    const petType = getRadio("petType") || "狗";
     const chipHas = getRadio("chipHas") || "有";
+    const neutered = getRadio("neutered") || "有";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
-    const neutered = getRadio("neutered") || "有";
 
     const medicalHistory = getMedicalHistory();
     const medicalNoteText = (medicalNote?.value || "").trim();
@@ -1226,17 +1204,17 @@ ______________________________________________。
       emergencyName: requireValue(emergencyName, "緊急聯絡人"),
       emergencyPhone: requireValue(emergencyPhone, "緊急聯絡人電話"),
       ownerEmail: requireValue(ownerEmail, "Email（寄送附本用）"),
+      ownerIdNo: requireValue(ownerIdNo, "身分證字號"),
       ownerAddress: requireValue(ownerAddress, "通訊地址"),
 
       isOwnerSelf,
       ownerRelation: (isOwnerSelf === "否") ? requireValue(ownerRelation, "與飼主關係") : "",
 
       petName: requireValue(petName, "寵物姓名"),
-      petType,
       petBreed: requireValue(petBreed, "寵物品種"),
-      petSex: getRadio("petSex") || "男生",
-      petBirthday: requireValue(petBirthday, "寵物生日"),
+      petSex: getRadio("petSex") || "不確定",
       petAge: requireValue(petAge, "寵物年齡"),
+      petBirthday: requireValue(petBirthday, "寵物生日"),
       neutered,
       petWeight: requireValue(petWeight, "體重"),
       petTemperament: getPetTemperament(),
@@ -1245,7 +1223,6 @@ ______________________________________________。
 
       chipHas,
       chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
-      chipIdentifyInfo: (chipHas === "無") ? (chipIdentifyInfo.value || "").trim() : "",
 
       foodAllergy,
       allergyDetail: allergyDetailText,
@@ -1269,13 +1246,6 @@ ______________________________________________。
 
     if(!isValidDateString(data.petBirthday)){
       setError("寵物生日格式不正確，請輸入有效日期");
-      petBirthday.focus();
-      resetSubmit();
-      return;
-    }
-
-    if(!data.petAge){
-      setError("無法自動產生寵物年齡，請確認生日格式");
       petBirthday.focus();
       resetSubmit();
       return;
@@ -1310,7 +1280,7 @@ ______________________________________________。
 
       const chipText = (data.chipHas === "有")
         ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
-        : `無${data.chipIdentifyInfo ? "（辨識資訊：" + data.chipIdentifyInfo + "）" : ""}`;
+        : "無";
 
       const allergyText = (data.foodAllergy === "有")
         ? `有（${data.allergyDetail}）`
@@ -1346,15 +1316,15 @@ ______________________________________________。
 緊急聯絡人：${data.emergencyName}
 緊急聯絡人電話：${data.emergencyPhone}
 Email：${data.ownerEmail}
+身分證字號：${data.ownerIdNo}
 通訊地址：${data.ownerAddress}
 是否飼主本人：${data.isOwnerSelf}${data.ownerRelation ? "（關係：" + data.ownerRelation + "）" : ""}
 
 寵物名字：${data.petName}
-種類：${data.petType}
 品種：${data.petBreed}
 性別：${data.petSex}
-生日：${data.petBirthday}
 年齡：${data.petAge}
+生日：${data.petBirthday}
 絕育：${data.neutered}
 體重(公斤)：${data.petWeight}
 寵物個性：${ptText}
@@ -1421,8 +1391,6 @@ ${completeNote}`;
       resetSubmit();
     }
   };
-
-  updatePetAge();
 })();
 </script>
 
