@@ -42,6 +42,24 @@ body{
   padding:18px 14px;
 }
 
+    .brandHeader{
+  text-align:center;
+  margin-bottom:12px;
+}
+
+.brandLogo{
+  width:auto;
+  max-width:220px;
+  max-height:90px;
+  display:block;
+  margin:0 auto 10px;
+  object-fit:contain;
+}
+
+.brandLogo.is-hidden{
+  display:none;
+}
+
 .card{
   background:var(--card);
   border-radius:var(--radius);
@@ -300,6 +318,19 @@ body{
   font-size:14px;
   text-align:center;
 }
+.brandHeader{
+  text-align:center;
+  margin-bottom:12px;
+}
+
+.brandLogo{
+  max-width:220px;
+  max-height:90px;
+  display:block;
+  margin:0 auto 10px;
+  object-fit:contain;
+}
+    
 </style>
 
   <script>
@@ -308,8 +339,8 @@ body{
       storeName: "XX寵物有限公司",
       storeAddress: "XXXXX",
       storeLine: "@xxxxxxx",
-      liffId: "你的Liff ID",
-      googleScriptUrl: "你部署的網址",
+      liffId: "2009333840-1wawyJgg",
+      googleScriptUrl: "https://script.google.com/macros/s/AKfycbyX_Ja4o6zsHgr4q6ASXC2C_4eFt7ehiYgiiphl2gvsfXxOhCwlzK7RlryJN4cCfRePSA/exec",
       sharedSecret: "自訂密碼"
     };
   </script>
@@ -320,16 +351,20 @@ body{
 <body>
   <div class="wrap">
 
-    <div class="card">
-      <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
-      <div class="infoBox">
-        <div class="meta">
-          公司名稱：<span id="storeNameText">XX寵物有限公司</span><br>
-          營業地址：<span id="storeAddressText">XXXXX</span><br>
-          官方LINE：<span id="storeLineText">@xxxxxxx</span>
-        </div>
-      </div>
+<div class="card">
+  <div class="brandHeader">
+    <img class="brandLogo" src="logo.jpg" alt="店家Logo">
+    <div class="title">寵物美容服務定型化契約</div>
+  </div>
+
+  <div class="infoBox">
+    <div class="meta">
+      公司名稱：熊嶼寵物有限公司<br>
+      營業地址：新北市板橋區<br>
+      官方LINE：@xxxx
     </div>
+  </div>
+</div>
 
     <div class="card" style="padding:18px 16px;">
       <div class="contractTitle">契約內容（請完整閱讀）</div>
