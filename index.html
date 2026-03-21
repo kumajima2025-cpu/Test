@@ -8,338 +8,335 @@
   <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;800&display=swap');
 
-  :root{
-    --bg:#CABDB5;
-    --card:#FFFCFA;
-    --card-soft:#F2ECE7;
-    --border:#CDBFB5;
-    --text:#5D514B;
-    --muted:#887B75;
-    --stone:#E8E1DC;
-    --dusty:#DDD5D0;
-    --latte:#8C7E77;
-    --danger:#9A6666;
-    --ok:#5E5752;
-    --radius:22px;
-    --radius-sm:16px;
-    --shadow:0 10px 28px rgba(73, 61, 54, .08);
-    --shadow-sm:0 6px 16px rgba(73, 61, 54, .05);
-  }
+:root{
+  --bg:#C2A891;
+  --card:#FFFFFF;
+  --border:#664C33;
+  --text:#664C33;
+  --muted:#9B7F66;
+  --stone:#F7F2ED;
+  --dusty:#E7D7C8;
+  --latte:#664C33;
+  --danger:#B94A48;
 
-  *{box-sizing:border-box}
-  html,body{ overscroll-behavior:none; }
+  --surface:#FFFFFF;
+  --soft-bg:#E9DDD2;
+  --soft-panel:#FFFFFF;
+  --soft-accent:#F1E8E0;
+  --soft-accent-2:#F8F3EE;
+  --btn-dark:#664C33;
+  --btn-darker:#664C33;
 
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
-    overflow-x:hidden;
-    letter-spacing:.2px;
-  }
+  --radius:22px;
+  --radius-sm:16px;
+  --shadow:0 10px 28px rgba(36, 26, 22, .08);
+  --shadow-sm:0 6px 16px rgba(36, 26, 22, .06);
+}
 
-  .wrap{
-    max-width:680px;
-    margin:0 auto;
-    padding:18px 14px 28px;
-  }
+*{box-sizing:border-box}
+html,body{ overscroll-behavior:none; }
 
-  .logoBox{
-    text-align:center;
-    margin:18px 0 8px;
-  }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
+  overflow-x:hidden;
+  letter-spacing:.2px;
+}
 
-  .logoBox img{
-    width:84px;
-    opacity:.96;
-    display:block;
-    margin:0 auto;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,.06));
-  }
+.wrap{
+  max-width:680px;
+  margin:0 auto;
+  padding:18px 14px;
+}
 
-  .card{
-    background:rgba(255,252,250,.94);
-    border-radius:var(--radius);
-    padding:18px 16px;
-    margin:14px 0;
-    border:1px solid rgba(205,191,181,.52);
-    box-shadow:
-      0 14px 32px rgba(73, 61, 54, .06),
-      0  2px 10px rgba(73, 61, 54, .03);
-    backdrop-filter: blur(2px);
-  }
+.logoWrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:4px 0 14px;
+}
 
-  .title{
-    font-size:26px;
-    font-weight:800;
-    margin:2px 0 10px;
-    letter-spacing:.5px;
-    text-align:center;
-  }
+.logoImg{
+  width:180px;
+  max-width:48vw;
+  height:auto;
+  display:block;
+}
 
-  .infoBox{
-    border:1.4px solid var(--border);
-    border-radius:var(--radius-sm);
-    padding:12px 12px;
-    background:var(--card-soft);
-    box-shadow:var(--shadow-sm);
-  }
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:18px 16px;
+  margin:14px 0;
+  border:1px solid var(--border);
+  box-shadow:0 6px 14px rgba(36, 26, 22, .06);
+}
 
-  .meta{
-    color:rgba(93,81,75,.92);
-    font-weight:600;
-    line-height:1.7;
-    text-align:left;
-  }
+.title{
+  font-size:26px;
+  font-weight:800;
+  margin:2px 0 14px;
+  letter-spacing:.5px;
+  text-align:center;
+  color:var(--text);
+}
 
-  .sectionTitle{
-    font-size:22px;
-    font-weight:900;
-    margin:4px 0 10px;
-    letter-spacing:.6px;
-    text-align:left;
-  }
+.infoBox{
+  border:1.4px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:12px 12px;
+  background:var(--card);
+  box-shadow:var(--shadow-sm);
+}
 
-  .subText{
-    color:var(--muted);
-    font-weight:600;
-    margin:0 0 12px;
-    line-height:1.7;
-  }
+.meta{
+  color:var(--text);
+  font-weight:600;
+  line-height:1.7;
+  text-align:left;
+}
 
-  .label{
-    font-size:18px;
-    font-weight:800;
-    margin:16px 0 10px;
-  }
+.sectionTitle{
+  font-size:22px;
+  font-weight:900;
+  margin:4px 0 10px;
+  letter-spacing:.6px;
+  text-align:left;
+  color:var(--text);
+}
 
-  .input{
-    width:100%;
-    border:1.4px solid var(--border);
-    border-radius:var(--radius-sm);
-    padding:14px 14px;
-    font-size:18px;
-    font-weight:600;
-    background:#F8F4F1;
-    color:var(--text);
-    outline:none;
-    box-shadow:0 1px 0 rgba(73,61,54,.03) inset;
-  }
+.subText{
+  color:var(--muted);
+  font-weight:600;
+  margin:0 0 12px;
+  line-height:1.7;
+}
 
-  .input::placeholder{ color:rgba(93,81,75,.42); }
+.label{
+  font-size:18px;
+  font-weight:800;
+  margin:16px 0 10px;
+  color:var(--text);
+}
 
-  .input:focus{
-    border-color:var(--latte);
-    box-shadow:0 0 0 4px rgba(140,126,119,.14);
-  }
+.input{
+  width:100%;
+  border:1.4px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:14px 14px;
+  font-size:18px;
+  font-weight:600;
+  background:var(--soft-panel);
+  color:var(--text);
+  outline:none;
+  box-shadow:0 1px 0 rgba(0,0,0,.03) inset;
+}
 
-  .input[readonly]{
-    background:#EDE5DF;
-    color:#6B5F59;
-  }
+.input::placeholder{
+  color:color-mix(in srgb, var(--muted) 60%, white 40%);
+}
 
-  .grid2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
+.input:focus{
+  border-color:var(--latte);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--latte) 18%, white 82%);
+}
 
-  @media (max-width:560px){
-    .grid2{ grid-template-columns:1fr; }
-  }
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+@media (max-width:560px){
+  .grid2{ grid-template-columns:1fr; }
+}
 
-  .contractTitle{
-    font-size:22px;
-    font-weight:900;
-    margin:0 0 12px;
-    letter-spacing:.6px;
-    text-align:left;
-    color:var(--text);
-    padding-bottom:8px;
-    border-bottom:1px solid rgba(205,191,181,.65);
-  }
+.contractTitle{
+  font-size:22px;
+  font-weight:900;
+  margin:0 0 12px;
+  letter-spacing:.6px;
+  text-align:left;
+  color:var(--text);
+  padding-bottom:8px;
+  border-bottom:1px solid color-mix(in srgb, var(--border) 55%, rgba(0,0,0,.10) 45%);
+}
 
-  .contractBox{
-    border:1.4px solid var(--border);
-    border-radius:var(--radius-sm);
-    padding:14px;
-    background:var(--card-soft);
-    max-height:440px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    box-shadow:var(--shadow-sm);
-    text-align:left;
-  }
+.contractBox{
+  border:1.4px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:14px;
+  background:var(--soft-panel);
+  max-height:440px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  box-shadow:var(--shadow-sm);
+  text-align:left;
+}
 
-  .contractBox pre{
-    margin:0;
-    white-space:pre-wrap;
-    word-break:break-word;
-    line-height:1.75;
-    font-size:15px;
-    font-weight:500;
-    color:rgba(93,81,75,.96);
-    text-align:left;
-  }
+.contractBox pre{
+  margin:0;
+  white-space:pre-wrap;
+  word-break:break-word;
+  line-height:1.75;
+  font-size:15px;
+  font-weight:500;
+  color:var(--text);
+  text-align:left;
+}
 
-  .checkRow{
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-    margin-top:14px;
-    padding:12px;
-    border-radius:16px;
-    background:#F3ECE7;
-    border:1px solid var(--border);
-  }
+.checkRow{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin-top:14px;
+  padding:12px;
+  border-radius:16px;
+  background:var(--soft-accent-2);
+  border:1px solid color-mix(in srgb, var(--border) 40%, rgba(0,0,0,.10) 60%);
+}
 
-  .checkRow input{
-    width:22px; height:22px;
-    accent-color:var(--latte);
-    margin-top:2px;
-  }
+.checkRow input{
+  width:22px;
+  height:22px;
+  accent-color:var(--latte);
+  margin-top:2px;
+}
 
-  .checkRow label{
-    font-size:17px;
-    font-weight:800;
-    color:var(--text);
-    line-height:1.5;
-  }
+.checkRow label{
+  font-size:17px;
+  font-weight:800;
+  color:var(--text);
+  line-height:1.5;
+}
 
-  .choiceRow{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    align-items:center;
-    padding:12px;
-    border:1px solid var(--border);
-    border-radius:16px;
-    background:#F5EFEB;
-    box-shadow:var(--shadow-sm);
-  }
+.choiceRow{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:center;
+  padding:12px;
+  border:1.4px solid var(--border);
+  border-radius:16px;
+  background:var(--soft-panel);
+  box-shadow:var(--shadow-sm);
+}
 
-  .choice{
-    display:flex;
-    gap:8px;
-    align-items:center;
-    font-weight:800;
-  }
+.choice{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-weight:800;
+  color:var(--text);
+}
 
-  .choice input{
-    width:20px; height:20px;
-    accent-color:var(--latte);
-  }
+.choice input{
+  width:20px;
+  height:20px;
+  accent-color:var(--latte);
+}
 
-  .checkGrid{
-    display:grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap:12px 40px;
-    padding:14px 16px;
-    border:1px solid var(--border);
-    border-radius:16px;
-    background:#F5EFEB;
-    box-shadow:var(--shadow-sm);
-  }
+.checkGrid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:12px 40px;
+  padding:14px 16px;
+  border:1.4px solid var(--border);
+  border-radius:16px;
+  background:var(--soft-panel);
+  box-shadow:var(--shadow-sm);
+}
 
-  .ck{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-weight:600;
-    font-size:14px;
-    line-height:1.4;
-  }
+.ck{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:600;
+  font-size:14px;
+  line-height:1.4;
+  color:var(--text);
+}
 
-  .ck input{
-    width:18px;
-    height:18px;
-    accent-color:var(--latte);
-    flex-shrink:0;
-  }
+.ck input{
+  width:18px;
+  height:18px;
+  accent-color:var(--latte);
+  flex-shrink:0;
+}
 
-  .fullRow{ grid-column: 1 / -1; }
-  .otherInputWrap{ display:none; margin-top:10px; }
-  .otherInputWrap .input{ width:100%; }
+.fullRow{ grid-column: 1 / -1; }
 
-  .vetPresetBox{
-    margin-top:10px;
-    border:1.4px solid var(--border);
-    border-radius:16px;
-    background:#F1EAE5;
-    padding:14px 14px;
-    line-height:1.8;
-    font-weight:700;
-    color:var(--text);
-    box-shadow:var(--shadow-sm);
-  }
+.hidden{ display:none !important; }
 
-  #sig{
-    width:100%;
-    height:320px;
-    border:1.4px solid var(--border);
-    border-radius:var(--radius-sm);
-    background:#FCFAF8;
-    touch-action:none;
-    box-shadow:var(--shadow-sm);
-  }
+#sig{
+  width:100%;
+  height:320px;
+  border:1.4px solid var(--border);
+  border-radius:var(--radius-sm);
+  background:#fff;
+  touch-action:none;
+  box-shadow:var(--shadow-sm);
+}
 
-  .btn{
-    width:100%;
-    border:none;
-    border-radius:18px;
-    padding:15px 16px;
-    font-size:18px;
-    font-weight:900;
-    cursor:pointer;
-    margin-top:12px;
-    letter-spacing:.3px;
-    box-shadow:0 8px 18px rgba(73,61,54,.08);
-    transition:.15s ease;
-  }
+.btn{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:15px 16px;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+  margin-top:12px;
+  letter-spacing:.3px;
+  box-shadow:0 10px 20px rgba(0,0,0,.10);
+  transition:.15s ease;
+}
 
-  .btn:active{ transform:scale(.98); }
+.btn:active{ transform:scale(.98); }
 
-  .btnClear{
-    background:#E2D8D1;
-    color:#554944;
-  }
+.btnClear{
+  background:var(--soft-accent-2);
+  color:var(--text);
+  border:1px solid color-mix(in srgb, var(--border) 35%, rgba(0,0,0,.10) 65%);
+}
 
-  .btnSubmit{
-    background:#8C7E77;
-    color:#fff;
-  }
+.btnSubmit{
+  background:var(--btn-dark);
+  color:#fff;
+}
 
-  .msg{
-    margin-top:10px;
-    color:var(--danger);
-    font-weight:900;
-    text-align:center;
-    line-height:1.6;
-    white-space:pre-line;
-  }
+.msg{
+  margin-top:10px;
+  color:var(--danger);
+  font-weight:900;
+  text-align:center;
+  line-height:1.6;
+  white-space:pre-line;
+}
 
-  .dangerNote{
-    margin-top:10px;
-    color:var(--muted);
-    font-weight:800;
-    font-size:14px;
-    text-align:center;
-  }
-
-  .hidden{ display:none !important; }
+.dangerNote{
+  margin-top:10px;
+  color:var(--muted);
+  font-weight:800;
+  font-size:14px;
+  text-align:center;
+}
   </style>
 
   <script>
-    window.STORE_CONFIG = {
-      contractTitle: "寵物美容服務定型化契約",
-      storeName: "XX寵物有限公司",
-      storeAddress: "XXXXX",
-      storeLine: "@xxxxxxx",
-      liffId: "你的Liff ID",
-      googleScriptUrl: "你部署的網址",
-      sharedSecret: "自訂密碼"
-    };
-  </script>
+window.STORE_CONFIG = {
+  contractTitle: "寵物美容服務定型化契約",
+  storeName: "米默毛孩寓所",
+  storeAddress: "台中市北屯區北屯路447-5號",
+  storeLine: "@516Ixjen",
+  backupEmail: "mimofurrymimo@gmail.com",
+  liffId: "2009550686-wtinmFcx",
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycbxKN2r2msHabaQraQuOTN1p4-lvIjGDo6M81YBKSd2zAx_9K-DyaZceuzLPJ9tagSUJ4A/exec",
+  sharedSecret: "mimofurrymimo",
+  debugMode: false
+};
+</script>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
@@ -347,12 +344,13 @@
 <body>
   <div class="wrap">
 
-    <div class="logoBox">
-      <img src="你的LOGO網址" alt="logo">
+    <div class="logoWrap">
+      <img src="logo.png" alt="米默毛孩寓所 LOGO" class="logoImg">
     </div>
 
+    <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
+
     <div class="card">
-      <div class="title" id="pageTitle">寵物美容服務定型化契約</div>
       <div class="infoBox">
         <div class="meta">
           公司名稱：<span id="storeNameText">XX寵物有限公司</span><br>
@@ -693,12 +691,6 @@ ______________________________________________。
         </div>
       </div>
 
-      <div class="label">絕育</div>
-      <div class="choiceRow" id="neuteredRow">
-        <label class="choice"><input type="radio" name="neutered" value="有" checked> 有</label>
-        <label class="choice"><input type="radio" name="neutered" value="無"> 無</label>
-      </div>
-
       <div class="label">晶片</div>
       <div class="choiceRow" id="chipRow">
         <label class="choice"><input type="radio" name="chipHas" value="有"> 有</label>
@@ -708,6 +700,12 @@ ______________________________________________。
       <div id="chipNoWrap" class="hidden">
         <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
         <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
+      </div>
+
+      <div class="label">絕育</div>
+      <div class="choiceRow" id="neuterRow">
+        <label class="choice"><input type="radio" name="isNeutered" value="有"> 有</label>
+        <label class="choice"><input type="radio" name="isNeutered" value="無" checked> 無</label>
       </div>
 
       <div class="label">體重（公斤）</div>
@@ -903,29 +901,30 @@ ______________________________________________。
     submitBtn.disabled = false;
     submitBtn.textContent = "送出簽名";
   }
+
   function setError(t){
     msg.textContent = t || "";
-    msg.style.color = "#9A6666";
-  }
-  function setOK(t){
-    msg.textContent = t || "";
-    msg.style.color = "#5E5752";
+    msg.style.color = "#8A2B2B";
   }
 
-  function requireValue(inputEl, label){
-    if(!inputEl){
-      setError(`系統缺少欄位：${label}（請聯絡店家）`);
-      resetSubmit();
-      return null;
-    }
-    const v = (inputEl.value || "").trim();
+  function setOK(t){
+    msg.textContent = t || "";
+    msg.style.color = "#111";
+  }
+
+  function requireBasic(inputEl, label){
+    const v = (inputEl?.value || "").trim();
     if(!v){
       setError(`請填寫：${label}`);
-      inputEl.focus();
+      inputEl?.focus();
       resetSubmit();
       return null;
     }
     return v;
+  }
+
+  function getValue(inputEl){
+    return (inputEl?.value || "").trim();
   }
 
   function isValidEmail(email){
@@ -951,6 +950,7 @@ ______________________________________________。
     if(d) out += "/" + d;
     return out;
   }
+
   if(petBirthday){
     petBirthday.addEventListener("input", (e) => {
       const start = e.target.selectionStart || 0;
@@ -965,6 +965,7 @@ ______________________________________________。
   function getRadio(name){
     return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
   }
+
   function setHidden(el, hidden){
     if(!el) return;
     el.classList.toggle("hidden", !!hidden);
@@ -1057,9 +1058,12 @@ ______________________________________________。
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "#5D514B";
+    ctx.strokeStyle = "#111";
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, r.width, r.height);
   }
   syncSize();
+  window.addEventListener("resize", syncSize);
 
   let drawing = false;
   let hasStroke = false;
@@ -1121,6 +1125,9 @@ ______________________________________________。
 
   clearBtn.onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const r = canvas.getBoundingClientRect();
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, r.width, r.height);
     hasStroke = false;
     setError("已清除，請重新簽名");
     resetSubmit();
@@ -1152,79 +1159,73 @@ ______________________________________________。
       return;
     }
 
+    const requiredOwnerName = requireBasic(ownerName, "甲方姓名");
+    const requiredPetName = requireBasic(petName, "寵物姓名");
+    if(requiredOwnerName === null || requiredPetName === null) return;
+
     const isOwnerSelf = getRadio("isOwnerSelf") || "是";
     const chipHas = getRadio("chipHas") || "無";
-    const neutered = getRadio("neutered") || "有";
+    const isNeutered = getRadio("isNeutered") || "無";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
 
-    const medicalHistory = getMedicalHistory();
-    const medicalNoteText = (medicalNote?.value || "").trim();
-    const allergyDetailText = (foodAllergy === "有") ? requireValue(allergyDetail, "過敏內容") : "";
-    const otherInjuryNote = (otherInjury && otherInjury.checked) ? (otherText?.value || "").trim() : "";
-
     const data = {
-      ownerName: requireValue(ownerName, "甲方姓名"),
-      ownerPhone: requireValue(ownerPhone, "聯絡電話"),
-      emergencyName: requireValue(emergencyName, "緊急聯絡人"),
-      emergencyPhone: requireValue(emergencyPhone, "緊急聯絡人電話"),
-      ownerEmail: requireValue(ownerEmail, "Email（寄送附本用）"),
-      ownerIdNo: requireValue(ownerIdNo, "身分證字號"),
-      ownerAddress: requireValue(ownerAddress, "通訊地址"),
+      ownerName: requiredOwnerName,
+      ownerPhone: getValue(ownerPhone),
+      emergencyName: getValue(emergencyName),
+      emergencyPhone: getValue(emergencyPhone),
+      ownerEmail: getValue(ownerEmail),
+      ownerIdNo: getValue(ownerIdNo),
+      ownerAddress: getValue(ownerAddress),
 
       isOwnerSelf,
-      ownerRelation: (isOwnerSelf === "否") ? requireValue(ownerRelation, "與飼主關係") : "",
+      ownerRelation: getValue(ownerRelation),
 
-      petName: requireValue(petName, "寵物姓名"),
-      petBreed: requireValue(petBreed, "寵物品種"),
+      petName: requiredPetName,
+      petBreed: getValue(petBreed),
       petSex: getRadio("petSex") || "不確定",
-      petAge: requireValue(petAge, "寵物年齡"),
-      petBirthday: requireValue(petBirthday, "寵物生日"),
-      neutered,
-      petWeight: requireValue(petWeight, "體重"),
+      petAge: getValue(petAge),
+      petBirthday: getValue(petBirthday),
+      petWeight: getValue(petWeight),
       petTemperament: getPetTemperament(),
-      petTemperamentNote: (petTemperamentNote?.value || "").trim(),
-      signDate: requireValue(signDate, "簽署日期"),
+      petTemperamentNote: getValue(petTemperamentNote),
+      signDate: getValue(signDate),
 
       chipHas,
-      chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
+      chipNo: (chipHas === "有") ? getValue(chipNo) : "",
+      isNeutered,
 
       foodAllergy,
-      allergyDetail: allergyDetailText,
+      allergyDetail: (foodAllergy === "有") ? getValue(allergyDetail) : "",
 
       treatAllowed,
 
-      medicalHistory,
-      medicalNote: medicalNoteText,
-      otherInjuryNote,
+      medicalHistory: getMedicalHistory(),
+      medicalNote: getValue(medicalNote),
+      otherInjuryNote: (otherInjury && otherInjury.checked) ? getValue(otherText) : "",
 
       vetMode,
-      vetName: (vetMode === "甲方指定") ? requireValue(vetName, "動物醫院名稱") : "",
-      vetPhone: (vetMode === "甲方指定") ? requireValue(vetPhone, "動物醫院電話") : "",
-      vetAddress: (vetMode === "甲方指定") ? requireValue(vetAddress, "動物醫院地址") : ""
+      vetName: (vetMode === "甲方指定") ? getValue(vetName) : "",
+      vetPhone: (vetMode === "甲方指定") ? getValue(vetPhone) : "",
+      vetAddress: (vetMode === "甲方指定") ? getValue(vetAddress) : ""
     };
 
-    if(Object.values(data).some(v => v === null)){
-      resetSubmit();
-      return;
-    }
-
-    if(!isValidDateString(data.petBirthday)){
+    if(data.petBirthday && !isValidDateString(data.petBirthday)){
       setError("寵物生日格式不正確，請輸入有效日期");
       petBirthday.focus();
       resetSubmit();
       return;
     }
 
-    if(!isValidWeight(data.petWeight)){
+    if(data.petWeight && !isValidWeight(data.petWeight)){
       setError("體重格式不正確，請輸入數字，例如：6.5");
       petWeight.focus();
       resetSubmit();
       return;
     }
 
-    if(!isValidEmail(data.ownerEmail)){
+    if(data.ownerEmail && !isValidEmail(data.ownerEmail)){
       setError("Email 格式不正確，請重新確認");
       ownerEmail.focus();
       resetSubmit();
@@ -1245,16 +1246,20 @@ ______________________________________________。
       }
 
       const chipText = (data.chipHas === "有")
-        ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
+        ? `有${data.chipNo ? "（" + data.chipNo + "）" : ""}`
         : "無";
 
       const allergyText = (data.foodAllergy === "有")
-        ? `有（${data.allergyDetail}）`
+        ? `有${data.allergyDetail ? "（" + data.allergyDetail + "）" : ""}`
         : "無";
 
       const vetText = (data.vetMode === "乙方指定")
         ? "乙方指定"
-        : `甲方指定：${data.vetName} / ${data.vetPhone}`;
+        : [
+            data.vetName ? `醫院：${data.vetName}` : "",
+            data.vetPhone ? `電話：${data.vetPhone}` : "",
+            data.vetAddress ? `地址：${data.vetAddress}` : ""
+          ].filter(Boolean).join(" / ") || "甲方指定（未填）";
 
       const mhText = (data.medicalHistory && data.medicalHistory.length)
         ? data.medicalHistory.join("、")
@@ -1273,36 +1278,37 @@ ______________________________________________。
       const ptNoteText = data.petTemperamentNote ? data.petTemperamentNote : "（未填）";
 
       const completeNote =
-      "（簽署資料與簽名已完成。\n副本將寄送至Email。\n\n若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）";
+`（簽署資料與簽名已完成。
+若有多隻毛孩，請為每隻毛孩分別填寫一份表單並各自送出。）`;
 
       const textMsg =
 `【犬貓美容契約簽署資料】
 甲方姓名：${data.ownerName}
-聯絡電話：${data.ownerPhone}
-緊急聯絡人：${data.emergencyName}
-緊急聯絡人電話：${data.emergencyPhone}
-Email：${data.ownerEmail}
-身分證字號：${data.ownerIdNo}
-通訊地址：${data.ownerAddress}
+聯絡電話：${data.ownerPhone || "（未填）"}
+緊急聯絡人：${data.emergencyName || "（未填）"}
+緊急聯絡人電話：${data.emergencyPhone || "（未填）"}
+Email：${data.ownerEmail || "（未填）"}
+身分證字號：${data.ownerIdNo || "（未填）"}
+通訊地址：${data.ownerAddress || "（未填）"}
 是否飼主本人：${data.isOwnerSelf}${data.ownerRelation ? "（關係：" + data.ownerRelation + "）" : ""}
 
 寵物名字：${data.petName}
-品種：${data.petBreed}
-性別：${data.petSex}
-年齡：${data.petAge}
-生日：${data.petBirthday}
-絕育：${data.neutered}
-體重(公斤)：${data.petWeight}
+品種：${data.petBreed || "（未填）"}
+性別：${data.petSex || "（未填）"}
+年齡：${data.petAge || "（未填）"}
+生日：${data.petBirthday || "（未填）"}
+體重(公斤)：${data.petWeight || "（未填）"}
 寵物個性：${ptText}
 個性其他應注意：${ptNoteText}
 晶片：${chipText}
+絕育：${data.isNeutered}
 食物過敏：${allergyText}
 零食：${data.treatAllowed}
 病史：${mhText}
 ${otherInjuryTextLine}
 病史其他應注意：${noteText}
 緊急就醫：${vetText}
-審閱/簽署日期：${data.signDate}
+審閱/簽署日期：${data.signDate || "（未填）"}
 
 ${completeNote}`;
 
