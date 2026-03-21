@@ -698,6 +698,14 @@ ______________________________________________。
       <div class="label">寵物姓名</div>
       <input id="petName" class="input" placeholder="請輸入寵物姓名">
 
+
+<div class="label">寵物種類</div>
+<div class="choiceRow" id="petTypeRow">
+  <label class="choice"><input type="radio" name="petType" value="狗" checked> 狗</label>
+  <label class="choice"><input type="radio" name="petType" value="貓"> 貓</label>
+</div>
+
+      
       <div class="label">寵物品種</div>
       <input id="petBreed" class="input" placeholder="例：比熊犬">
 
@@ -738,15 +746,15 @@ ______________________________________________。
   <label class="choice"><input type="radio" name="chipHas" value="無"> 無</label>
 </div>
 
-      <div id="chipNoWrap" class="hidden">
-        <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
-        <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
-      </div>
+      <div id="chipNoWrap">
+  <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
+  <input id="chipNo" class="input" inputmode="numeric" pattern="[0-9]*" placeholder="晶片號碼">
+</div>
 
-      <div id="chipIdentifyWrap">
-        <div class="label">辨識資訊 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
-        <input id="chipIdentifyInfo" class="input" placeholder="例如：小名、花色、特徵">
-      </div>
+<div id="chipIdentifyWrap" class="hidden">
+  <div class="label">辨識資訊 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
+  <input id="chipIdentifyInfo" class="input" placeholder="例如：小名、花色、特徵">
+</div>
 
       <div class="label">體重（公斤）</div>
       <input id="petWeight" class="input" inputmode="decimal" placeholder="例：6.5">
@@ -911,8 +919,10 @@ ______________________________________________。
   const petWeight = document.getElementById("petWeight");
   const signDate = document.getElementById("signDate");
 
-  const chipNoWrap = document.getElementById("chipNoWrap");
-  const chipNo = document.getElementById("chipNo");
+const chipNoWrap = document.getElementById("chipNoWrap");
+const chipNo = document.getElementById("chipNo");
+const chipIdentifyWrap = document.getElementById("chipIdentifyWrap");
+const chipIdentifyInfo = document.getElementById("chipIdentifyInfo");
 
   const allergyDetailWrap = document.getElementById("allergyDetailWrap");
   const allergyDetail = document.getElementById("allergyDetail");
@@ -1017,12 +1027,17 @@ ______________________________________________。
   document.querySelectorAll('input[name="isOwnerSelf"]').forEach(r => r.addEventListener("change", refreshOwnerRelation));
   refreshOwnerRelation();
 
-  function refreshChip(){
-    const has = getRadio("chipHas");
-    const show = (has === "有");
-    setHidden(chipNoWrap, !show);
-    if(!show && chipNo) chipNo.value = "";
-  }
+function refreshChip(){
+  const has = getRadio("chipHas");
+  const showChipNo = (has === "有");
+  const showIdentify = (has === "無");
+
+  setHidden(chipNoWrap, !showChipNo);
+  setHidden(chipIdentifyWrap, !showIdentify);
+
+  if(!showChipNo && chipNo) chipNo.value = "";
+  if(!showIdentify && chipIdentifyInfo) chipIdentifyInfo.value = "";
+}
   document.querySelectorAll('input[name="chipHas"]').forEach(r => r.addEventListener("change", refreshChip));
   refreshChip();
 
@@ -1190,9 +1205,10 @@ ______________________________________________。
       return;
     }
 
-    const isOwnerSelf = getRadio("isOwnerSelf") || "是";
-    const chipHas = getRadio("chipHas") || "有";
-    const neutered = getRadio("neutered") || "有";
+const isOwnerSelf = getRadio("isOwnerSelf") || "是";
+const petType = getRadio("petType") || "狗";
+const chipHas = getRadio("chipHas") || "有";
+const neutered = getRadio("neutered") || "有";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
@@ -1214,8 +1230,9 @@ ______________________________________________。
       isOwnerSelf,
       ownerRelation: (isOwnerSelf === "否") ? requireValue(ownerRelation, "與飼主關係") : "",
 
-      petName: requireValue(petName, "寵物姓名"),
-      petBreed: requireValue(petBreed, "寵物品種"),
+petName: requireValue(petName, "寵物姓名"),
+petType,
+petBreed: requireValue(petBreed, "寵物品種"),
       petSex: getRadio("petSex") || "不確定",
       petAge: requireValue(petAge, "寵物年齡"),
       petBirthday: requireValue(petBirthday, "寵物生日"),
@@ -1225,8 +1242,9 @@ ______________________________________________。
       petTemperamentNote: (petTemperamentNote?.value || "").trim(),
       signDate: requireValue(signDate, "簽署日期"),
 
-      chipHas,
-      chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
+chipHas,
+chipNo: (chipHas === "有") ? (chipNo.value || "").trim() : "",
+chipIdentifyInfo: (chipHas === "無") ? (chipIdentifyInfo.value || "").trim() : "",
 
       foodAllergy,
       allergyDetail: allergyDetailText,
@@ -1282,9 +1300,9 @@ ______________________________________________。
         return;
       }
 
-      const chipText = (data.chipHas === "有")
-        ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
-        : "無";
+const chipText = (data.chipHas === "有")
+  ? `有${data.chipNo ? "（" + data.chipNo + "）" : "（未填號碼）"}`
+  : `無${data.chipIdentifyInfo ? "（辨識資訊：" + data.chipIdentifyInfo + "）" : ""}`;
 
       const allergyText = (data.foodAllergy === "有")
         ? `有（${data.allergyDetail}）`
@@ -1325,6 +1343,7 @@ Email：${data.ownerEmail}
 是否飼主本人：${data.isOwnerSelf}${data.ownerRelation ? "（關係：" + data.ownerRelation + "）" : ""}
 
 寵物名字：${data.petName}
+種類：${data.petType}
 品種：${data.petBreed}
 性別：${data.petSex}
 年齡：${data.petAge}
