@@ -768,12 +768,6 @@ ______________________________________________。
         <input id="allergyDetail" class="input" placeholder="例：雞肉 / 牛肉 / 乳製品">
       </div>
 
-      <div class="label">零食</div>
-      <div class="choiceRow" id="treatRow">
-        <label class="choice"><input type="radio" name="treatAllowed" value="可以" checked> 可以</label>
-        <label class="choice"><input type="radio" name="treatAllowed" value="不可以"> 不可以</label>
-      </div>
-
       <div class="label">病史</div>
       <div class="checkGrid" id="medicalGrid">
         <label class="ck fullRow">
@@ -1235,7 +1229,6 @@ ______________________________________________。
     const neutered = getRadio("neutered") || "有";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
-    const treatAllowed = getRadio("treatAllowed") || "可以";
 
     const medicalHistory = getMedicalHistory();
     const medicalNoteText = (medicalNote?.value || "").trim();
@@ -1272,8 +1265,6 @@ ______________________________________________。
 
       foodAllergy,
       allergyDetail: allergyDetailText,
-
-      treatAllowed,
 
       medicalHistory,
       medicalNote: medicalNoteText,
@@ -1385,7 +1376,6 @@ Email：${data.ownerEmail}
 個性其他應注意：${ptNoteText}
 晶片：${chipText}
 食物過敏：${allergyText}
-零食：${data.treatAllowed}
 病史：${mhText}
 ${otherInjuryTextLine}
 病史其他應注意：${noteText}
