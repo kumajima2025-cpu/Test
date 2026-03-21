@@ -134,6 +134,13 @@ body{
 .input::placeholder{
   color:rgba(35,64,71,.38);
 }
+.input-lock{
+  background:#DDECEF;
+  color:#1F3B40;
+  border:1.4px dashed #BFE5EA;
+  font-weight:700;
+  cursor:not-allowed;
+}
 
 .input:focus{
   border-color:rgba(100,196,210,.95);
@@ -696,7 +703,7 @@ ______________________________________________。
         </div>
         <div>
           <div class="label" style="margin:0 0 8px; font-size:16px;">寵物年齡</div>
-          <input id="petAge" class="input" placeholder="將依生日自動產生" readonly>
+          <input id="petAge" class="input input-lock" placeholder="" readonly>
         </div>
       </div>
 
@@ -707,10 +714,10 @@ ______________________________________________。
       </div>
 
       <div class="label">晶片</div>
-      <div class="choiceRow" id="chipRow">
-        <label class="choice"><input type="radio" name="chipHas" value="有"> 有</label>
-        <label class="choice"><input type="radio" name="chipHas" value="無" checked> 無</label>
-      </div>
+<div class="choiceRow" id="chipRow">
+  <label class="choice"><input type="radio" name="chipHas" value="有" checked> 有</label>
+  <label class="choice"><input type="radio" name="chipHas" value="無"> 無</label>
+</div>
 
       <div id="chipNoWrap" class="hidden">
         <div class="label">晶片號碼 <span style="color:var(--muted); font-weight:700; font-size:14px;">（選填）</span></div>
@@ -1202,7 +1209,7 @@ ______________________________________________。
 
     const isOwnerSelf = getRadio("isOwnerSelf") || "是";
     const petType = getRadio("petType") || "狗";
-    const chipHas = getRadio("chipHas") || "無";
+    const chipHas = getRadio("chipHas") || "有";
     const vetMode = getRadio("vetMode") || "甲方指定";
     const foodAllergy = getRadio("foodAllergy") || "無";
     const treatAllowed = getRadio("treatAllowed") || "可以";
